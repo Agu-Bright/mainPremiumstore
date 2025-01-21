@@ -77,7 +77,7 @@ const SendEmails = () => {
       }}
     >
       <Typography variant="h5" gutterBottom>
-        Send Emails
+        Send
       </Typography>
 
       <Grid container spacing={2} alignItems="center">
