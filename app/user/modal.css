@@ -1,0 +1,21 @@
+.dashboard-nav {
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.85
+  ); /* Replace with your desired color and transparency */
+  background-blend-mode: overlay; /* Blend the background color with the image */
+  background-size: cover; /* Cover the entire area */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat;
+
+  /* background-color: #2a2a2a; */
+  height: 100%;
+  box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.12);
+  z-index: 11;
+  position: fixed;
+  min-height: 100vh;
+  overflow: hidden;
+  min-width: 280px;
+}

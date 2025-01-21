@@ -1,0 +1,36 @@
+.chef_flex_container {
+  border: 0.1px solid #e3dbdb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.reg_view {
+  height: 100%;
+  width: 550px;
+  padding: 10px 10px;
+  align-self: flex-start;
+}
+.img_reg {
+  width: 500px;
+  height: 100%;
+}
+
+@media (max-width: 1200px) {
+  .topic_reg {
+    font-size: 27px;
+    font-weight: 900;
+  }
+}
+@media (max-width: 1000px) {
+  .chef_flex_container {
+    flex-direction: column;
+  }
+  .img_reg {
+    width: 100%;
+  }
+
+  .reg_view {
+    width: inherit;
+  }
+}

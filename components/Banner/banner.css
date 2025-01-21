@@ -1,0 +1,11 @@
+@media only screen and (min-width: 998px) {
+  .lskdf {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.new_banner_style {
+  height: 50vh;
+  overflow: hidden;
+}

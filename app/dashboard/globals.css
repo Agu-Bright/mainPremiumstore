@@ -1,0 +1,312 @@
+.swiper-button-next:after,
+.swiper-rtl .swiper-button-prev:after {
+  color: #1a53ef;
+  background-color: white;
+  font-size: 20px !important;
+  font-weight: 900;
+  padding: 5px 10px;
+  border-radius: 50%;
+  box-shadow: 1px 1px 5px #bbb2b2;
+  border: 15px solid transparent;
+}
+
+.swiper-button-prev:after,
+.swiper-rtl .swiper-button-next:after {
+  color: #1a53ef;
+  background-color: white;
+  font-size: 20px !important;
+  font-weight: 900;
+  padding: 5px 10px;
+  border-radius: 50%;
+  box-shadow: 1px 1px 5px #bbb2b2;
+  border: 15px solid transparent;
+}
+.container {
+  max-width: 2140px;
+}
+.listing-item-box .top {
+  padding: 10px 6px;
+  background: white;
+  position: relative;
+}
+
+.css-i9fmh8-MuiBackdrop-root-MuiModal-backdrop {
+  backdrop-filter: blur(7px);
+  background-color: transparent !important;
+}
+
+/* 
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+} */
+
+.css-zs2h9k-MuiStack-root {
+  padding-top: 0px !important;
+}
+
+.css-jr3eha-MuiPickersLayout-root .MuiPickersLayout-toolbar {
+  background: #1a53ef;
+}
+
+.css-1hbyad5-MuiTypography-root {
+  color: white !important;
+}
+
+.css-1wy8uaa-MuiButtonBase-root-MuiPickersDay-root.Mui-selected {
+  background-color: #1a53ef !important;
+}
+
+.css-1wy8uaa-MuiButtonBase-root-MuiPickersDay-root.Mui-selected:hover {
+  background-color: #1a53ef !important;
+}
+.css-23p0if-MuiButtonBase-root-MuiPickersDay-root.Mui-selected {
+  background-color: #1a53ef !important;
+}
+.css-23p0if-MuiButtonBase-root-MuiPickersDay-root.Mui-selected:hover {
+  background-color: #1a53ef !important;
+}
+.css-1e6y48t-MuiButtonBase-root-MuiButton-root {
+  color: #1a53ef !important;
+}
+.css-23p0if-MuiButtonBase-root-MuiPickersDay-root:not(.Mui-selected) {
+  border: 1px solid#1a53ef !important;
+  background-color: #f8f5f5 !important;
+}
+
+.css-1hbyad5-MuiTypography-root {
+  color: white !important;
+}
+
+.css-mvmxd9-MuiTypography-root-MuiPickersToolbarText-root {
+  color: white !important;
+}
+.css-umzx0k-MuiClock-pin {
+  background-color: #1a53ef !important;
+}
+
+.css-d0vs79-MuiClockPointer-root {
+  background-color: #1a53ef !important;
+}
+
+.css-f53ilk-MuiClockPointer-thumb {
+  border: 16px solid #1a53ef !important;
+  background-color: #1a53ef !important;
+}
+
+.css-12t0dn4-MuiClockPointer-thumb {
+  border: 16px solid #1a53ef !important;
+  /* background-color: #1a53ef !important;  */
+}
+
+.css-1bz26re-MuiTypography-root-MuiDatePickerToolbar-title {
+  color: white;
+}
+
+.leaflet-popup.leaflet-zoom-animated {
+  background: transparent !important;
+}
+
+.drawer-container {
+  width: 100%;
+  padding: 5px 6px;
+}
+
+.top-icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.drawer-items {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1500px;
+  }
+}
+
+@media (max-width: 992px) {
+  .dashboard_row {
+    margin-top: 70px;
+    width: "100%";
+  }
+}
+@media (max-width: 5900px) {
+  .dashboard_row {
+    margin-top: 85px;
+    width: "100%";
+  }
+}
+
+@media (min-width: 0px) {
+  .css-136bf8j-MuiGrid-root {
+    margin-top: 0px;
+    margin-left: 0px;
+    width: 100%;
+    padding: 0px;
+  }
+}
+.movie_image {
+  width: 200px;
+  height: 300px;
+  border-radius: 10px;
+}
+@media screen and (max-width: 600px) {
+  .swiper-button-next:after,
+  .swiper-rtl .swiper-button-prev:after {
+    display: none;
+  }
+
+  .swiper-button-prev:after,
+  .swiper-rtl .swiper-button-next:after {
+    display: none;
+  }
+
+  .movie_image {
+    width: 170px;
+  }
+}
+@media screen and (max-width: 500px) {
+  .movie_image {
+    width: 150px;
+  }
+}
+
+.choose_cuisine {
+  border: "1px solid green";
+}
+
+/* Hide default arrow */
+.choose_cuisine::-ms-expand {
+  display: none;
+}
+.choose_cuisine {
+  /* Set styles for the select element */
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff; /* Default background color */
+}
+.choose_cuisine option {
+  /* Set styles for the options */
+  padding: 5px;
+}
+/* Hover effect for options */
+.choose_cuisine:hover option {
+  background-color: red; /* Change background color on hover */
+}
+/* Selected option */
+.choose_cuisine option:checked {
+  background-color: blue; /* Change background color when selected */
+}
+
+.bubs_design {
+  border: "1px solid black";
+}
+
+.css-t1uqk7-MuiGrid-root {
+  width: calc(100% + 8px);
+  margin-left: 28px;
+}
+
+.butom_nav_bar {
+  cursor: pointer;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background-color: rgba(23, 22, 22, 0.6);
+  color: rgb(21, 21, 21);
+  backdrop-filter: blur(5px);
+  padding: 10px 0;
+  font-weight: 600;
+  text-align: center;
+  z-index: 9999;
+}
+
+/*--------------custom scroll-bar ------------*/
+::-webkit-scrollbar {
+  width: 2px;
+  border: 1px solid black;
+  display: none;
+}
+::-webkit-scrollbar-track {
+  background: rgb(112, 110, 109);
+}
+::-webkit-scrollbar-thumb {
+  background: orange;
+  border-radius: 5px;
+}
+
+.marquee {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+  width: 100%; /* Adjust this width as necessary */
+}
+
+.marquee p {
+  color: white;
+  display: inline-block;
+  padding-left: 50%; /* Start from outside the left edge */
+  animation: marquee 25s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* components/PhotoGrid.module.css */
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 10px;
+  perspective: 1000px;
+  /* transform: rotateX(20deg); */
+  padding: 20px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.gridItem {
+  width: 100%;
+  padding-top: 100%; /* This makes the div a square */
+  position: relative;
+  overflow: hidden;
+  /* transform: rotateX(-20deg) scale(1); */
+  transform-style: preserve-3d;
+}
+
+.gridItem img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 992px) {
+  .dashboard_row {
+    margin-top: 70px;
+  }
+}
+@media (max-width: 5900px) {
+  .dashboard_row {
+    margin-top: 85px;
+  }
+}

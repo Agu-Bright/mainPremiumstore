@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/home",
+      "destination": "https://premiumstoree.netlify.app/"
+    },
+    {
+      "source": "/:path*",
+      "destination": "/:path*"
+    }
+  ]
+}

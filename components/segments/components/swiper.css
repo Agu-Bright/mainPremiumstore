@@ -1,0 +1,10 @@
+.swiper-pagination-bullet-active {
+  background: #1a53ef !important;
+}
+
+.rest_status_open {
+  background: green;
+}
+.res_status_closed {
+  background: #1a53ef;
+}

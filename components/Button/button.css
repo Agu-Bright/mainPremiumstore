@@ -1,0 +1,20 @@
+.contaner {
+  border: none;
+  background: transparent;
+  color: #1a53ef;
+  border-radius: 10px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.contaner:hover {
+  background: #f9e3e3;
+}
+
+@media screen and (max-width: 400px) {
+  .contaner {
+    width: 150px;
+  }
+}
