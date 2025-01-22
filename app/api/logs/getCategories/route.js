@@ -16,19 +16,18 @@ export const GET = async (req) => {
     },
     authOptions
   );
-  // if (!session) {
-  //   return Response.json(
-  //     { message: "You must be logged in." },
+  if (!session) {
+    return Response.json(
+      { message: "You must be logged in." },
 
-  //     { status: 401 }
-  //   );
-  // }
+      { status: 401 }
+    );
+  }
   try {
     await connectDB;
     const { data } = await axios.get(
       "https://shopviaclone22.com/api/products.php?api_key=aee5f317aad9959bf4915f0502812b2c"
     );
-    console.log(data);
     return new Response(
       JSON.stringify({ success: true, categories: data?.categories }),
       {

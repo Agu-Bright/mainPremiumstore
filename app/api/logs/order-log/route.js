@@ -67,7 +67,8 @@ export const POST = async (req, res) => {
 
   try {
     await connectDB;
-    const { id, amount, totalPrice, profit, name, icon } = await req.json();
+    const { id, amount, totalPrice, profit, name, icon, type } =
+      await req.json();
 
     const userWallet = await Wallet.findOne({ user: session?.user?.id });
     if (!userWallet) {
@@ -81,49 +82,51 @@ export const POST = async (req, res) => {
       );
     }
 
-    //get balance
-    const { data } = await axios.get(
-      `https://shopviaclone22.com/api/profile.php?api_key=${process.env.SHOP_VIA_CLONE_API}`
-    );
-
-    if (Number(data?.money) < totalPrice) {
-      return Response.json(
-        { message: `Error purchasing log` },
-        { status: 401 }
+    if (type === "accsmtp") {
+      //get balance
+      const { data } = await axios.get(
+        `https://accsmtp.com/api/GetBalance.php?username=${process.env._username}&password=${process.env._password}`
       );
-    }
-
-    //handle purchase
-    // const res = await axios.get(`https://shopviaclone22.com/api/buy_product`, {
-    //   action: "buyProduct",
-    //   id: id,
-    //   amount: amount,
-    //   api_key: process.env.SHOP_VIA_CLONE_API,
-    // });
-    // console.log("purchase", res?.data);
-    const res = await buyProduct(id, amount);
-
-    if (res?.status === "success") {
-      const order = await Order.create({
-        user: session?.user?.id,
-        logs: res?.data,
-        categoryId: id,
-        transactionId: res?.trans_id,
-        profit: profit,
-        source: "shopviaclone",
-        name: name,
-        icon: icon,
-      });
-
-      //remove balance from users account
-      userWallet.balance = Number(userWallet.balance) - totalPrice;
-      await userWallet.save();
-
-      return new Response(JSON.stringify({ success: true, order }), {
+      console.log(data);
+      return new Response(JSON.stringify({ success: true }), {
         status: 200,
       });
     } else {
-      throw new Error();
+      //get balance
+      const { data } = await axios.get(
+        `https://shopviaclone22.com/api/profile.php?api_key=${process.env.SHOP_VIA_CLONE_API}`
+      );
+
+      if (Number(data?.money) < totalPrice) {
+        return Response.json(
+          { message: `Error purchasing log` },
+          { status: 401 }
+        );
+      }
+
+      const res = await buyProduct(id, amount);
+      if (res?.status === "success") {
+        const order = await Order.create({
+          user: session?.user?.id,
+          logs: res?.data,
+          categoryId: id,
+          transactionId: res?.trans_id,
+          profit: profit,
+          source: "shopviaclone",
+          name: name,
+          icon: icon,
+        });
+
+        //remove balance from users account
+        userWallet.balance = Number(userWallet.balance) - totalPrice;
+        await userWallet.save();
+
+        return new Response(JSON.stringify({ success: true, order }), {
+          status: 200,
+        });
+      } else {
+        throw new Error();
+      }
     }
   } catch (error) {
     console.log("error", error);

@@ -304,9 +304,25 @@ const Body = () => {
                             alignItems: "center",
                             height: "100%",
                             justifyContent: "center",
+                            marginRight: "8px",
                           }}
                         >
                           &#8358; {rate?.rate} / USDT
+                        </Typography>
+                        <Typography
+                          sx={{
+                            marginRight: "4px",
+                            background: "gray",
+                            color: "white",
+                            borderRadius: "10px",
+                            padding: "0px 2px",
+                            display: "flex",
+                            alignItems: "center",
+                            height: "100%",
+                            justifyContent: "center",
+                          }}
+                        >
+                          percentage: {rate?.percentage}%
                         </Typography>
 
                         <Box>

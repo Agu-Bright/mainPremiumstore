@@ -72,12 +72,13 @@ const RestaurantContextProvider = ({ children }) => {
   const [totalP, setTotalp] = useState("home");
 
   const [rate, setRate] = useState("");
-  const [percentage, setPercentage] = useState(20);
+  const [percentage, setPercentage] = useState();
 
   useEffect(() => {
     (async () => {
       try {
         const { data } = await axios.get("/api/get-rate");
+        setPercentage(data?.percentage);
         setRate(data?.rate);
       } catch (error) {
         console.log(error);

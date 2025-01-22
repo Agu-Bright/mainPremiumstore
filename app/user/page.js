@@ -53,6 +53,7 @@ export default function Home() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [categories, setCategories] = useState([]);
+  const [categories2, setCategories2] = useState([]);
   const [values, setvalues] = useState([]);
   const [loading, setLoading] = useState(false);
   const { myWallet, formatMoney, setGlobalCat } = useContext(RestaurantContext);
@@ -70,18 +71,23 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    (async () => {
+    const fetchCategories = async () => {
       try {
         setLoading(true);
-        const { data } = await axios.get("/api/logs/getCategories");
-        setCategories(data?.categories);
-        setGlobalCat(data?.categories);
-        setLoading(false);
+        const [categoriesResponse, categories2Response] = await Promise.all([
+          axios.get("/api/logs/getCategories"),
+          axios.get("/api/logs/get-categories2"),
+        ]);
+        setCategories(categoriesResponse?.data?.categories);
+        setGlobalCat(categoriesResponse?.data?.categories);
+        setCategories2(categories2Response?.data?.categories);
       } catch (error) {
         console.log(error);
+      } finally {
         setLoading(false);
       }
-    })();
+    };
+    fetchCategories();
   }, []);
 
   if (status === "loading") {
@@ -94,45 +100,6 @@ export default function Home() {
     return (
       <NavPage>
         <Box sx={{ height: "100vh" }}>
-          {/* <Stack direction="row" justifyContent="space-between">
-            <h2 style={{ fontSize: "1em" }}>
-              <span style={{ color: "#8075ff", fontWeight: "800" }}>
-                Welcome!!{" "}
-              </span>
-              <span style={{}}>{session?.user?.username}</span> 😇
-            </h2>
-            <h2 style={{ fontSize: "1em" }}>
-              <span
-                style={{
-                  textDecoration: "underline",
-                  cursor: "pointer",
-                  fontWeight: "800",
-                }}
-              >
-                {formatMoney(myWallet?.balance)}
-              </span>
-            </h2>
-          </Stack>
-          <Typography
-            sx={{
-              textAlign: "center",
-              fontWeight: "800",
-              fontSize: { md: "3em", xs: "1.6em" },
-              background:
-                "linear-gradient(92.12deg, #007C9B 1.46%, #00CCFF 41.25%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            Buy social accounts and Followers
-          </Typography>
-          <Typography
-            sx={{ textAlign: "center", fontSize: { md: "1em", xs: "0.8em" } }}
-          >
-            Leading marketplace to buy established Facebook accounts, Youtube
-            Followers, Theme pages etc.
-          </Typography> */}
-
           <Swiper />
 
           <div>
@@ -146,6 +113,7 @@ export default function Home() {
                       products={category?.products}
                       catId={category?._id}
                       icon={category?.icon}
+                      type="shopviaclone22"
                       title={
                         <Topic title={category?.name} src={category?.icon} />
                       }
@@ -153,66 +121,29 @@ export default function Home() {
                   );
                 })}
             </>
-            {/* <>
-              {categories.length == 0 && (
-                <div
-                  style={{
-                    width: "100%",
-                    height: "50vh",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginTop: "10px",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Image src="/img/photo.png" width={200} height={200} />
-                    <Typography sx={{ textAlign: "center", fontWeight: "800" }}>
-                      No Log Uploaded yet
-                    </Typography>
-                    {session?.user?.role === "admin" && (
-                      <>
-                        <a
-                          href="/dashboard/upload-logs"
-                          target="_blank"
-                          style={{
-                            border: "none",
-                            color: "white",
-                            fontWeight: "800",
-                            borderRadius: "10px",
-                            fontSize: "1.2em",
-                            marginTop: "20px",
-                            textAlign: "center",
-                            background:
-                              "linear-gradient(90deg, rgba(128,117,255,1) 0%, rgba(128,117,255,1) 35%, rgba(0,212,255,1) 100%)",
-                          }}
-                          className="btn-md  btn-block"
-                        >
-                          Manage Logs{" "}
-                        </a>
-                        <Typography
-                          style={{
-                            fontWeight: "300",
-                            fontSize: "0.8em",
-                            marginTop: "10px",
-                          }}
-                        >
-                          <span style={{ fontWeight: "800" }}>N/B:</span> {""}{" "}
-                          This button is only visible to the admin
-                        </Typography>
-                      </>
-                    )}
-                  </div>
-                </div>
-              )}
-            </> */}
+            <Divider />
+            <>
+              {categories2.length > 0 &&
+                categories2.map((category) => {
+                  return (
+                    <TableList
+                      key={category?.id}
+                      category={category?.catType}
+                      products={category?.accounts}
+                      catId={category?._id}
+                      icon={category?.proxiedImage}
+                      type="accsmtp"
+                      title={
+                        <Topic
+                          title={category?.name}
+                          src={category?.proxiedImage}
+                        />
+                      }
+                    />
+                  );
+                })}
+            </>
+
             {loading && (
               <div
                 style={{

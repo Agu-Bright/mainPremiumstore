@@ -35,9 +35,10 @@ export default function WalletModal({
   const [deleting, setDeleting] = React.useState(false);
   const { type2, setType2 } = React.useContext(RestaurantContext);
   const [rate, setRate] = React.useState("");
+  const [percentage, setPercentage] = React.useState("");
 
   const hanedleUpload = async () => {
-    if (!rate) {
+    if (!rate && !percentage) {
       toast.error("Rate value is required", {
         position: "top-center",
         autoClose: 5000,
@@ -53,9 +54,15 @@ export default function WalletModal({
     }
     try {
       setSubmiting(true);
-      const { data } = await axios.post(`/api/admin-upload-rate`, {
-        rate,
-      });
+      const payload = {};
+      if (rate) {
+        payload.rate = rate;
+      }
+      if (percentage) {
+        payload.percentage = percentage;
+      }
+
+      const { data } = await axios.post(`/api/admin-upload-rate`, payload);
       if (data?.success) {
         toast.success("Success", {
           position: "top-center",
@@ -251,6 +258,17 @@ export default function WalletModal({
                     placeholder="Enter Current Rate"
                     onChange={(e) => setRate(e.target.value)}
                     value={rate}
+                  />
+                </div>
+                <div className="form-group" style={{ marginTop: "10px" }}>
+                  <input
+                    style={{ width: "100%" }}
+                    type="number"
+                    name="percentage"
+                    className="input-text"
+                    placeholder="Enter Percentage"
+                    onChange={(e) => setPercentage(e.target.value)}
+                    value={percentage}
                   />
                 </div>
                 <Stack>

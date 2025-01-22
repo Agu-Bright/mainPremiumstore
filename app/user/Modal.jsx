@@ -33,7 +33,7 @@ const style = {
 };
 
 export default function BasicModal({ open, setOpen, handleClose }) {
-  const { activeLog, formatMoney, loading, percentage, rate } =
+  const { activeLog, formatMoney, loading, percentage, rate, type, setType } =
     React.useContext(RestaurantContext);
   const { data: session } = useSession();
   const [count, setCount] = React.useState(1);
@@ -49,16 +49,30 @@ export default function BasicModal({ open, setOpen, handleClose }) {
     const finalPrice = (parseFloat(profit) + parseFloat(conversion)).toFixed(0);
     return formatMoney(finalPrice);
   };
+  const _calculatePrice = (price) => {
+    const profit = Number(price * (percentage / 100)).toFixed(2);
+    const finalPrice = (parseFloat(profit) + parseFloat(price)).toFixed(0);
+    return formatMoney(finalPrice);
+  };
   const calculatePrice2 = (price) => {
     const conversion = Number(price * rate?.rate).toFixed(2);
     const profit = Number(conversion * (percentage / 100)).toFixed(2);
     const finalPrice = (parseFloat(profit) + parseFloat(conversion)).toFixed(0);
     return finalPrice;
   };
-  const calculateProfit = (price) => {
+  const _calculate_Price2 = (price) => {
+    const profit = Number(price * (percentage / 100)).toFixed(2);
+    const finalPrice = (parseFloat(profit) + parseFloat(price)).toFixed(0);
+    return finalPrice;
+  };
+  const calculateProfit = (price, count) => {
     const conversion = Number(price * rate?.rate).toFixed(2);
     const profit = Number(conversion * (percentage / 100)).toFixed(2);
-    return profit;
+    return Number(count * profit);
+  };
+  const calculateProfit2 = (price, count) => {
+    const profit = Number(price * (percentage / 100)).toFixed(2);
+    return Number(count * profit);
   };
   const handleIncrement = () => {
     const maxLength = Number(activeLog?.amount);
@@ -98,10 +112,17 @@ export default function BasicModal({ open, setOpen, handleClose }) {
       await axios.post("/api/logs/order-log", {
         id: activeLog?.id,
         amount: count,
-        totalPrice: calculatePrice2(activeLog?.price),
-        profit: calculateProfit(activeLog?.price),
+        totalPrice:
+          type === "shopviaclone22"
+            ? calculatePrice2(activeLog?.price)
+            : _calculate_Price2(activeLog?.price),
+        profit:
+          type === ""
+            ? calculateProfit(activeLog?.price, count)
+            : calculateProfit2(activeLog?.price, count),
         name: activeLog?.name,
-        icon: activeLog?.icon,
+        icon: activeLog?.icon || activeLog?.proxiedImage,
+        type: type,
       });
       toast.success("Purchase successful", {
         position: "top-center",
@@ -136,7 +157,14 @@ export default function BasicModal({ open, setOpen, handleClose }) {
 
   return (
     <div>
-      <Drawer anchor="bottom" open={open} onClose={handleClose}>
+      <Drawer
+        anchor="bottom"
+        open={open}
+        onClose={() => {
+          setType("");
+          handleClose();
+        }}
+      >
         <>
           {loading ? (
             <div
@@ -258,9 +286,19 @@ export default function BasicModal({ open, setOpen, handleClose }) {
                         justifyContent: "center",
                       }}
                     >
-                      <Typography sx={{ color: "white", textAlign: "center" }}>
-                        {calculatePrice(activeLog?.price)}
-                      </Typography>
+                      {type === "shopviaclone22" ? (
+                        <Typography
+                          sx={{ color: "white", textAlign: "center" }}
+                        >
+                          {calculatePrice(activeLog?.price)}
+                        </Typography>
+                      ) : (
+                        <Typography
+                          sx={{ color: "white", textAlign: "center" }}
+                        >
+                          {_calculatePrice(activeLog?.price)}
+                        </Typography>
+                      )}
                     </Box>
                   </Stack>
                   <Button
@@ -340,7 +378,11 @@ export default function BasicModal({ open, setOpen, handleClose }) {
                           }}
                         >
                           Total Amount:{" "}
-                          {Number(count * calculatePrice2(activeLog?.price))}
+                          {type === "shopviaclone22"
+                            ? Number(count * calculatePrice2(activeLog?.price))
+                            : Number(
+                                count * _calculate_Price2(activeLog?.price)
+                              )}
                         </Typography>
                       </Stack>
                     </Stack>

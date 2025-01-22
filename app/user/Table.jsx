@@ -31,17 +31,25 @@ export default function TableList({
   catId,
   products,
   icon,
+  type,
 }) {
   const router = useRouter();
   const isMobile = useMediaQuery("(max-width:600px)");
 
-  const { setOpen, setActiveLog, formatMoney, rate, percentage } =
+  const { setOpen, setActiveLog, formatMoney, rate, percentage,  setType } =
     React.useContext(RestaurantContext);
+
+  console.log("percentage", percentage);
 
   const calculatePrice = (price) => {
     const conversion = Number(price * rate?.rate).toFixed(2);
     const profit = Number(conversion * (percentage / 100)).toFixed(2);
     const finalPrice = (parseFloat(profit) + parseFloat(conversion)).toFixed(0);
+    return formatMoney(finalPrice);
+  };
+  const calculatePrice2 = (price) => {
+    const profit = Number(price * (percentage / 100)).toFixed(2);
+    const finalPrice = (parseFloat(profit) + parseFloat(price)).toFixed(0);
     return formatMoney(finalPrice);
   };
 
@@ -53,7 +61,7 @@ export default function TableList({
           justifyContent="space-between"
           sx={{
             marginBottom: "10px",
-            background: "#8075ff",
+            background: "#6b5ff7",
             padding: "8px",
             borderRadius: "5px",
           }}
@@ -134,7 +142,10 @@ export default function TableList({
                   <Stack
                     direction="row"
                     justifyContent="space-between"
-                    sx={{ width: { md: "30%", xs: "100%" } }}
+                    sx={{
+                      width: { md: "30%", xs: "100%" },
+                      marginTop: { md: "0", xs: "8px" },
+                    }}
                   >
                     <Stack
                       direction="row"
@@ -177,11 +188,19 @@ export default function TableList({
                         >
                           Price
                         </Typography>
-                        <Typography
-                          sx={{ textAlign: "center", color: "black" }}
-                        >
-                          {calculatePrice(log?.price)}
-                        </Typography>
+                        {type === "shopviaclone22" ? (
+                          <Typography
+                            sx={{ textAlign: "center", color: "black" }}
+                          >
+                            {calculatePrice(log?.price)}
+                          </Typography>
+                        ) : (
+                          <Typography
+                            sx={{ textAlign: "center", color: "black" }}
+                          >
+                            {calculatePrice2(log?.price)}
+                          </Typography>
+                        )}
                       </Box>
                     </Stack>
 
@@ -194,7 +213,7 @@ export default function TableList({
                     >
                       <Button
                         onClick={() => {
-                          if (log?.amount === 0) {
+                          if (log?.amount == 0) {
                             toast.error("Sold Out", {
                               position: "top-center",
                               autoClose: 5000,
@@ -209,6 +228,7 @@ export default function TableList({
                             return;
                           }
                           setActiveLog(log);
+                          setType(type);
                           setOpen(true);
                         }}
                         variant="outlined"
