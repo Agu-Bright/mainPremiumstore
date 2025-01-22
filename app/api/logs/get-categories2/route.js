@@ -32,7 +32,7 @@ export const GET = async (req) => {
     const categories = data?.categories.map((category) => ({
       ...category,
       proxiedImage: `${
-        process.env.BASE_URL
+        process.env.BASE_URL2
       }/api/proxy-image?imageUrl=${encodeURIComponent(category.image)}`,
     }));
 
