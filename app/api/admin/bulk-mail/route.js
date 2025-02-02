@@ -41,6 +41,7 @@ export const POST = async (req, res) => {
         from: process.env.EMAIL_USER, // Sender address
         to: email, // Recipient address
         subject: "Message from Admin", // Email subject
+        text: message, // Email body
       });
     });
 
