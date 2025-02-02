@@ -47,6 +47,7 @@
     "react": "^18",
     "react-confetti-explosion": "^2.1.2",
     "react-dom": "^18",
+    "react-korapay": "^1.0.6",
     "react-leaflet": "^4.2.1",
     "react-squadpay": "^1.0.9",
     "react-toastify": "^10.0.5",

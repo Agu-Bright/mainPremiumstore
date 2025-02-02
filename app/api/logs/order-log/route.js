@@ -7,6 +7,7 @@ import Wallet from "@models/wallet";
 import Order from "@models/order";
 import axios from "@node_modules/axios";
 import FormData from "form-data";
+import Rate from "@models/rate";
 
 const buyProduct = async (productId, quantity) => {
   try {
@@ -88,6 +89,41 @@ export const POST = async (req, res) => {
         `https://accsmtp.com/api/GetBalance.php?username=${process.env._username}&password=${process.env._password}`
       );
       console.log(data);
+      const rate = await Rate.find();
+      const myRate = rate[0].rate;
+      const totalBalance = Number(myRate) * Number(data);
+      if (totalBalance < totalPrice) {
+        return Response.json(
+          { message: `Insuffcient Admin Balance` },
+          { status: 401 }
+        );
+      }
+      //buy product
+      const res = await axios.get(
+        `https://accsmtp.com/api/BResource.php?username=${process.env._username}&password=${process.env._password}id=${id}&amount=${amount}`
+      );
+      if (res?.data?.status === "success") {
+        const order = await Order.create({
+          user: session?.user?.id,
+          logs: res?.data,
+          categoryId: id,
+          transactionId: res?.trans_id,
+          profit: profit,
+          source: "shopviaclone",
+          name: name,
+          icon: icon,
+        });
+
+        //remove balance from users account
+        userWallet.balance = Number(userWallet.balance) - totalPrice;
+        await userWallet.save();
+
+        return new Response(JSON.stringify({ success: true, order }), {
+          status: 200,
+        });
+      } else {
+        throw new Error();
+      }
       return new Response(JSON.stringify({ success: true }), {
         status: 200,
       });

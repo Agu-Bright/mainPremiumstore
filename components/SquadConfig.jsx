@@ -8,7 +8,7 @@ import { Bounce } from "react-toastify"; // Import the Bounce transition if it's
 import "react-toastify/dist/ReactToastify.css";
 import "./flutterstyle.css";
 
-export default function SquadPayButton({ session, amount, activeLog, count }) {
+export default function   SquadPayButton({ session, amount, activeLog, count }) {
   const { setLoading, handleClose, setOpen, setState } =
     useContext(RestaurantContext);
   const router = useRouter();

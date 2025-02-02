@@ -10,6 +10,7 @@ const RestaurantContextProvider = ({ children }) => {
   const [user, setUser] = useState("");
   const [cuisine, setCuisine] = useState("");
   const [search, setSearch] = useState("");
+  const [amount, setAmount] = useState("");
   const [page, setPage] = useState(1);
   const [refreshed, setRefreshed] = useState(false);
   const [restaurantIntent, setRestaurantIntent] = useState(false);
@@ -247,6 +248,8 @@ const RestaurantContextProvider = ({ children }) => {
         setActiveLoading,
         percentage,
         setPercentage,
+        amount,
+        setAmount,
       }}
     >
       {children}

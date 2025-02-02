@@ -28,6 +28,8 @@ export const GET = async (req) => {
       `https://accsmtp.com/api/ListResource.php?username=${process.env._username}&password=${process.env._password}&domain`
     );
 
+    console.log("data", data);
+
     // Modify the response to include proxied image URLs
     const categories = data?.categories.map((category) => ({
       ...category,

@@ -15,19 +15,13 @@ import Swiper from "@components/Swiper";
 function timeAgo(dateString) {
   const givenDate = new Date(dateString);
   const now = new Date();
-
-  // Calculate the difference in milliseconds
   const diff = now - givenDate;
-
-  // Convert to various time units
   const seconds = Math.floor(diff / 1000);
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
   const days = Math.floor(hours / 24);
   const weeks = Math.floor(days / 7);
   const years = Math.floor(days / 365);
-
-  // Determine the appropriate unit
   if (seconds < 60) return `${seconds} seconds ago`;
   if (minutes < 60) return `${minutes} minutes ago`;
   if (hours < 24) return `${hours} hours ago`;
@@ -69,7 +63,7 @@ export default function Home() {
     };
     fetchValues();
   }, []);
-
+  console.log("categories2", categories2);
   useEffect(() => {
     const fetchCategories = async () => {
       try {

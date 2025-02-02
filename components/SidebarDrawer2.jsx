@@ -27,11 +27,16 @@ function SideBarDrawer2({ open, close }) {
   const router = useRouter();
   // const { globalCat } = useContext(RestaurantContext);
   const [categories, setCategories] = useState([]);
+  const [categories2, setCategories2] = useState([]);
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await axios.get("/api/logs/getCategories");
-        setCategories(data?.categories);
+        const [categoriesResponse, categories2Response] = await Promise.all([
+          axios.get("/api/logs/getCategories"),
+          axios.get("/api/logs/get-categories2"),
+        ]);
+        setCategories(categoriesResponse?.data?.categories);
+        setCategories2(categories2Response?.data?.categories);
       } catch (error) {
         console.log(error);
       }
@@ -66,16 +71,27 @@ function SideBarDrawer2({ open, close }) {
                 <CloseIcon sx={{ color: "red" }} />
               </IconButton>
             </div>
-            <Typography>Categories</Typography>
-            <ul style={{ marginTop: "10px", paddingLeft: "10px" }}>
+            <Typography
+              sx={{ fontWeight: "800", marginLeft: "10px", fontSize: "20px" }}
+            >
+              Categories
+            </Typography>
+            <ul
+              style={{
+                marginTop: "10px",
+                paddingLeft: "10px",
+                overflowY: "scroll",
+                height: "90vh",
+              }}
+            >
               {categories.map((category) => {
                 return (
                   <li key={category?.id} style={{ marginTop: "10px" }}>
                     <div
                       onClick={() => {
-                        // router.push(
-                        //   "/user/products?cat=66e2317767f6ea038e702a07&&catType=FACEBOOK&&special=true"
-                        // );
+                        router.push(
+                          `/user/products?type=shopviaclone22&&id=${category?.id}`
+                        );
                         close();
                       }}
                       style={{
@@ -93,7 +109,51 @@ function SideBarDrawer2({ open, close }) {
                           marginRight: "8px",
                         }}
                       />
-                      <div style={{ color: "black", fontWeight: "700" }}>
+                      <div
+                        style={{
+                          color: "black",
+                          fontWeight: "700",
+                          marginLeft: "8px",
+                        }}
+                      >
+                        {category?.name}
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
+              {categories2.map((category) => {
+                return (
+                  <li key={category?.id} style={{ marginTop: "10px" }}>
+                    <div
+                      onClick={() => {
+                        router.push(
+                          `/user/products?type=accsmtp&&id=${category?.id}`
+                        );
+                        close();
+                      }}
+                      style={{
+                        display: "flex",
+                        cursor: "pointer",
+                        alignItems: "center",
+                      }}
+                    >
+                      <img
+                        src={category?.proxiedImage}
+                        alt="facebook"
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          marginRight: "8px",
+                        }}
+                      />
+                      <div
+                        style={{
+                          color: "black",
+                          fontWeight: "700",
+                          marginLeft: "8px",
+                        }}
+                      >
                         {category?.name}
                       </div>
                     </div>

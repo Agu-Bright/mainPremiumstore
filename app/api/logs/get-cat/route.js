@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import Log from "@models/log";
 import Category from "@models/Category";
+import axios from "@node_modules/axios";
 
 export const POST = async (req, res) => {
   const session = await getServerSession(
@@ -25,28 +26,21 @@ export const POST = async (req, res) => {
 
   try {
     await connectDB;
+    // console.log("hiiiiiiiiiiiiiiiiiiiiiiiii");
     const body = await req.json();
-  
-    // Fetch logs without the `logs` field but include `logCount`
-    const logs = await Log.find({ social: body.social}).select("-logs");
+    console.log("id", body?.id);
 
-    // For each log, calculate the length of the `logs` array
-    const logsWithCount = await Promise.all(
-      logs.map(async (log) => {
-        const logCount = await Log.aggregate([
-          { $match: { _id: log._id } },
-          { $project: { logCount: { $size: "$logs" } } },
-        ]);
-        return {
-          ...log.toObject(), // Convert the log document to a JS object
-          logCount: logCount[0]?.logCount || 0, // Add the log count
-        };
-      })
+    // https://shopviaclone22.com/api/product.php?api_key=46a255ee592b54e3d05021daf07dd07c&product=3
+    const { data } = await axios.get(
+      `https://shopviaclone22.com/api/product.php?api_key=aee5f317aad9959bf4915f0502812b2c&product=${body?.id}`
     );
+    console.log(data);
 
     return new Response(
-      JSON.stringify({ success: true, logs: logsWithCount }),
-      { status: 200 }
+      JSON.stringify({ success: true, logs: data?.categories }),
+      {
+        status: 200,
+      }
     );
   } catch (error) {
     if ((error.code = 11000 && error.keyPattern && error.keyValue)) {

@@ -249,7 +249,7 @@ const Navbar = ({ fixed, type, data, topNav, title }) => {
                   justifyContent="space-between"
                   alignItems="center"
                 >
-                  <IconButton
+                  {/* <IconButton
                     onClick={() => setSideBar2(true)}
                     sx={{
                       border: "0.1px solid gray",
@@ -258,7 +258,7 @@ const Navbar = ({ fixed, type, data, topNav, title }) => {
                     }}
                   >
                     <SortIcon sx={{ fontWeight: "800", color: "#c1c3c61f3" }} />
-                  </IconButton>
+                  </IconButton> */}
                   <Link
                     style={{
                       fontWeight: "800",

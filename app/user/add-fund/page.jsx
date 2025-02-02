@@ -11,6 +11,8 @@ import {
   Divider,
   Button,
 } from "@mui/material";
+import Swal from "sweetalert2";
+
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -29,7 +31,7 @@ import { useSearchParams } from "next/navigation";
 
 import Modal from "@mui/material/Modal";
 import { borderRadius } from "@mui/system";
-import Spinner from "@components/Spinner";
+import KorapayComponent from "@components/Korapay";
 
 const LoadingModal = ({ open, setOpen }) => {
   // const [open, setOpen] = React.useState(false);
@@ -55,7 +57,13 @@ const LoadingModal = ({ open, setOpen }) => {
       {/* <Button onClick={handleOpen}>Open modal</Button> */}
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={(event, reason) => {
+          // Prevent closing when clicking outside the modal or pressing escape
+          if (reason === "backdropClick" || reason === "escapeKeyDown") {
+            return;
+          }
+          setOpen(false);
+        }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -66,7 +74,9 @@ const LoadingModal = ({ open, setOpen }) => {
           >
             Verifying Transaction ...
           </Typography>
-          <Typography>Do not refersh this page</Typography>
+          <Typography style={{ color: "red" }}>
+            Do not refersh this page
+          </Typography>
         </Box>
       </Modal>
     </div>
@@ -103,7 +113,6 @@ const HomeData = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [amount, setAmount] = useState("");
   const [uploading, setUploading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("");
   const [deposits, setDeposits] = useState("");
@@ -113,15 +122,31 @@ const HomeData = () => {
   const [open, setOpen] = useState(false);
   const baseUrl = " https://api.ercaspay.com/api/v1";
 
+  const showSuccessAlert = () => {
+    Swal.fire({
+      icon: "success",
+      title: "Success!",
+      text: "Payment Successful",
+      confirmButtonText: "Go to Home",
+      confirmButtonColor: "#3085d6",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        router.push("/user");
+      }
+    });
+  };
+
   const {
     state,
     setState,
     rate,
     formatMoney,
     formatDollar,
-    activeLoading,
     setActiveLoading,
+    amount,
+    setAmount,
   } = useContext(RestaurantContext);
+
   const searchParams = useSearchParams();
 
   const verifyPayment = async (transactionRef) => {
@@ -141,20 +166,24 @@ const HomeData = () => {
       const result = await response.json();
 
       if (result?.requestSuccessful) {
-        await axios.post("/api/deposit/create-deposit/", {
-          amount: result?.responseBody?.amount,
-          method: "ErcasPay",
-          transactionRef: transactionRef,
-        });
-        toast.success("Payment verified and deposit successful.", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: true,
-          transition: Bounce,
-        });
-        setOpen(false);
-        setState((prev) => !prev);
-        // handleClose();
+        try {
+          await axios.post("/api/deposit/create-deposit/", {
+            amount: result?.responseBody?.amount,
+            method: "ErcasPay",
+            transactionRef: transactionRef,
+          });
+          setState((prev) => !prev);
+          showSuccessAlert();
+          setOpen(false);
+          // handleClose();
+        } catch (error) {
+          toast.error(error?.response?.data?.message, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            transition: Bounce,
+          });
+        }
       } else {
         toast.error(result?.responseMessage || "Payment verification failed.", {
           position: "top-center",
@@ -256,63 +285,6 @@ const HomeData = () => {
       });
     }
   };
-  const handleSubmit2 = async () => {
-    if (!amount && !paymentMethod) {
-      toast.error("Amount and Payment Method, Required", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
-      return;
-    }
-    try {
-      setLoading(true);
-      const { data } = await axios.post("/api/deposit/crypto-deposit/", {
-        amount: amount,
-        method: "Transfer",
-        network: main?.network,
-        usdt: "",
-        screenShot: image,
-        status: "pending",
-      });
-      toast.success("Deposit Successful", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
-      setState((prev) => !prev);
-      setLoading(false);
-      setAmount("");
-      setAppState("default");
-      setImage("");
-      setAmount("");
-    } catch (error) {
-      setLoading(false);
-      toast.error(error?.response?.data?.message, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
-    }
-  };
 
   const [fetching, setFetching] = useState(false);
   useEffect(() => {
@@ -375,21 +347,9 @@ const HomeData = () => {
     }
   };
 
-  //--------------------------------------------------------------------------------------------------------------------
-
   const [colorIndex, setColorIndex] = useState(0);
-  // Define the colors to cycle through
   const colors = ["red", "blue", "green"];
 
-  useEffect(() => {
-    // Change the color every second
-    const interval = setInterval(() => {
-      setColorIndex((prevIndex) => (prevIndex + 1) % colors.length);
-    }, 1000);
-
-    // Cleanup interval on component unmount
-    return () => clearInterval(interval);
-  }, [colors.length]);
   const handleClick = () => {
     window.open(
       "https://drive.google.com/file/d/11uFSKv63FEvZ2GoFQbvaAzADjtPDGWSM/view?usp=drivesdk",
@@ -432,7 +392,20 @@ const HomeData = () => {
   };
 
   if (status === "loading") {
-    return <Spinner />;
+    return (
+      <div
+        style={{
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "#EC5766",
+        }}
+      >
+        <CircularProgress style={{ color: "#CDC5B4" }} />
+      </div>
+    );
   }
 
   if (status === "unauthenticated") {
@@ -445,6 +418,9 @@ const HomeData = () => {
             <div className="col">
               {appState === "default" && (
                 <>
+                  <Typography sx={{ fontWeight: "800", fontSize: "30px" }}>
+                    ADD FUND
+                  </Typography>
                   <form>
                     <p class="mt-3" style={{ fontWeight: "700" }}>
                       Top up your wallet easily using Bank Transfer or Crypto
@@ -494,15 +470,18 @@ const HomeData = () => {
                           }}
                         >
                           <img
-                            src="/img/payment.jpg"
+                            src="/img/opay.jpg"
                             alt="payment"
                             style={{ width: "100%", height: "100%" }}
-                            onClick={() => handleCopy("0279099194")}
+                            onClick={() => handleCopy("6113479018")}
                           />
                         </div>
                       </div>
                       <button
                         style={{
+                          width: "100%",
+                          marginTop: "10px",
+                          padding: "10px 0px",
                           background:
                             "linear-gradient(90deg, rgba(128,117,255,1) 0%, rgba(128,117,255,1) 35%, rgba(0,212,255,1) 100%)",
                           border: "none",
@@ -595,15 +574,26 @@ const HomeData = () => {
                         )}
                       </div>
                     </>
-                  )}  */}
+                  )} */}
                   {amount && (
                     <SquadPayButton amount={amount} session={session} />
                   )}
-                  {/* <p style={{ textAlign: "center" }}>------- OR ------- </p>
-                  {amount && (
-                    <PaymentButton amount={amount} session={session} />
+                  {/* {amount && (
+                    <KorapayComponent amount={amount} session={session} />
                   )} */}
-                  {activeLoading ? (
+                  {amount && (
+                    <button
+                      onClick={() => router.push("/user/korapay")}
+                      className="btn-md btn-block flutter_style"
+                    >
+                      Pay with Transfer!
+                    </button>
+                  )}
+                  {/* <p style={{ textAlign: "center" }}>------- OR ------- </p>
+                   {amount && (
+                    <PaymentButton amount={amount} session={session} />
+                  )}  */}
+                  {/* {activeLoading ? (
                     <CircularProgress size={15} sx={{ color: "blue" }} />
                   ) : (
                     <div
@@ -612,18 +602,21 @@ const HomeData = () => {
                         alignItems: "center",
                         justifyContent: "center",
                         marginTop: "10px",
-                        width: "100%",
                       }}
                     >
                       {amount && (
-                        <Stack direction="column" sx={{ width: "100%" }}>
+                        <Stack direction="column">
                           <PaymentButton amount={amount} session={session} />
+                          <Typography sx={{ color: "red", marginTop: "5px" }}>
+                            Pls After making payment, wait to be redirected back
+                            to our platform (Don't refresh or leave the page)
+                          </Typography>
                         </Stack>
                       )}
                     </div>
-                  )}
+                  )} */}
                   {/* {amount ? (
-                    <p style={{ textAlign: "center" }}>------- OR ------- </p>
+                    <p style={{ textAl  ign: "center" }}>------- OR ------- </p>
                   ) : (
                     ""
                   )} */}
@@ -632,7 +625,7 @@ const HomeData = () => {
                       onClick={() => setAppState("crypto")}
                       className="btn-md btn-block button_style"
                     >
-                      Manual Crypto Payment{" "}
+                      Pay With Crypto
                     </button>
                   )}{" "}
                 </>
