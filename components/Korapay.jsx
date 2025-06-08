@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
-import { useKorapay, KorapayButton } from "react-korapay";
+// import { useKorapay, KorapayButton } from "react-korapay";
 import axios from "axios";
 import { RestaurantContext } from "@context/RestaurantContext";
 import { toast } from "react-toastify";
@@ -105,7 +105,7 @@ const KorapayComponent = ({ session, amount }) => {
 
   return (
     <div>
-      <KorapayButton {...korapayBtnConfig} />
+      {/* <KorapayButton {...korapayBtnConfig} /> */}
     </div>
   );
 };
