@@ -8,7 +8,7 @@ import { Bounce } from "react-toastify"; // Import the Bounce transition if it's
 import "react-toastify/dist/ReactToastify.css";
 import "./flutterstyle.css";
 
-export default function   SquadPayButton({ session, amount, activeLog, count }) {
+export default function SquadPayButton({ session, amount, activeLog, count }) {
   const { setLoading, handleClose, setOpen, setState } =
     useContext(RestaurantContext);
   const router = useRouter();
@@ -26,7 +26,7 @@ export default function   SquadPayButton({ session, amount, activeLog, count }) 
       setOpen(true);
       setLoading(true);
       await axios.post("/api/deposit/create-deposit/", {
-        amount: amount,
+        amount: amount, 
         method: "squadpay",
         transactionId: response.transactionId,
       });
@@ -38,7 +38,7 @@ export default function   SquadPayButton({ session, amount, activeLog, count }) 
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
       setState((prev) => !prev);
@@ -55,7 +55,7 @@ export default function   SquadPayButton({ session, amount, activeLog, count }) 
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
       console.error(error);
@@ -74,7 +74,7 @@ export default function   SquadPayButton({ session, amount, activeLog, count }) 
     <div>
       <SquadPay
         className="btn-md btn-block flutter_style"
-        text="Pay with Card"
+        text="Pay with Card or USSD"
         params={params}
         onClose={handlePaymentClose}
         onLoad={handleWidgetLoad}

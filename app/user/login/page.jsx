@@ -1,17 +1,18 @@
 "use client";
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Formik } from "formik";
-import { Avatar, CircularProgress, Stack, Typography } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import { Bounce } from "react-toastify"; // Import the Bounce transition if it's provided by your toast library
 import "react-toastify/dist/ReactToastify.css";
 import { useSession } from "next-auth/react";
+import { RestaurantContext } from "@context/RestaurantContext";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import Spinner from "@components/Spinner";
 const page = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -24,7 +25,21 @@ const page = () => {
   }, [session]);
 
   if (status === "loading") {
-    return <Spinner />;
+    return (
+      <div
+        style={{
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background:
+            "linear-gradient(90deg, rgba(128,117,255,1) 0%, rgba(128,117,255,1) 35%, rgba(0,212,255,1) 100%)",
+        }}
+      >
+        <CircularProgress style={{ color: "white" }} />
+      </div>
+    );
   }
   if (status === "authenticated") {
     router.push("/user");
@@ -35,23 +50,29 @@ const page = () => {
           className="contact-section overview-bgi"
           style={{ flexDirection: "column" }}
         >
-          <div
-            className="container"
-            style={{ backgroundColor: "#7247ff !important" }}
-          >
+          <div className="container">
             <div className="row">
               <div className="col-lg-12">
+                {/* <!-- Form content box start --> */}
                 <div className="form-content-box">
+                  {/* <!-- details --> */}
                   <div className="details">
-                    <Avatar
-                      src="/img/logo.png"
-                      sx={{ width: "auto", height: "150px" }}
-                    />
-
-                    <h3 style={{ fontWeight: "700", color: "white" }}>
-                      Login your account{" "}
+                    {/* <!-- Logo --> */}
+                    <a
+                      href="/"
+                      style={{ fontWeight: "900", fontSize: "1.5em" }}
+                    >
+                      Active Store{" "}
+                    </a>
+                    {/* <!-- Name --> */}
+                    <h2 style={{ fontWeight: "800", color: "#8075ff" }}>
+                      Good To see you !!
+                    </h2>
+                    <h3 style={{ fontSize: "0.8em" }}>
+                      Welcome back, let's get started{" "}
                     </h3>
 
+                    {/* <!-- Form start --> */}
                     <Formik
                       initialValues={{ email: "", password: "" }}
                       validate={(values) => {
@@ -83,7 +104,7 @@ const page = () => {
                             pauseOnHover: true,
                             draggable: true,
                             progress: undefined,
-                            theme: "dark",
+                            theme: "light",
                             transition: Bounce,
                           });
                           setSubmitting(false);
@@ -107,7 +128,7 @@ const page = () => {
                               type="email"
                               name="email"
                               className="input-text"
-                              placeholder="Email Address"
+                              placeholder="Email"
                               onChange={handleChange}
                               onBlur={handleBlur}
                               value={values.email}
@@ -119,19 +140,14 @@ const page = () => {
                           </div>
                           <div className="form-group">
                             <div
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                backgroundColor: "white",
-                                borderRadius: "3px",
-                              }}
+                              style={{ display: "flex", alignItems: "center" }}
                             >
                               <input
                                 type={viewPassword ? "text" : "password"}
                                 name="password"
                                 className="input-text"
                                 style={{ borderRight: "none" }}
-                                placeholder="Enter your password"
+                                placeholder="Password"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 value={values.password}
@@ -141,14 +157,12 @@ const page = () => {
                                 style={{
                                   borderLeft: "none",
                                   height: "100%",
-                                  padding: "5px",
                                 }}
                                 onClick={() => setViewPassword((prev) => !prev)}
                                 className="text-xl absolute font-bold right-[23px] top-[5px]"
                               >
                                 {viewPassword ? (
                                   <VisibilityIcon
-                                    sx={{ color: "#8075ff" }}
                                     fontSize="small"
                                     className="size-4 text-gray-500"
                                   />
@@ -169,10 +183,7 @@ const page = () => {
 
                           <div className="form-group mb-0">
                             <button
-                              style={{
-                                border: "3px solid #9e95fc",
-                                background: "#8b81fd",
-                              }}
+                              style={{ background: "#8075ff", color: "white" }}
                               type="submit"
                               className="btn-md button-theme btn-block"
                               disabled={isSubmitting}
@@ -180,64 +191,90 @@ const page = () => {
                               {isSubmitting ? (
                                 <CircularProgress
                                   size={20}
-                                  sx={{ color: "#a9a2fb" }}
+                                  sx={{ color: "white" }}
                                 />
                               ) : (
-                                <Typography
-                                  sx={{ color: "white", fontWeight: "700" }}
-                                >
-                                  Sign In
-                                </Typography>
+                                "Sign In"
                               )}
                             </button>
                           </div>
                         </form>
                       )}
                     </Formik>
-                    <Stack
-                      direction="row"
-                      sx={{
-                        padding: "10px",
-                        marginTop: "10px",
-                      }}
-                      justifyContent="space-between"
-                    >
-                      <Typography sx={{ fontSize: "11px", color: "white" }}>
-                        {" "}
-                        Don't have an account?{" "}
-                        <Link
-                          href="signup"
-                          style={{
-                            textDecoration: "underline",
-                            fontWeight: "700",
-                            color: "white",
-                          }}
-                        >
-                          Register here
-                        </Link>{" "}
-                      </Typography>
-                      <Typography sx={{ fontSize: "11px", color: "white" }}>
-                        {" "}
-                        <Link
-                          href="/user/forgotPassword"
-                          style={{
-                            textDecoration: "underline",
-                            fontWeight: "700",
-                            color: "white",
-                          }}
-                        >
-                          Forgot Password
-                        </Link>
-                      </Typography>
-                    </Stack>
+                    {/* googel signin */}
+                    {/* <button
+                  onClick={() =>
+                    signIn("google", {
+                      callbackUrl: `${
+                        restaurantIntent
+                          ? "http://localhost:3000/pricing"
+                          : "http://localhost:3000"
+                      }`,
+                    })
+                  }
+                  className="btn-md btn-block"
+                  style={{
+                    padding: "0px",
+                    height: "auto",
+                    marginTop: "7px",
+                    background: "white",
+                    color: "black",
+                    fontWeight: "600",
+                    border: "1px solid #b6afaf",
+                  }}
+                >
+                  <span>
+                    <Image
+                      height={30}
+                      width={30}
+                      alt="svgImg"
+                      src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiPgo8cGF0aCBmaWxsPSIjZjllNjVjIiBkPSJNODQuNDY3LDQ0SDUwdjEzaDIwLjg1NkM2Ny45MzEsNjUuNzE3LDU5LjcwMiw3Miw1MCw3MmMtMTIuMTUsMC0yMi05Ljg1LTIyLTIyczkuODUtMjIsMjItMjIJYzQuNzk5LDAsOS4yMzUsMS41NDEsMTIuODUxLDQuMTQ5bDkuMjY5LTkuMjY5QzY2LjA5MSwxNy45NTYsNTguMzkxLDE1LDUwLDE1Yy0xOS4zMywwLTM1LDE1LjY3LTM1LDM1czE1LjY3LDM1LDM1LDM1CXMzNS0xNS42NywzNS0zNUM4NSw0Ny45NTIsODQuODA2LDQ1Ljk1MSw4NC40NjcsNDR6Ij48L3BhdGg+PHBhdGggZmlsbD0iIzc4YTJkMiIgZD0iTTUwLDU3aDIwLjg1NmMtMS41NzcsNC42OTktNC43MDQsOC42NzktOC43NjMsMTEuMzZsOS44Nyw4Ljg4NEM3OS45MTEsNzAuODI4LDg1LDYxLjAxLDg1LDUwCWMwLTIuMDQ4LTAuMTk0LTQuMDQ5LTAuNTMzLTZINTBWNTd6Ij48L3BhdGg+PHBhdGggZmlsbD0iIzYwYmU5MiIgZD0iTTYyLjA5Myw2OC4zNkM1OC42MjIsNzAuNjUzLDU0LjQ3Miw3Miw1MCw3MmMtOC45OTcsMC0xNi43MjctNS40MDMtMjAuMTM3LTEzLjEzOUwxOC44MTgsNjUuODkJQzI0LjYwOSw3Ny4yMywzNi4zOTMsODUsNTAsODVjOC4zMiwwLDE1Ljk1Ny0yLjkwOCwyMS45NjMtNy43NTZMNjIuMDkzLDY4LjM2eiI+PC9wYXRoPjxwYXRoIGZpbGw9IiNmMTViNmMiIGQ9Ik0yOS42NzcsNDEuNTY5QzMyLjk4NSwzMy42MDMsNDAuODM3LDI4LDUwLDI4YzQuNzk5LDAsOS4yMzUsMS41NDEsMTIuODUxLDQuMTQ5bDkuMjY5LTkuMjY5CUM2Ni4wOTEsMTcuOTU2LDU4LjM5MSwxNSw1MCwxNWMtMTMuNzcyLDAtMjUuNjgxLDcuOTU4LTMxLjM5NCwxOS41MjRMMjkuNjc3LDQxLjU2OXoiPjwvcGF0aD48cGF0aCBmaWxsPSIjMWYyMTJiIiBkPSJNNTAsODZjLTE5Ljg1MSwwLTM2LTE2LjE0OS0zNi0zNnMxNi4xNDktMzYsMzYtMzZjOC4yNzEsMCwxNi4zNTMsMi44NzgsMjIuNzUzLDguMTA1CWMwLjIxOSwwLjE3OSwwLjM1MiwwLjQ0MiwwLjM2NiwwLjcyNGMwLjAxNCwwLjI4Mi0wLjA5MiwwLjU1OC0wLjI5MiwwLjc1N2wtOS4yNjksOS4yNjljLTAuMzQ3LDAuMzQ3LTAuODk1LDAuMzkxLTEuMjkyLDAuMTA0CUM1OC42NzUsMzAuMzY5LDU0LjQzMywyOSw1MCwyOWMtMTEuNTc5LDAtMjEsOS40Mi0yMSwyMXM5LjQyMSwyMSwyMSwyMWM4LjU2MywwLDE2LjE5Ni01LjE2OCwxOS40MTctMTNINTBjLTAuNTUzLDAtMS0wLjQ0OC0xLTFWNDQJYzAtMC41NTIsMC40NDctMSwxLTFoMzQuNDY3YzAuNDg2LDAsMC45MDIsMC4zNSwwLjk4NSwwLjgyOUM4NS44MTUsNDUuOTIyLDg2LDQ3Ljk5OSw4Niw1MEM4Niw2OS44NTEsNjkuODUxLDg2LDUwLDg2eiBNNTAsMTYJYy0xOC43NDgsMC0zNCwxNS4yNTItMzQsMzRzMTUuMjUyLDM0LDM0LDM0czM0LTE1LjI1MiwzNC0zNGMwLTEuNjI0LTAuMTI5LTMuMzAyLTAuMzg0LTVINTF2MTFoMTkuODU2CWMwLjMyMiwwLDAuNjI0LDAuMTU1LDAuODEyLDAuNDE2YzAuMTg4LDAuMjYxLDAuMjM5LDAuNTk3LDAuMTM3LDAuOTAyQzY4LjY1Nyw2Ni42OTgsNTkuODk1LDczLDUwLDczYy0xMi42ODMsMC0yMy0xMC4zMTgtMjMtMjMJczEwLjMxNy0yMywyMy0yM2M0LjU2OSwwLDguOTU0LDEuMzI5LDEyLjczNSwzLjg1MWw3Ljg4My03Ljg4M0M2NC43MiwxOC40NjcsNTcuNDQyLDE2LDUwLDE2eiI+PC9wYXRoPjxwYXRoIGZpbGw9IiMxZjIxMmIiIGQ9Ik03MS41LDc4Yy0wLjExOSwwLTAuMjM5LTAuMDQyLTAuMzM1LTAuMTI4bC00LTMuNmMtMC4yMDUtMC4xODUtMC4yMjItMC41MDEtMC4wMzctMC43MDYJYzAuMTg3LTAuMjA1LDAuNTAyLTAuMjIxLDAuNzA3LTAuMDM3bDQsMy42YzAuMjA1LDAuMTg1LDAuMjIyLDAuNTAxLDAuMDM3LDAuNzA2QzcxLjc3Miw3Ny45NDQsNzEuNjM3LDc4LDcxLjUsNzh6Ij48L3BhdGg+PHBhdGggZmlsbD0iIzFmMjEyYiIgZD0iTTY1LjUsNzIuNmMtMC4xMTksMC0wLjIzOS0wLjA0Mi0wLjMzNS0wLjEyOGwtMS43NzctMS42Yy0wLjIwNS0wLjE4NS0wLjIyMi0wLjUwMS0wLjAzNy0wLjcwNgljMC4xODctMC4yMDUsMC41MDItMC4yMjEsMC43MDctMC4wMzdsMS43NzcsMS42YzAuMjA1LDAuMTg1LDAuMjIyLDAuNTAxLDAuMDM3LDAuNzA2QzY1Ljc3Miw3Mi41NDQsNjUuNjM3LDcyLjYsNjUuNSw3Mi42eiI+PC9wYXRoPjxwYXRoIGZpbGw9IiMxZjIxMmIiIGQ9Ik0yNy45MjksNjBjLTAuMTY1LDAtMC4zMjYtMC4wODItMC40MjItMC4yMzFjLTAuMTQ4LTAuMjMzLTAuMDc5LTAuNTQyLDAuMTUzLTAuNjlsMS41NzEtMQljMC4yMzEtMC4xNDYsMC41NDEtMC4wOCwwLjY5LDAuMTUzYzAuMTQ4LDAuMjMzLDAuMDc5LDAuNTQyLTAuMTUzLDAuNjlsLTEuNTcxLDFDMjguMTE0LDU5Ljk3NSwyOC4wMjEsNjAsMjcuOTI5LDYweiI+PC9wYXRoPjxwYXRoIGZpbGw9IiMxZjIxMmIiIGQ9Ik0yMy41LDYyLjgxOGMtMC4xNjUsMC0wLjMyNi0wLjA4Mi0wLjQyMi0wLjIzMWMtMC4xNDgtMC4yMzMtMC4wNzktMC41NDIsMC4xNTMtMC42OWwyLTEuMjczCWMwLjIzMS0wLjE0NiwwLjU0MS0wLjA4MSwwLjY5LDAuMTUzYzAuMTQ4LDAuMjMzLDAuMDc5LDAuNTQyLTAuMTUzLDAuNjlsLTIsMS4yNzNDMjMuNjg2LDYyLjc5MywyMy41OTMsNjIuODE4LDIzLjUsNjIuODE4eiI+PC9wYXRoPjxwYXRoIGZpbGw9IiMxZjIxMmIiIGQ9Ik0xOC41LDY2Yy0wLjE2NSwwLTAuMzI2LTAuMDgyLTAuNDIyLTAuMjMxYy0wLjE0OC0wLjIzMy0wLjA3OS0wLjU0MiwwLjE1My0wLjY5bDMtMS45MDkJYzAuMjMtMC4xNDYsMC41NDEtMC4wOCwwLjY5LDAuMTUzYzAuMTQ4LDAuMjMzLDAuMDc5LDAuNTQyLTAuMTUzLDAuNjlsLTMsMS45MDlDMTguNjg2LDY1Ljk3NSwxOC41OTMsNjYsMTguNSw2NnoiPjwvcGF0aD48cGF0aCBmaWxsPSIjMWYyMTJiIiBkPSJNMjQuNSwzOC4xODJjLTAuMDkzLDAtMC4xODYtMC4wMjUtMC4yNjktMC4wNzhsLTUtMy4xODJjLTAuMjMyLTAuMTQ4LTAuMzAyLTAuNDU4LTAuMTUzLTAuNjkJYzAuMTQ5LTAuMjMzLDAuNDYtMC4yOTksMC42OS0wLjE1M2w1LDMuMTgyYzAuMjMyLDAuMTQ4LDAuMzAyLDAuNDU4LDAuMTUzLDAuNjlDMjQuODI2LDM4LjEsMjQuNjY1LDM4LjE4MiwyNC41LDM4LjE4MnoiPjwvcGF0aD48cGF0aCBmaWxsPSIjMWYyMTJiIiBkPSJNMjcuNSw0MC4wOTFjLTAuMDkzLDAtMC4xODYtMC4wMjUtMC4yNjktMC4wNzhsLTEtMC42MzZjLTAuMjMyLTAuMTQ4LTAuMzAyLTAuNDU4LTAuMTUzLTAuNjkJYzAuMTUtMC4yMzMsMC40Ni0wLjI5OSwwLjY5LTAuMTUzbDEsMC42MzZjMC4yMzIsMC4xNDgsMC4zMDIsMC40NTgsMC4xNTMsMC42OUMyNy44MjYsNDAuMDA5LDI3LjY2NSw0MC4wOTEsMjcuNSw0MC4wOTF6Ij48L3BhdGg+Cjwvc3ZnPg=="
+                    />
+                  </span>{" "}
+                  login with Google
+                </button> */}
+                  </div>
+                  {/* <!-- Footer --> */}
+                  <div
+                    className="footer"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <div>
+                      Don't have an account?{" "}
+                      <Link
+                        href="signup"
+                        style={{
+                          textDecoration: "underline",
+                          fontWeight: "700",
+                        }}
+                      >
+                        Register here
+                      </Link>
+                    </div>
+                    <div>
+                      <Link
+                        href="/user/forgotPassword"
+                        style={{
+                          textDecoration: "underline",
+                          fontWeight: "700",
+                        }}
+                      >
+                        Forgot Password
+                      </Link>
+                    </div>
                   </div>
                 </div>
+                {/* <!-- Form content box end --> */}
               </div>
             </div>
           </div>
           <ToastContainer />
           <p style={{ color: "white", zIndex: "999", marginTop: "30px" }}>
-            Copyright @2024 Premium Store.
+            Copyright @2024 Active Store.
           </p>
         </div>
       </>

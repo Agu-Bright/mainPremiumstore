@@ -84,7 +84,6 @@ export const POST = async (req, res) => {
     }
     wallet.balance = wallet.balance + Number(deposit.amount);
     await wallet.save();
-
     return new Response(JSON.stringify({ success: true, deposit }), {
       status: 200,
     });

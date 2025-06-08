@@ -49,7 +49,7 @@ export default function DeleteModal({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
       return;
@@ -69,7 +69,7 @@ export default function DeleteModal({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
       setOpen(false);
@@ -84,7 +84,7 @@ export default function DeleteModal({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
       setLoading(false);
@@ -100,7 +100,7 @@ export default function DeleteModal({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
       return;
@@ -120,7 +120,7 @@ export default function DeleteModal({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
       setOpen(false);
@@ -135,7 +135,7 @@ export default function DeleteModal({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
       setLoading(false);
@@ -153,7 +153,7 @@ export default function DeleteModal({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
       setOpen(false);
@@ -167,7 +167,7 @@ export default function DeleteModal({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
     }

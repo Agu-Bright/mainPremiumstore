@@ -1,27 +1,49 @@
 "use client";
+import LiveChatScript from "@components/LiveChat";
 import NavPage from "@components/navPage/NavPage";
-import { Box, Stack, Typography, Divider, Avatar } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Stack,
+  Typography,
+  Avatar,
+  Button,
+  Divider,
+} from "@mui/material";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
 import TableList from "./Table";
+
 import React from "react";
 import Image from "next/image";
 import { RestaurantContext } from "@context/RestaurantContext";
-import Spinner from "@components/Spinner";
-import Swiper from "@components/Swiper";
 
 function timeAgo(dateString) {
   const givenDate = new Date(dateString);
   const now = new Date();
+
+  // Calculate the difference in milliseconds
   const diff = now - givenDate;
+
+  // Convert to various time units
   const seconds = Math.floor(diff / 1000);
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
   const days = Math.floor(hours / 24);
   const weeks = Math.floor(days / 7);
   const years = Math.floor(days / 365);
+
+  // Determine the appropriate unit
   if (seconds < 60) return `${seconds} seconds ago`;
   if (minutes < 60) return `${minutes} minutes ago`;
   if (hours < 24) return `${hours} hours ago`;
@@ -32,14 +54,10 @@ function timeAgo(dateString) {
 
 const Topic = ({ title, src }) => {
   return (
-    <Stack direction="row" alignItems="center">
-      <Avatar src={src} alt="img" sx={{ borderRadius: "0px" }} />
-      <Typography
-        style={{ marginLeft: "10px", fontSize: "12px", color: "white" }}
-      >
-        {title}
-      </Typography>
-    </Stack>
+    <div>
+      <Image src={src} alt="img" width={30} height={30} />
+      <span style={{ marginLeft: "10px" }}>{title}</span>
+    </div>
   );
 };
 
@@ -47,10 +65,10 @@ export default function Home() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [categories, setCategories] = useState([]);
-  const [categories2, setCategories2] = useState([]);
   const [values, setvalues] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const { myWallet, formatMoney, setGlobalCat } = useContext(RestaurantContext);
+
+  const { myWallet, formatMoney, setSideBar2, setGlobalCat } =
+    useContext(RestaurantContext);
 
   useEffect(() => {
     const fetchValues = async () => {
@@ -63,29 +81,34 @@ export default function Home() {
     };
     fetchValues();
   }, []);
-  console.log("categories2", categories2);
   useEffect(() => {
-    const fetchCategories = async () => {
+    (async () => {
       try {
-        setLoading(true);
-        const [categoriesResponse, categories2Response] = await Promise.all([
-          axios.get("/api/logs/getCategories"),
-          axios.get("/api/logs/get-categories2"),
-        ]);
-        setCategories(categoriesResponse?.data?.categories);
-        setGlobalCat(categoriesResponse?.data?.categories);
-        setCategories2(categories2Response?.data?.categories);
+        const { data } = await axios.get("/api/logs/getCategories");
+        setCategories(data?.categories);
+        setGlobalCat(data?.categories);
       } catch (error) {
         console.log(error);
-      } finally {
-        setLoading(false);
       }
-    };
-    fetchCategories();
+    })();
   }, []);
 
   if (status === "loading") {
-    return <Spinner />;
+    return (
+      <div
+        className="contact-section overview-bgi"
+        style={{
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          // background: "#EC5766",
+        }}
+      >
+        <CircularProgress style={{ color: "white" }} />
+      </div>
+    );
   }
 
   if (status === "unauthenticated") {
@@ -94,7 +117,100 @@ export default function Home() {
     return (
       <NavPage>
         <Box sx={{ height: "100vh" }}>
-          <Swiper />
+          <Stack direction="row" justifyContent="space-between">
+            <h2 style={{ fontSize: "1em" }}>
+              <span style={{ color: "#8075ff", fontWeight: "800" }}>
+                Welcome!!{" "}
+              </span>
+              <span style={{}}>{session?.user?.username}</span> 😇
+            </h2>
+            <h2 style={{ fontSize: "1em" }}>
+              <span style={{ fontWeight: "800", paddingRight: "10px" }}>
+                Balance:
+              </span>
+              <span
+                style={{
+                  textDecoration: "underline",
+                  cursor: "pointer",
+                  fontWeight: "800",
+                }}
+              >
+                {formatMoney(myWallet?.balance)}
+              </span>
+            </h2>
+          </Stack>
+          <Typography
+            sx={{
+              textAlign: "center",
+              fontWeight: "800",
+              fontSize: { md: "3em", xs: "1.6em" },
+              background:
+                "linear-gradient(92.12deg, #007C9B 1.46%, #00CCFF 41.25%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            Buy social accounts and Followers
+          </Typography>
+          <Typography
+            sx={{ textAlign: "center", fontSize: { md: "1em", xs: "0.8em" } }}
+          >
+            Leading marketplace to buy established Facebook accounts, Youtube
+            Followers, Theme pages etc.
+          </Typography>
+
+          <Box
+            sx={{
+              border: "1px solid #e6dede",
+              borderRadius: { md: "40px", xs: "20px" },
+              width: "100%",
+              marginBottom: "20px",
+              // boxShadow: "1px 1px 2px gray",
+              padding: "5px",
+              overflow: "hidden",
+            }}
+          >
+            <Swiper
+              style={{ width: "100%", height: "100%" }}
+              spaceBetween={30}
+              centeredSlides={true}
+              autoplay={{
+                delay: 2500,
+                disableOnInteraction: false,
+              }}
+              modules={[Autoplay]}
+              className="mySwiper"
+            >
+              <SwiperSlide>
+                {" "}
+                <a href="https://t.me/activest0re" target="_blank">
+                  <img
+                    src="/img/flier-1.png"
+                    alt="flier"
+                    style={{ width: "100%" }}
+                  />
+                </a>
+              </SwiperSlide>
+              <SwiperSlide>
+                <a href="#" target="_blank">
+                  <img
+                    src="/img/note.png"
+                    alt="flier"
+                    style={{ width: "100%" }}
+                  />
+                </a>
+              </SwiperSlide>
+              <SwiperSlide>
+                <a href="https://t.me/activest0re" target="_blank">
+                  <img
+                    src="/img/flier-3.png"
+                    alt="flier"
+                    style={{ width: "100%" }}
+                  />
+                </a>
+              </SwiperSlide>
+            </Swiper>
+          </Box>
 
           <div>
             <>
@@ -102,72 +218,76 @@ export default function Home() {
                 categories.map((category) => {
                   return (
                     <TableList
-                      key={category?.id}
+                      key={category?._id}
                       category={category?.catType}
-                      products={category?.products}
                       catId={category?._id}
-                      icon={category?.icon}
-                      type="shopviaclone22"
                       title={
-                        <Topic title={category?.name} src={category?.icon} />
+                        <Topic title={category?.catType} src="/img/star.png" />
                       }
                     />
                   );
                 })}
             </>
-            <Divider />
             <>
-              {categories2.length > 0 &&
-                categories2.map((category) => {
-                  return (
-                    <TableList
-                      key={category?.id}
-                      category={category?.catType}
-                      products={category?.accounts}
-                      catId={category?._id}
-                      icon={category?.proxiedImage}
-                      type="accsmtp"
-                      title={
-                        <Topic
-                          title={category?.name}
-                          src={category?.proxiedImage}
-                        />
-                      }
-                    />
-                  );
-                })}
+              {categories.length == 0 && (
+                <div
+                  style={{
+                    width: "100%",
+                    height: "50vh",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginTop: "10px",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Image src="/img/photo.png" width={200} height={200} />
+                    <Typography sx={{ textAlign: "center", fontWeight: "800" }}>
+                      No Log Uploaded yet
+                    </Typography>
+                    {session?.user?.role === "admin" && (
+                      <>
+                        <a
+                          href="/dashboard/upload-logs"
+                          target="_blank"
+                          style={{
+                            border: "none",
+                            color: "white",
+                            fontWeight: "800",
+                            borderRadius: "10px",
+                            fontSize: "1.2em",
+                            marginTop: "20px",
+                            textAlign: "center",
+                            background:
+                              "linear-gradient(90deg, rgba(128,117,255,1) 0%, rgba(128,117,255,1) 35%, rgba(0,212,255,1) 100%)",
+                          }}
+                          className="btn-md  btn-block"
+                        >
+                          Manage Logs{" "}
+                        </a>
+                        <Typography
+                          style={{
+                            fontWeight: "300",
+                            fontSize: "0.8em",
+                            marginTop: "10px",
+                          }}
+                        >
+                          <span style={{ fontWeight: "800" }}>N/B:</span> {""}{" "}
+                          This button is only visible to the admin
+                        </Typography>
+                      </>
+                    )}
+                  </div>
+                </div>
+              )}
             </>
-
-            {loading && (
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "100vh",
-                }}
-              >
-                <div className="spinner"></div>
-                <style jsx>{`
-                  .spinner {
-                    width: 56px;
-                    height: 56px;
-                    border: 11.2px #7247ff double;
-                    border-left-style: solid;
-                    border-radius: 50%;
-                    animation: spinner-aib1d7 0.75s infinite linear;
-                  }
-
-                  @keyframes spinner-aib1d7 {
-                    to {
-                      transform: rotate(360deg);
-                    }
-                  }
-                `}</style>
-              </div>
-            )}
-
             <div className="mt-5">
               <Stack
                 direction="row"
@@ -301,6 +421,7 @@ export default function Home() {
               <div style={{ visibility: "hidden" }}>hii</div>
             </div>
           </div>
+          
         </Box>
       </NavPage>
     );

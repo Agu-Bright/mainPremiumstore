@@ -15,20 +15,27 @@ export const GET = async (req, res) => {
     },
     authOptions
   );
-  // if (!session) {
-  //   return Response.json(
-  //     { message: "You must be logged in." },
-  //     { status: 401 }
-  //   );
-  // }
+  if (!session) {
+    return Response.json(
+      { message: "You must be logged in." },
+      { status: 401 }
+    );
+  }
   try {
     await connectDB;
 
     const rate = await Rate.find();
+
     return new Response(JSON.stringify({ success: true, rate: rate[0] }), {
       status: 200,
     });
   } catch (error) {
+    if ((error.code = 11000 && error.keyPattern && error.keyValue)) {
+      return new Response(
+        JSON.stringify({ success: false, message: "User already exist" }),
+        { status: 500 }
+      );
+    }
     return new Response(
       JSON.stringify({ success: false, message: error.message }),
       { status: 500 }

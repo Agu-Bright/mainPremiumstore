@@ -25,7 +25,10 @@ export const GET = async (req) => {
   }
   try {
     await connectDB;
-    const myOrders = await Order.find({ user: session?.user?.id });
+
+    const myOrders = await Order.find({ user: session?.user?.id }).populate(
+      "orderLog"
+    );
     const orders = myOrders.reverse();
     return Response.json({ message: "success", orders }, { status: 200 });
   } catch (error) {

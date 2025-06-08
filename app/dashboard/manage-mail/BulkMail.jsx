@@ -30,9 +30,9 @@ const SendEmails = () => {
   const handleDeleteEmail = (emailToDelete) => {
     setEmails(emails.filter((email) => email !== emailToDelete));
   };
-
-  const handleSend = async () => {
-    if (emails.length === 0) {
+  const [loading, setLoading] = useState(false);
+  const handleSend = async (state) => {
+    if (emails.length === 0 && state !== "all") {
       alert("Please add at least one email address.");
       return;
     }
@@ -42,12 +42,13 @@ const SendEmails = () => {
     }
 
     try {
-      const response = await fetch("/api/admin/bulk-mail", {
+      setLoading(true);
+      const response = await fetch("/api/admin/bulk-mail/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ emails, message }),
+        body: JSON.stringify({ emails, message, broadcast: state }),
       });
 
       const result = await response.json();
@@ -59,7 +60,9 @@ const SendEmails = () => {
       } else {
         alert(`Failed to send emails: ${result.message}`);
       }
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.error("Error sending emails:", error);
       alert("An error occurred while sending emails. Please try again later.");
     }
@@ -136,11 +139,23 @@ const SendEmails = () => {
       <Button
         variant="contained"
         color="success"
-        onClick={handleSend}
+        onClick={() => handleSend("not")}
         fullWidth
         sx={{ mt: 3 }}
+        disabled={loading}
       >
         Send Emails
+      </Button>
+      <p className="text-center">----------OR----------</p>
+      <Button
+        variant="contained"
+        color="success"
+        onClick={() => handleSend("all")}
+        fullWidth
+        sx={{ mt: 3, backgroundColor: "orange" }}
+        disabled={loading}
+      >
+        Broadcast
       </Button>
     </Box>
   );

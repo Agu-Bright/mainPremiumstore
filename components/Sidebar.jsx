@@ -14,8 +14,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
 import { Box } from "@mui/material";
-import LocalPostOfficeIcon from "@mui/icons-material/LocalPostOffice";
-
+import EmailIcon from "@mui/icons-material/Email";
 const Sidebar = () => {
   const pathname = usePathname();
   const { data: session } = useSession();
@@ -46,7 +45,7 @@ const Sidebar = () => {
                   <div>Add Funds</div>
                 </Link>
               </li>
-              {/* <li
+              <li
                 className={`${pathname === "/user/add-fund" ? "active" : ""}`}
               >
                 <Link
@@ -57,7 +56,7 @@ const Sidebar = () => {
                   <AccountBalanceWalletIcon sx={{ marginRight: "10px" }} />{" "}
                   <div>How to Login</div>
                 </Link>
-              </li> */}
+              </li>
               <li className={`${pathname === "/user/rules" ? "active" : ""}`}>
                 <Link href="/user/rules" style={{ display: "flex" }}>
                   <GavelIcon sx={{ marginRight: "10px" }} /> <div>Rules</div>
@@ -91,9 +90,9 @@ const Sidebar = () => {
                   pathname === "/dashboard/upload-logs" ? "active" : ""
                 }`}
               >
-                <Link href="/dashboard/orders" style={{ display: "flex" }}>
-                  <ProductionQuantityLimitsIcon sx={{ marginRight: "10px" }} />{" "}
-                  <div>Orders</div>
+                <Link href="/dashboard/upload-logs" style={{ display: "flex" }}>
+                  <HomeRepairServiceIcon sx={{ marginRight: "10px" }} />{" "}
+                  <div>Manage Logs</div>
                 </Link>
               </li>
 
@@ -103,8 +102,18 @@ const Sidebar = () => {
                 }`}
               >
                 <Link href="/dashboard/manage-mail" style={{ display: "flex" }}>
-                  <LocalPostOfficeIcon sx={{ marginRight: "10px" }} />{" "}
-                  <div>Email Service</div>
+                  <EmailIcon sx={{ marginRight: "10px" }} />{" "}
+                  <div>Manage Mails</div>
+                </Link>
+              </li>
+              <li
+                className={`${
+                  pathname === "/dashboard/upload-logs" ? "active" : ""
+                }`}
+              >
+                <Link href="/dashboard/orders" style={{ display: "flex" }}>
+                  <ProductionQuantityLimitsIcon sx={{ marginRight: "10px" }} />{" "}
+                  <div>Orders</div>
                 </Link>
               </li>
               <li

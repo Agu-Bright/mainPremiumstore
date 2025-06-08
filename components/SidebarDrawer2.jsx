@@ -1,6 +1,6 @@
 "use client";
-import React, { useContext, useEffect, useState } from "react";
-import { Drawer, IconButton, Divider, Avatar, Typography } from "@mui/material";
+import React, { useContext, useEffect } from "react";
+import { Drawer, IconButton, Divider, Avatar } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
@@ -18,7 +18,6 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
 import Image from "next/image";
 import { RestaurantContext } from "@context/RestaurantContext";
-import axios from "@node_modules/axios";
 
 function SideBarDrawer2({ open, close }) {
   const pathname = usePathname();
@@ -26,22 +25,6 @@ function SideBarDrawer2({ open, close }) {
   const root = pathname.split("/")[1];
   const router = useRouter();
   // const { globalCat } = useContext(RestaurantContext);
-  const [categories, setCategories] = useState([]);
-  const [categories2, setCategories2] = useState([]);
-  useEffect(() => {
-    (async () => {
-      try {
-        const [categoriesResponse, categories2Response] = await Promise.all([
-          axios.get("/api/logs/getCategories"),
-          axios.get("/api/logs/get-categories2"),
-        ]);
-        setCategories(categoriesResponse?.data?.categories);
-        setCategories2(categories2Response?.data?.categories);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
 
   return (
     <Drawer
@@ -71,95 +54,318 @@ function SideBarDrawer2({ open, close }) {
                 <CloseIcon sx={{ color: "red" }} />
               </IconButton>
             </div>
-            <Typography
-              sx={{ fontWeight: "800", marginLeft: "10px", fontSize: "20px" }}
-            >
-              Categories
-            </Typography>
-            <ul
-              style={{
-                marginTop: "10px",
-                paddingLeft: "10px",
-                overflowY: "scroll",
-                height: "90vh",
-              }}
-            >
-              {categories.map((category) => {
-                return (
-                  <li key={category?.id} style={{ marginTop: "10px" }}>
-                    <div
-                      onClick={() => {
-                        router.push(
-                          `/user/products?type=shopviaclone22&&id=${category?.id}`
-                        );
-                        close();
-                      }}
-                      style={{
-                        display: "flex",
-                        cursor: "pointer",
-                        alignItems: "center",
-                      }}
-                    >
-                      <img
-                        src={category?.icon}
-                        alt="facebook"
-                        style={{
-                          width: "50px",
-                          height: "50px",
-                          marginRight: "8px",
-                        }}
-                      />
-                      <div
-                        style={{
-                          color: "black",
-                          fontWeight: "700",
-                          marginLeft: "8px",
-                        }}
-                      >
-                        {category?.name}
-                      </div>
-                    </div>
-                  </li>
-                );
-              })}
-              {categories2.map((category) => {
-                return (
-                  <li key={category?.id} style={{ marginTop: "10px" }}>
-                    <div
-                      onClick={() => {
-                        router.push(
-                          `/user/products?type=accsmtp&&id=${category?.id}`
-                        );
-                        close();
-                      }}
-                      style={{
-                        display: "flex",
-                        cursor: "pointer",
-                        alignItems: "center",
-                      }}
-                    >
-                      <img
-                        src={category?.proxiedImage}
-                        alt="facebook"
-                        style={{
-                          width: "50px",
-                          height: "50px",
-                          marginRight: "8px",
-                        }}
-                      />
-                      <div
-                        style={{
-                          color: "black",
-                          fontWeight: "700",
-                          marginLeft: "8px",
-                        }}
-                      >
-                        {category?.name}
-                      </div>
-                    </div>
-                  </li>
-                );
-              })}
+            <ul style={{ marginTop: "10px", paddingLeft: "10px" }}>
+              <li>
+                <div
+                  onClick={() => {
+                    router.push(
+                      "/user/products?cat=66e2317767f6ea038e702a07&&catType=FACEBOOK&&special=true"
+                    );
+                    close();
+                  }}
+                  style={{ display: "flex", cursor: "pointer" }}
+                >
+                  <Image
+                    src="/img/facebook.png"
+                    alt="facebook"
+                    width={25}
+                    height={25}
+                    style={{ marginRight: "7px" }}
+                  />
+                  <div style={{ color: "black", fontWeight: "700" }}>
+                    Facebook
+                  </div>
+                </div>
+              </li>
+
+              <li
+                className={`${pathname === "/user/orders" ? "active" : ""}`}
+                style={{ marginTop: "15px" }}
+              >
+                <div
+                  style={{ display: "flex", cursor: "pointer" }}
+                  onClick={() => {
+                    router.push(
+                      "/user/products?cat=66e231af3297fe72df46011a&&catType=INSTAGRAM"
+                    );
+                    close();
+                  }}
+                >
+                  <Image
+                    src="/img/instagram.png"
+                    alt="facebook"
+                    width={25}
+                    height={25}
+                    style={{ marginRight: "7px" }}
+                  />{" "}
+                  <div style={{ color: "black", fontWeight: "700" }}>
+                    Instagram
+                  </div>
+                </div>
+              </li>
+              <li style={{ marginTop: "15px", cursor: "pointer" }}>
+                <div
+                  onClick={() => {
+                    router.push(
+                      "/user/products?cat=66e46532789afde03410d506&&catType=TIKTOK"
+                    );
+                    close();
+                  }}
+                  style={{ display: "flex" }}
+                >
+                  <Image
+                    src="/img/tiktok.png"
+                    alt="facebook"
+                    width={25}
+                    height={25}
+                    style={{ marginRight: "7px" }}
+                  />{" "}
+                  <div style={{ color: "black", fontWeight: "700" }}>
+                    TikTok
+                  </div>
+                </div>
+              </li>
+
+              <li style={{ marginTop: "15px", cursor: "pointer" }}>
+                <div
+                  onClick={() => {
+                    router.push(
+                      "/user/products?cat=66e4653a789afde03410d51d&&catType=TWITTER"
+                    );
+                    close();
+                  }}
+                  style={{ display: "flex" }}
+                >
+                  <Image
+                    src="/img/twitter.png"
+                    alt="facebook"
+                    width={25}
+                    height={25}
+                    style={{ marginRight: "7px" }}
+                  />{" "}
+                  <div style={{ color: "black", fontWeight: "700" }}>
+                    Twitter
+                  </div>
+                </div>
+              </li>
+              <li style={{ marginTop: "15px", cursor: "pointer" }}>
+                <div
+                  onClick={() => {
+                    router.push(
+                      "/user/products?cat=66f9fa093beb74e3984a3cf2&&catType=TELEGRAM"
+                    );
+                    close();
+                  }}
+                  style={{ display: "flex" }}
+                >
+                  <Image
+                    src="/img/telegram.png"
+                    alt="facebook"
+                    width={25}
+                    height={25}
+                    style={{ marginRight: "7px" }}
+                  />{" "}
+                  <div style={{ color: "black", fontWeight: "700" }}>
+                    Telegram
+                  </div>
+                </div>
+              </li>
+              <li style={{ marginTop: "15px", cursor: "pointer" }}>
+                <div
+                  onClick={() => {
+                    router.push(
+                      "/user/products?cat=66eb01a27df2da0824d46978&&catType=WE CREATE WEBSITES"
+                    );
+                    close();
+                  }}
+                  style={{ display: "flex" }}
+                >
+                  <Image
+                    src="/img/web.png"
+                    alt="facebook"
+                    width={25}
+                    height={25}
+                    style={{ marginRight: "7px" }}
+                  />{" "}
+                  <div style={{ color: "black", fontWeight: "700" }}>
+                    WE CREATE WEBSITES
+                  </div>
+                </div>
+              </li>
+              {/* <li style={{ marginTop: "15px", cursor: "pointer" }}>
+                <div
+                  onClick={() => {
+                    router.push(
+                      "/user/products?cat=66ef4e77943ed55e069cad30&&catType=Texting"
+                    );
+                    close();
+                  }}
+                  style={{ display: "flex" }}
+                >
+                  <Image
+                    src="/img/texting.png"
+                    alt="facebook"
+                    width={25}
+                    height={25}
+                    style={{ marginRight: "7px" }}
+                  />{" "}
+                  <div style={{ color: "black", fontWeight: "700" }}>
+                    Texting{" "}
+                  </div>
+                </div>
+              </li> */}
+              {/* <li style={{ marginTop: "15px", cursor: "pointer" }}>
+                <div
+                  onClick={() => {
+                    router.push(
+                      "/user/products?cat=66ef5481871def43f07190c0&&catType=REDDIT"
+                    );
+                    close();
+                  }}
+                  style={{ display: "flex" }}
+                >
+                  <Image
+                    src="/img/reddit.png"
+                    alt="facebook"
+                    width={25}
+                    height={25}
+                    style={{ marginRight: "7px" }}
+                  />{" "}
+                  <div style={{ color: "black", fontWeight: "700" }}>
+                    Reddit{" "}
+                  </div>
+                </div>
+              </li> */}
+              {/* <li style={{ marginTop: "15px", cursor: "pointer" }}>
+                <div
+                  onClick={() => {
+                    router.push(
+                      "/user/products?cat=66ef57bb6602fd5380d26858&&catType=DISCORD"
+                    );
+                    close();
+                  }}
+                  style={{ display: "flex" }}
+                >
+                  <Image
+                    src="/img/discord.png"
+                    alt="facebook"
+                    width={25}
+                    height={25}
+                    style={{ marginRight: "7px" }}
+                  />{" "}
+                  <div style={{ color: "black", fontWeight: "700" }}>
+                    DISCORD{" "}
+                  </div>
+                </div>
+              </li> */}
+              <li style={{ marginTop: "15px", cursor: "pointer" }}>
+                <div
+                  onClick={() => {
+                    router.push(
+                      "/user/products?cat=66e6b8742cb499b71600f213&&catType=VPN"
+                    );
+                    close();
+                  }}
+                  style={{ display: "flex" }}
+                >
+                  <Image
+                    src="/img/vpn.png"
+                    alt="facebook"
+                    width={25}
+                    height={25}
+                    style={{ marginRight: "7px" }}
+                  />{" "}
+                  <div style={{ color: "black", fontWeight: "700" }}>VPN </div>
+                </div>
+              </li>
+              <li style={{ marginTop: "15px", cursor: "pointer" }}>
+                <div
+                  onClick={() => {
+                    router.push(
+                      "/user/products?cat=66eb4fd47b1ca98317297f63&&catType=MAILS 📫"
+                    );
+                    close();
+                  }}
+                  style={{ display: "flex" }}
+                >
+                  <Image
+                    src="/img/gmail.png"
+                    alt="facebook"
+                    width={25}
+                    height={25}
+                    style={{ marginRight: "7px" }}
+                  />{" "}
+                  <div style={{ color: "black", fontWeight: "700" }}>
+                    MAILS 📫{" "}
+                  </div>
+                </div>
+              </li>
+              <li style={{ marginTop: "15px", cursor: "pointer" }}>
+                <div
+                  onClick={() => {
+                    router.push(
+                      "/user/products?cat=66f068a016f64083195fbd03&&catType=MOVIES"
+                    );
+                    close();
+                  }}
+                  style={{ display: "flex" }}
+                >
+                  <Image
+                    src="/img/video.png"
+                    alt="facebook"
+                    width={25}
+                    height={25}
+                    style={{ marginRight: "7px" }}
+                  />{" "}
+                  <div style={{ color: "black", fontWeight: "700" }}>
+                    MOVIES{" "}
+                  </div>
+                </div>
+              </li>
+              {/* <li style={{ marginTop: "15px", cursor: "pointer" }}>
+                <div
+                  onClick={() => {
+                    router.push(
+                      "/user/products?cat=66ef5f35e366e02ee10b66e1&&catType=LINKEDIN"
+                    );
+                    close();
+                  }}
+                  style={{ display: "flex" }}
+                >
+                  <Image
+                    src="/img/linkedin.png"
+                    alt="facebook"
+                    width={25}
+                    height={25}
+                    style={{ marginRight: "7px" }}
+                  />{" "}
+                  <div style={{ color: "black", fontWeight: "700" }}>
+                    LINKEDIN{" "}
+                  </div>
+                </div>
+              </li> */}
+              {/* <li style={{ marginTop: "15px", cursor: "pointer" }}>
+                <div
+                  onClick={() => {
+                    router.push(
+                      "/user/products?cat=66f9f8bfccc60d5173fdcfd4&&catType=TWITCH"
+                    );
+                    close();
+                  }}
+                  style={{ display: "flex" }}
+                >
+                  <Image
+                    src="/img/twitch.png"
+                    alt="facebook"
+                    width={25}
+                    height={25}
+                    style={{ marginRight: "7px" }}
+                  />{" "}
+                  <div style={{ color: "black", fontWeight: "700" }}>
+                    TWITCH{" "}
+                  </div>
+                </div>
+              </li> */}
             </ul>
           </div>
         </div>

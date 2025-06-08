@@ -122,7 +122,7 @@ export default function BasicModal({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
       return;
@@ -143,7 +143,7 @@ export default function BasicModal({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
     }
@@ -165,6 +165,8 @@ export default function BasicModal({
   const [image, setImage] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [customLog, setCustomLog] = React.useState("");
+
+  const [newCategory, setNewCategory] = useState("");
 
   const handleRemoveLog = (index) => {
     setLogs((prev) => {
@@ -196,7 +198,7 @@ export default function BasicModal({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
     } catch (error) {
@@ -210,7 +212,45 @@ export default function BasicModal({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
+  const handleEditCateory = async (_catType) => {
+    console.log("_catType");  
+    try {
+      setDeleting(true);
+      await axios.post("/api/logs/delete-category", {
+        catId: _catType,
+      });
+      handleClose();
+      setCatType("");
+      setDeleting(false);
+      setToggle((prev) => !prev);
+      toast.error("Deleted", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    } catch (error) {
+      setDeleting(false);
+
+      toast.error(error?.response?.data?.message, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
         transition: Bounce,
       });
     }
@@ -266,7 +306,7 @@ export default function BasicModal({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
     }
@@ -319,7 +359,7 @@ export default function BasicModal({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
     }
@@ -341,7 +381,7 @@ export default function BasicModal({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
       handleClose();
@@ -356,7 +396,7 @@ export default function BasicModal({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
     }
@@ -402,7 +442,7 @@ export default function BasicModal({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
       setAdding(false);
@@ -418,7 +458,7 @@ export default function BasicModal({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
     }
@@ -441,7 +481,7 @@ export default function BasicModal({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
       setAdding(false);
@@ -457,7 +497,7 @@ export default function BasicModal({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
     }
@@ -864,7 +904,7 @@ export default function BasicModal({
                             pauseOnHover: true,
                             draggable: true,
                             progress: undefined,
-                            theme: "dark",
+                            theme: "light",
                             transition: Bounce,
                           });
                         }
@@ -995,7 +1035,7 @@ export default function BasicModal({
                           pauseOnHover: true,
                           draggable: true,
                           progress: undefined,
-                          theme: "dark",
+                          theme: "light",
                           transition: Bounce,
                         });
                       }}
@@ -1045,7 +1085,7 @@ export default function BasicModal({
                           pauseOnHover: true,
                           draggable: true,
                           progress: undefined,
-                          theme: "dark",
+                          theme: "light",
                           transition: Bounce,
                         });
                         return;
@@ -1061,7 +1101,7 @@ export default function BasicModal({
                           pauseOnHover: true,
                           draggable: true,
                           progress: undefined,
-                          theme: "dark",
+                          theme: "light",
                           transition: Bounce,
                         });
                         return;
@@ -1312,7 +1352,7 @@ export default function BasicModal({
                         pauseOnHover: true,
                         draggable: true,
                         progress: undefined,
-                        theme: "dark",
+                        theme: "light",
                         transition: Bounce,
                       });
                     }}
@@ -1415,7 +1455,7 @@ export default function BasicModal({
         </Modal>
       </div>
     );
-  } else
+  } else if (type === "edit-category") {
     return (
       <div>
         {/* <Button onClick={handleOpen}>Open modal</Button> */}
@@ -1426,48 +1466,95 @@ export default function BasicModal({
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            {active?.transactionHash || active?.screenShot ? (
-              <Typography id="modal-modal-title" variant="h6" component="h2">
-                Credit Account{" "}
-              </Typography>
-            ) : (
-              <Typography id="modal-modal-title" variant="h6" component="h2">
-                Confirm Withdrawal{" "}
-              </Typography>
-            )}
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Are you sure you want to credit{" "}
-              <span style={{ fontWeight: "750" }}>
-                {active?.user?.username}
-              </span>{" "}
-              with the sum of ₦
-              <span style={{ fontWeight: "750" }}>
-                {formatMoney(Number(active?.amount))}
-              </span>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Edit Category{" "}
             </Typography>
+            <Box>
+              <div className="form-group" style={{ width: "100%" }}>
+                <input
+                  type="text"
+                  name="category"
+                  className="input-text"
+                  placeholder="Enter new Category name"
+                  style={{ width: "100%", marginTop: "5px" }}
+                  onChange={(e) =>
+                    setLogCategory((prev) => {
+                      return { ...prev, price: e.target.value };
+                    })
+                  }
+                  value={logCategory?.price}
+                />
+              </div>
+            </Box>
+
             <Stack justifyContent="space-between" direction="row">
-              <Button
-                sx={{ color: "red" }}
-                onClick={() =>
-                  active?.transactionHash || active?.screenShot
-                    ? handleDecline(active?._id)
-                    : handleDecline2(active?._id)
-                }
-              >
-                Decline
+              <Button sx={{ color: "red" }} onClick={() => handleClose()}>
+                cancel
               </Button>
-              <Button
-                onClick={() =>
-                  active?.transactionHash || active?.screenShot
-                    ? handleApprove(active?._id)
-                    : handleApprove2(active?._id)
-                }
-              >
-                Approve
-              </Button>
+              {!adding && (
+                <Button onClick={() => handleEditDetail()}>Update</Button>
+              )}{" "}
+              {adding && (
+                <Button>
+                  <CircularProgress sx={{ color: "blue" }} size={15} />
+                </Button>
+              )}{" "}
             </Stack>
           </Box>
         </Modal>
       </div>
     );
+  }
+  return (
+    <div>
+      {/* <Button onClick={handleOpen}>Open modal</Button> */}
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          {active?.transactionHash || active?.screenShot ? (
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Credit Account{" "}
+            </Typography>
+          ) : (
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Confirm Withdrawal{" "}
+            </Typography>
+          )}
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Are you sure you want to credit{" "}
+            <span style={{ fontWeight: "750" }}>{active?.user?.username}</span>{" "}
+            with the sum of ₦
+            <span style={{ fontWeight: "750" }}>
+              {formatMoney(Number(active?.amount))}
+            </span>
+          </Typography>
+          <Stack justifyContent="space-between" direction="row">
+            <Button
+              sx={{ color: "red" }}
+              onClick={() =>
+                active?.transactionHash || active?.screenShot
+                  ? handleDecline(active?._id)
+                  : handleDecline2(active?._id)
+              }
+            >
+              Decline
+            </Button>
+            <Button
+              onClick={() =>
+                active?.transactionHash || active?.screenShot
+                  ? handleApprove(active?._id)
+                  : handleApprove2(active?._id)
+              }
+            >
+              Approve
+            </Button>
+          </Stack>
+        </Box>
+      </Modal>
+    </div>
+  );
 }

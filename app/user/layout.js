@@ -3,6 +3,7 @@ import "./globals.css";
 import Provider from "@components/Provider";
 import FilterContextProvider from "@context/FilterContext";
 import RestaurantContextProvider from "@context/RestaurantContext";
+import LiveChatScript from "@components/LiveChat";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {

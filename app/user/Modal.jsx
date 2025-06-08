@@ -10,7 +10,6 @@ import {
   Divider,
   IconButton,
   Stack,
-  Drawer,
 } from "@mui/material";
 import { RestaurantContext } from "@context/RestaurantContext";
 import AddIcon from "@mui/icons-material/Add";
@@ -25,6 +24,12 @@ import FlutterButton from "@components/FlutterConfig";
 import { useSession } from "next-auth/react";
 
 const style = {
+  position: "absolute",
+  top: "37%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: { md: 600, xs: 370 },
+  minHeight: 300,
   bgcolor: "background.paper",
   border: "0.1px solid #dcd8d8",
   borderRadius: "10px",
@@ -33,7 +38,7 @@ const style = {
 };
 
 export default function BasicModal({ open, setOpen, handleClose }) {
-  const { activeLog, formatMoney, loading, percentage, rate, type, setType } =
+  const { activeLog, formatMoney, loading } =
     React.useContext(RestaurantContext);
   const { data: session } = useSession();
   const [count, setCount] = React.useState(1);
@@ -43,46 +48,16 @@ export default function BasicModal({ open, setOpen, handleClose }) {
   React.useEffect(() => {
     setIndex(1);
   }, [activeLog]);
-  const calculatePrice = (price) => {
-    const conversion = Number(price * rate?.rate).toFixed(2);
-    const profit = Number(conversion * (percentage / 100)).toFixed(2);
-    const finalPrice = (parseFloat(profit) + parseFloat(conversion)).toFixed(0);
-    return formatMoney(finalPrice);
-  };
-  const _calculatePrice = (price) => {
-    const profit = Number(price * (percentage / 100)).toFixed(2);
-    const finalPrice = (parseFloat(profit) + parseFloat(price)).toFixed(0);
-    return formatMoney(finalPrice);
-  };
-  const calculatePrice2 = (price) => {
-    const conversion = Number(price * rate?.rate).toFixed(2);
-    const profit = Number(conversion * (percentage / 100)).toFixed(2);
-    const finalPrice = (parseFloat(profit) + parseFloat(conversion)).toFixed(0);
-    return finalPrice;
-  };
-  const _calculate_Price2 = (price) => {
-    const profit = Number(price * (percentage / 100)).toFixed(2);
-    const finalPrice = (parseFloat(profit) + parseFloat(price)).toFixed(0);
-    return finalPrice;
-  };
-  const calculateProfit = (price, count) => {
-    const conversion = Number(price * rate?.rate).toFixed(2);
-    const profit = Number(conversion * (percentage / 100)).toFixed(2);
-    return Number(count * profit);
-  };
-  const calculateProfit2 = (price, count) => {
-    const profit = Number(price * (percentage / 100)).toFixed(2);
-    return Number(count * profit);
-  };
+
   const handleIncrement = () => {
-    const maxLength = Number(activeLog?.amount);
+    const maxLength = Number(activeLog?.logCount);
     if (count < maxLength) {
       setCount((prev) => prev + 1);
     }
   };
 
   const handleDecreament = () => {
-    const length = Number(activeLog?.amount);
+    const length = Number(activeLog?.logCount);
     if (count > 0) {
       setCount((prev) => prev - 1);
     }
@@ -98,7 +73,7 @@ export default function BasicModal({ open, setOpen, handleClose }) {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
       return;
@@ -110,19 +85,8 @@ export default function BasicModal({ open, setOpen, handleClose }) {
     try {
       setProcessing(true);
       await axios.post("/api/logs/order-log", {
-        id: activeLog?.id,
-        amount: count,
-        totalPrice:
-          type === "shopviaclone22"
-            ? calculatePrice2(activeLog?.price)
-            : _calculate_Price2(activeLog?.price),
-        profit:
-          type === ""
-            ? calculateProfit(activeLog?.price, count)
-            : calculateProfit2(activeLog?.price, count),
-        name: activeLog?.name,
-        icon: activeLog?.icon || activeLog?.proxiedImage,
-        type: type,
+        number: count,
+        log: activeLog?._id,
       });
       toast.success("Purchase successful", {
         position: "top-center",
@@ -132,7 +96,7 @@ export default function BasicModal({ open, setOpen, handleClose }) {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
       setProcessing(false);
@@ -149,21 +113,19 @@ export default function BasicModal({ open, setOpen, handleClose }) {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
     }
   };
-
   return (
     <div>
-      <Drawer
-        anchor="bottom"
+      {/* <Button onClick={handleOpen}>Open modal</Button> */}
+      <Modal
         open={open}
-        onClose={() => {
-          setType("");
-          handleClose();
-        }}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
       >
         <>
           {loading ? (
@@ -210,7 +172,7 @@ export default function BasicModal({ open, setOpen, handleClose }) {
                     Order Details
                   </Typography>
                   <Stack spacing={10} direction="row" alignItems="start">
-                    {/* <Avatar
+                    <Avatar
                       src={
                         activeLog?.image
                           ? activeLog?.image
@@ -218,7 +180,7 @@ export default function BasicModal({ open, setOpen, handleClose }) {
                       }
                       alt="social"
                       sx={{ borderRadius: "1px", width: 56, height: 56 }}
-                    /> */}
+                    />
                     <Stack direction="column">
                       <Box
                         sx={{
@@ -227,11 +189,9 @@ export default function BasicModal({ open, setOpen, handleClose }) {
                         }}
                       >
                         <span style={{ fontWeight: "700", marginRight: "5px" }}>
-                          {activeLog?.name}:
+                          {activeLog?.social}:
                         </span>
-                        <p style={{ fontSize: "12px", color: "white" }}>
-                          {activeLog?.description}
-                        </p>
+                        {activeLog?.description}
                       </Box>
                       <Typography
                         sx={{
@@ -240,11 +200,14 @@ export default function BasicModal({ open, setOpen, handleClose }) {
                         }}
                       >
                         <span style={{ fontWeight: "700" }}>Stock:</span>{" "}
-                        {activeLog?.amount}
+                        {activeLog?.logCount}
                       </Typography>
                     </Stack>
                   </Stack>
-
+                  <Typography sx={{ color: "gray" }}>
+                    The account format includes username, password, email and
+                    email password
+                  </Typography>
                   <Divider
                     sx={{
                       color: "white",
@@ -286,19 +249,9 @@ export default function BasicModal({ open, setOpen, handleClose }) {
                         justifyContent: "center",
                       }}
                     >
-                      {type === "shopviaclone22" ? (
-                        <Typography
-                          sx={{ color: "white", textAlign: "center" }}
-                        >
-                          {calculatePrice(activeLog?.price)}
-                        </Typography>
-                      ) : (
-                        <Typography
-                          sx={{ color: "white", textAlign: "center" }}
-                        >
-                          {_calculatePrice(activeLog?.price)}
-                        </Typography>
-                      )}
+                      <Typography sx={{ color: "white", textAlign: "center" }}>
+                        {formatMoney(Number(activeLog?.price) * count)}
+                      </Typography>
                     </Box>
                   </Stack>
                   <Button
@@ -348,6 +301,15 @@ export default function BasicModal({ open, setOpen, handleClose }) {
                     Order Details
                   </Typography>
                   <Stack spacing={10} direction="row" alignItems="start">
+                    <Avatar
+                      src={
+                        activeLog?.image
+                          ? activeLog?.image
+                          : `/img/${activeLog?.social}.png`
+                      }
+                      alt="social"
+                      sx={{ borderRadius: "1px", width: 56, height: 56 }}
+                    />
                     <Stack direction="column">
                       <Box
                         sx={{
@@ -356,38 +318,25 @@ export default function BasicModal({ open, setOpen, handleClose }) {
                         }}
                       >
                         <span style={{ fontWeight: "700", marginRight: "5px" }}>
-                          {activeLog?.name}:
+                          {activeLog?.social}:
                         </span>
-                        <p style={{ fontSize: "12px", color: "white" }}>
-                          {activeLog?.description}
-                        </p>
+                        {activeLog?.description}
                       </Box>
-                      <Stack>
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { md: "1em", xs: "0.7em" },
-                          }}
-                        >
-                          Total Logs: {count}
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "white",
-                            fontSize: { md: "1em", xs: "0.7em" },
-                          }}
-                        >
-                          Total Amount:{" "}
-                          {type === "shopviaclone22"
-                            ? Number(count * calculatePrice2(activeLog?.price))
-                            : Number(
-                                count * _calculate_Price2(activeLog?.price)
-                              )}
-                        </Typography>
-                      </Stack>
+                      <Typography
+                        sx={{
+                          color: "white",
+                          fontSize: { md: "1em", xs: "0.7em" },
+                        }}
+                      >
+                        <span style={{ fontWeight: "700" }}>Stock:</span>{" "}
+                        {activeLog?.logCount}
+                      </Typography>
                     </Stack>
                   </Stack>
-
+                  <Typography sx={{ color: "gray" }}>
+                    The account format includes username, password, email and
+                    email password
+                  </Typography>
                   <Divider
                     sx={{
                       color: "white",
@@ -395,6 +344,12 @@ export default function BasicModal({ open, setOpen, handleClose }) {
                       margin: "20px 0px",
                     }}
                   />
+                  {/* <FlutterButton
+                    session={session}
+                    amount={Number(activeLog?.price * count)}
+                    activeLog={activeLog}
+                    count={count}
+                  /> */}
 
                   <Button
                     onClick={() => handleOrder()}
@@ -428,7 +383,7 @@ export default function BasicModal({ open, setOpen, handleClose }) {
             </div>
           )}
         </>
-      </Drawer>
+      </Modal>
     </div>
   );
 }

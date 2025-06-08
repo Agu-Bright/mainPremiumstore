@@ -29,7 +29,7 @@ const Table = () => {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: "dark",
+            theme: "light",
             transition: Bounce,
           });
           // Optionally, display a notification or toast here
@@ -43,7 +43,7 @@ const Table = () => {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: "dark",
+            theme: "light",
             transition: Bounce,
           });
         });
@@ -75,7 +75,7 @@ const Table = () => {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: "light",
           transition: Bounce,
         });
       }

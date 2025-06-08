@@ -99,62 +99,13 @@ const Navbar = ({ fixed, type, data, topNav, title }) => {
           <header className={handlePosition()}>
             <div className="container" style={{ position: "relative" }}>
               <nav className="navbar navbar-expand-lg navbar-light">
-                {/* <Link
+                <Link
                   style={{ fontWeight: "800" }}
                   className="navbar-brand logo"
                   href="/user"
                 >
-                  Premium Store{" "}
-                </Link> */}
-                {/* 
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlnsXlink="http://www.w3.org/1999/xlink"
-                  width="100"
-                  zoomAndPan="magnify"
-                  viewBox="0 0 375 374.999991"
-                  height="100"
-                  preserveAspectRatio="xMidYMid meet"
-                  version="1.0"
-                >
-                  <defs>
-                    <clipPath id="95fda0ff89">
-                      <path
-                        d="M 189 141 L 307 141 L 307 229 L 189 229 Z M 189 141"
-                        clipRule="nonzero"
-                      />
-                    </clipPath>
-                    <clipPath id="f3050e4403">
-                      <path
-                        d="M 184.121094 154.054688 L 297.828125 126.492188 L 317.613281 208.128906 L 203.90625 235.691406 Z M 184.121094 154.054688"
-                        clipRule="nonzero"
-                      />
-                    </clipPath>
-                    <clipPath id="25fc91d6c2">
-                      <path
-                        d="M 184.121094 154.054688 L 297.828125 126.492188 L 317.613281 208.128906 L 203.90625 235.691406 Z M 184.121094 154.054688"
-                        clipRule="nonzero"
-                      />
-                    </clipPath>
-                    <clipPath id="aea0779268">
-                      <path
-                        d="M 10.113281 172.132812 L 28.863281 172.132812 L 28.863281 190.882812 L 10.113281 190.882812 Z M 10.113281 172.132812"
-                        clipRule="nonzero"
-                      />
-                    </clipPath>
-                  </defs>
-                  <g clipPath="url(#95fda0ff89)">
-                    <g clipPath="url(#f3050e4403)">
-                      <g clipPath="url(#25fc91d6c2)">
-                        <path
-                          fill="#9cff1e"
-                          d="M 304.832031 165.082031 C 305.257812 166.695312 306.152344 167.65625 306.886719 168.199219 C 305.78125 169.695312 304.667969 171.1875 303.546875 172.671875 C 302.328125 171.753906 300.347656 169.808594 299.484375 166.53125 C 297.429688 169.28125 295.351562 172.011719 293.246094 174.722656 ..."
-                        />
-                        {/* Add other <path> elements here based on the original SVG 
-                      </g>
-                    </g>
-                  </g>
-                </svg> */}
+                  Active Store{" "}
+                </Link>
 
                 <div
                   style={{
@@ -235,11 +186,8 @@ const Navbar = ({ fixed, type, data, topNav, title }) => {
             className="main-header header-2 fixed-header"
             style={{
               zIndex: "999",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              // borderBottom: "0.1px solid #d6d3d3",
-              // boxShadow: "1px 2px 5px #e4e4e4",
+              borderBottom: "0.1px solid #d6d3d3",
+              boxShadow: "1px 2px 5px #e4e4e4",
             }}
           >
             <div className="container-fluid">
@@ -249,16 +197,12 @@ const Navbar = ({ fixed, type, data, topNav, title }) => {
                   justifyContent="space-between"
                   alignItems="center"
                 >
-                  {/* <IconButton
+                  <IconButton
                     onClick={() => setSideBar2(true)}
-                    sx={{
-                      border: "0.1px solid gray",
-                      marginRight: "10px",
-                      background: "white",
-                    }}
+                    sx={{ border: "0.1px solid gray", marginRight: "10px" }}
                   >
-                    <SortIcon sx={{ fontWeight: "800", color: "#c1c3c61f3" }} />
-                  </IconButton> */}
+                    <SortIcon sx={{ fontWeight: "800" }} />
+                  </IconButton>
                   <Link
                     style={{
                       fontWeight: "800",
@@ -268,7 +212,17 @@ const Navbar = ({ fixed, type, data, topNav, title }) => {
                     }}
                     className="navbar-brand logo"
                     href="/user"
-                  ></Link>
+                  >
+                    <Image
+                      src="/img/logo.png"
+                      alt="logo"
+                      width={30}
+                      height={30}
+                    />
+                    <Typography sx={{ fontWeight: "800" }}>
+                      Active Store{" "}
+                    </Typography>
+                  </Link>
                 </Stack>
                 <IconButton
                   // style={{ border: "1px solid black" }}
@@ -282,29 +236,17 @@ const Navbar = ({ fixed, type, data, topNav, title }) => {
                   aria-label="Toggle navigation"
                 >
                   {/* <span className="fa fa-bars"></span> */}
-                  <ViewWeekIcon
-                    sx={{
-                      display: { md: "none", xs: "block" },
-                      color: "white",
-                    }}
-                  />
+                  <ViewWeekIcon sx={{ display: { md: "none", xs: "block" } }} />
                 </IconButton>
                 <div
                   className="collapse navbar-collapse"
                   id="navbarSupportedContent"
                 ></div>
                 <Box sx={{ display: { sm: "block", md: "block", xs: "none" } }}>
-                  <span
-                    style={{
-                      fontWeight: "800",
-                      fontSize: "12px",
-                      padding: "8px",
-                      borderRadius: "15px",
-                      border: "1px solid #363434",
-                      color: "white",
-                      background: "#242222",
-                    }}
-                  >
+                  <span style={{ paddingRight: "10px", fontWeight: "800" }}>
+                    Balance:
+                  </span>
+                  <span style={{ fontWeight: "800" }}>
                     {formatMoney(myWallet?.balance) || 0.0}
                   </span>
                 </Box>

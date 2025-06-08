@@ -1,4 +1,5 @@
 "use client";
+import LiveChatScript from "@components/LiveChat";
 import NavPage from "@components/navPage/NavPage";
 import {
   Box,
@@ -112,7 +113,7 @@ export default function Home() {
 
           <h4>RULES</h4>
 
-          <h5> RULES @ Premium Store</h5>
+          <h5> RULES @ ACTIVE STORE</h5>
 
           <h6>
             {" "}
@@ -121,7 +122,7 @@ export default function Home() {
             customers are aware of all the terms and conditions before making a
             purchase to avoid misunderstandings and conflicts in the future.
             <br />
-            <br /> When buying a product on the Premium Store website, you
+            <br /> When buying a product on the ACTIVE STORE website, you
             automatically agree to the following rules:
           </h6>
           <br />

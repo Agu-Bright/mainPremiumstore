@@ -27,7 +27,7 @@ const page = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
     } catch (error) {
@@ -40,12 +40,12 @@ const page = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
     }
   };
-
+  
   return (
     <div className="contact-section overview-bgi">
       <div className="container">

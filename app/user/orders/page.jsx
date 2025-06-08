@@ -99,7 +99,7 @@ export default function Home() {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: "light",
           transition: Bounce,
         });
       }
@@ -154,15 +154,10 @@ export default function Home() {
                   alignItems: "center",
                   justifyContent: "center",
                   flexDirection: "column",
-                  background: "white",
-                  border: "1px solid gray",
-                  padding: "50px",
-                  borderRadius: "10px",
                 }}
               >
                 <Image width={250} height={250} src="/img/order.png" />
                 <Typography>You have no order yet</Typography>
-
                 <Button
                   onClick={() => router.push("/user")}
                   style={{
@@ -220,7 +215,7 @@ export default function Home() {
                             justifyContent: "start",
                           }}
                         >
-                          {/* <Box>
+                          <Box>
                             <Avatar
                               src={
                                 item?.image
@@ -232,7 +227,7 @@ export default function Home() {
                                 marginRight: "15px",
                               }}
                             />
-                          </Box> */}
+                          </Box>
                           <Typography
                             sx={{
                               fontWeight: "800",

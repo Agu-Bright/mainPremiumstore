@@ -19,7 +19,64 @@ export default function PaymentButton({ session, amount }) {
   const [reference, setReference] = useState("");
 
   const baseUrl = "https://api.ercaspay.com/api/v1";
-  const secretKey = "ECRS-LIVE-SKaFF2rOeaMLVGptmUjQaKZ2vxlnysAhtg8CXYjkHG";
+  const secretKey = "ECRS-LIVE-SKaFF2rOeaMLVGptmUjQaKZ2vxlnysAhtg8CXYjkHG"
+
+  const verifyPayment = async (transactionRef) => {
+    try {
+      const response = await fetch(
+        `${baseUrl}/payment/transaction/verify/${transactionRef}`,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const result = await response.json();
+
+      if (result?.requestSuccessful) {
+        await axios.post("/api/deposit/create-deposit/", {
+          amount: result?.responseBody?.amount,
+          method: "ErcasPay",
+          transactionRef: transactionRef,
+        });
+        toast.success("Payment verified and deposit successful.", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: true,
+          transition: Bounce,
+        });
+        setOpen(false);
+        setState((prev) => !prev);
+        // handleClose();
+      } else {
+        toast.error(result?.responseMessage || "Payment verification failed.", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: true,
+          transition: Bounce,
+        });
+        setOpen(false);
+      }
+    } catch (error) {
+      console.error("Payment Verification Error:", error);
+      // toast.error("An error occurred during payment verification.", {
+      //   position: "top-center",
+      //   autoClose: 5000,
+      //   hideProgressBar: true,
+      //   transition: Bounce,
+      // });
+      setOpen(false);
+    } finally {
+      setActiveLoading(false);
+      setOpen(false);
+      router.push("/user/add-fund");
+    }
+  };
+
+
   const initializePayment = async () => {
     setLoading(true);
     const reference = `REF-${Date.now()}`;
@@ -51,7 +108,7 @@ export default function PaymentButton({ session, amount }) {
 
       if (result?.responseCode === "success") {
         // Redirect user to payment page
-        setReference(reference);
+
         window.location.href = result.responseBody.checkoutUrl;
       } else {
         toast.error(
@@ -77,74 +134,17 @@ export default function PaymentButton({ session, amount }) {
     }
   };
 
-  // useEffect(() => {
-  //   if (transRef) {
-  //     alert(`THERE IS TRANSACTION REFERENCE ${transRef}`);
-  //     verifyPayment(transRef);
-  //   }
-  // }, [searchParams]);
 
-  const verifyPayment = async (transactionRef) => {
-    setActiveLoading(true);
-    try {
-      const response = await fetch(
-        `${baseUrl}/payment/transaction/verify/${transactionRef}`,
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const result = await response.json();
-
-      if (result?.requestSuccessful) {
-        await axios.post("/api/deposit/create-deposit/", {
-          amount: result?.responseBody?.amount,
-          method: "ErcasPay",
-        });
-        toast.success("Payment verified and deposit successful.", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: true,
-          transition: Bounce,
-        });
-        setState((prev) => !prev);
-        // handleClose();
-      } else {
-        toast.error(result?.responseMessage || "Payment verification failed.", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: true,
-          transition: Bounce,
-        });
-      }
-    } catch (error) {
-      console.error("Payment Verification Error:", error);
-      toast.error("An error occurred during payment verification.", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        transition: Bounce,
-      });
-    } finally {
-      setActiveLoading(false);
-    }
-  };
 
   return (
     <button
       onClick={initializePayment}
       style={{ background: "blue", color: "white" }}
-      className="btn-md btn-block button_style"
+      // className="btn-md"
+      className="btn-md btn-block flutter_style"
     >
       Pay With Transfer
-      <Typography sx={{ color: "red", marginTop: "5px", fontSize: "12px" }}>
-        Pls After making payment, wait to be redirected back to our platform
-        (Don't refresh or leave the page)
-      </Typography>
+     
     </button>
   );
 }

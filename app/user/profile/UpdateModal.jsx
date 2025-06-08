@@ -46,7 +46,7 @@ export default function BasicModal({ handleOpen, open, setOpen, title }) {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: "light",
           transition: Bounce,
         });
         return;
@@ -65,7 +65,7 @@ export default function BasicModal({ handleOpen, open, setOpen, title }) {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: "light",
           transition: Bounce,
         });
         await update({
@@ -87,7 +87,7 @@ export default function BasicModal({ handleOpen, open, setOpen, title }) {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: "light",
           transition: Bounce,
         });
         console.log(error);
@@ -106,7 +106,7 @@ export default function BasicModal({ handleOpen, open, setOpen, title }) {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: "light",
           transition: Bounce,
         });
         return;
@@ -133,7 +133,7 @@ export default function BasicModal({ handleOpen, open, setOpen, title }) {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: "dark",
+            theme: "light",
             transition: Bounce,
           }
         );
@@ -153,7 +153,7 @@ export default function BasicModal({ handleOpen, open, setOpen, title }) {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: "light",
           transition: Bounce,
         });
         console.log(error);

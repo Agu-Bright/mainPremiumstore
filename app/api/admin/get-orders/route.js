@@ -56,7 +56,7 @@ export const GET = async (req) => {
     // Fetch paginated orders based on the query
     const totalOrders = await Order.countDocuments(query); // Total number of filtered orders
     const orders = await Order.find(query)
-      .populate("user")
+      .populate("orderLog user")
       .sort({ createdAt: -1 }) // Sort orders by creation date (newest first)
       .skip(skip)
       .limit(limit)

@@ -3,51 +3,9 @@ import connectDB from "@utils/connectDB";
 import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import Log from "@models/log";
 import Wallet from "@models/wallet";
 import Order from "@models/order";
-import axios from "@node_modules/axios";
-import FormData from "form-data";
-import Rate from "@models/rate";
-
-const buyProduct = async (productId, quantity) => {
-  try {
-    // Create form-data
-    const formData = new FormData();
-    formData.append("action", "buyProduct");
-    formData.append("id", productId);
-    formData.append("amount", quantity);
-    // formData.append("coupon", coupon);
-    formData.append("api_key", "46a255ee592b54e3d05021daf07dd07c");
-
-    // Send POST request with Axios
-    const response = await axios.post(
-      "https://shopviaclone22.com/api/buy_product",
-      formData,
-      {
-        headers: {
-          ...formData.getHeaders(),
-        },
-      }
-    );
-
-    // Handle the response
-    console.log("Response data:", response.data);
-    return response.data;
-  } catch (error) {
-    // Handle errors
-    if (error.response) {
-      console.error("Error response:", error.response.data);
-    } else {
-      console.error("Error message:", error.message);
-    }
-    throw error;
-  }
-};
-
-// Example usage
-// buyProduct("12345", 2, "DISCOUNT10")
-//   .then((data) => console.log("Purchase successful:", data))
-//   .catch((error) => console.error("Purchase failed:", error));
 
 export const POST = async (req, res) => {
   const session = await getServerSession(
@@ -68,104 +26,62 @@ export const POST = async (req, res) => {
 
   try {
     await connectDB;
-    const { id, amount, totalPrice, profit, name, icon, type } =
-      await req.json();
+    const { number, log } = await req.json();
 
+    //find log
+    const orderLog = await Log.findById(log);
+    if (!orderLog) {
+      return Response.json(
+        { message: "Requested log can't be found." },
+        { status: 401 }
+      );
+    }
+    //check if number is available
+    if (orderLog.logs.length < number) {
+      return Response.json(
+        { message: `This log is remaining ${orderLog.length} in stock` },
+        { status: 401 }
+      );
+    }
+    //check is user have enough balance
     const userWallet = await Wallet.findOne({ user: session?.user?.id });
     if (!userWallet) {
       return Response.json({ message: `Invalid user waller` }, { status: 401 });
     }
-
-    if (userWallet.balance < totalPrice) {
+    const logCost = Number(number) * Number(orderLog.price);
+    if (userWallet.balance < logCost) {
       return Response.json(
         { message: `Insucfficient account balance to purchase this log` },
         { status: 401 }
       );
     }
+    //handle purchase ==> create Order
+    const orderedLog = orderLog.logs.slice(-Number(number));
+    orderLog.logs.splice(-Number(number));
+    await orderLog.save();
+    console.log("orderedLog", orderLog);
+    const order = await Order.create({
+      user: session?.user?.id,
+      logs: orderedLog,
+      orderLog: orderLog?._id,
+      social: orderLog?.social,
+      image: orderLog?.image,
+      description: orderLog?.description,
+    });
+    //remove balance from users account
+    userWallet.balance = Number(userWallet.balance) - logCost;
+    await userWallet.save();
 
-    if (type === "accsmtp") {
-      //get balance
-      const { data } = await axios.get(
-        `https://accsmtp.com/api/GetBalance.php?username=${process.env._username}&password=${process.env._password}`
-      );
-      console.log(data);
-      const rate = await Rate.find();
-      const myRate = rate[0].rate;
-      const totalBalance = Number(myRate) * Number(data);
-      if (totalBalance < totalPrice) {
-        return Response.json(
-          { message: `Insuffcient Admin Balance` },
-          { status: 401 }
-        );
-      }
-      //buy product
-      const res = await axios.get(
-        `https://accsmtp.com/api/BResource.php?username=${process.env._username}&password=${process.env._password}id=${id}&amount=${amount}`
-      );
-      if (res?.data?.status === "success") {
-        const order = await Order.create({
-          user: session?.user?.id,
-          logs: res?.data,
-          categoryId: id,
-          transactionId: res?.trans_id,
-          profit: profit,
-          source: "shopviaclone",
-          name: name,
-          icon: icon,
-        });
-
-        //remove balance from users account
-        userWallet.balance = Number(userWallet.balance) - totalPrice;
-        await userWallet.save();
-
-        return new Response(JSON.stringify({ success: true, order }), {
-          status: 200,
-        });
-      } else {
-        throw new Error();
-      }
-      return new Response(JSON.stringify({ success: true }), {
-        status: 200,
-      });
-    } else {
-      //get balance
-      const { data } = await axios.get(
-        `https://shopviaclone22.com/api/profile.php?api_key=${process.env.SHOP_VIA_CLONE_API}`
-      );
-
-      if (Number(data?.money) < totalPrice) {
-        return Response.json(
-          { message: `Error purchasing log` },
-          { status: 401 }
-        );
-      }
-
-      const res = await buyProduct(id, amount);
-      if (res?.status === "success") {
-        const order = await Order.create({
-          user: session?.user?.id,
-          logs: res?.data,
-          categoryId: id,
-          transactionId: res?.trans_id,
-          profit: profit,
-          source: "shopviaclone",
-          name: name,
-          icon: icon,
-        });
-
-        //remove balance from users account
-        userWallet.balance = Number(userWallet.balance) - totalPrice;
-        await userWallet.save();
-
-        return new Response(JSON.stringify({ success: true, order }), {
-          status: 200,
-        });
-      } else {
-        throw new Error();
-      }
-    }
+    return new Response(JSON.stringify({ success: true, order }), {
+      status: 200,
+    });
   } catch (error) {
-    console.log("error", error);
+    if ((error.code = 11000 && error.keyPattern && error.keyValue)) {
+      return new Response(
+        JSON.stringify({ success: false, message: "User already exist" }),
+        { status: 500 }
+      );
+    }
     return new Response(
       JSON.stringify({ success: false, message: error.message }),
       { status: 500 }

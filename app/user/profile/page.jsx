@@ -1,4 +1,5 @@
 "use client";
+import LiveChatScript from "@components/LiveChat";
 import NavPage from "@components/navPage/NavPage";
 import {
   Box,

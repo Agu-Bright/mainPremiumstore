@@ -66,7 +66,8 @@ const InfoCards = ({ summary }) => {
           <div className="col-lg-3 col-md-3 col-sm-6">
             <div className="ui-item bg-active">
               <div className="left">
-                {session?.user?.role === "admin" && <p>profit</p>}
+                {session?.user?.role === "admin" && <p>Logs</p>}
+                {session?.user?.role === "sub-admin" && <p>Logs</p>}
                 {session?.user?.role === "admin" && (
                   <h4>{dashboard?.logs || "0"}</h4>
                 )}
@@ -158,7 +159,7 @@ const InfoCards = ({ summary }) => {
               <div className="col-lg-3 col-md-3 col-sm-6">
                 <div className="ui-item bg-active">
                   <div className="left">
-                    {session?.user?.role === "admin" && <p>Profit</p>}
+                    {session?.user?.role === "admin" && <p>Logs</p>}
                     {session?.user?.role === "admin" && (
                       <h4>{dashboard?.logs || "0"}</h4>
                     )}

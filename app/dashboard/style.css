@@ -3214,7 +3214,7 @@ footer {
 
 .form-content-box .details {
   padding: 30px 30px;
-  background: #7247ff;
+  background: #fff;
   border-radius: 5px 5px 0 0;
 }
 
@@ -5198,7 +5198,7 @@ input {
   position: fixed;
   width: 100%;
   z-index: 1;
-  background: #1f0757;
+  background: #fff;
 }
 
 .dashboard-nav {

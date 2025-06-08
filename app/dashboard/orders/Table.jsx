@@ -40,7 +40,7 @@ const Table = () => {
         //   closeOnClick: true,
         //   pauseOnHover: true,
         //   draggable: true,
-        //   theme: "dark",
+        //   theme: "light",
         //   transition: Bounce,
         // });
         setLoading(false);

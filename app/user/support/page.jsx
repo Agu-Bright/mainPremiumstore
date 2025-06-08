@@ -1,4 +1,5 @@
 "use client";
+import LiveChatScript from "@components/LiveChat";
 import NavPage from "@components/navPage/NavPage";
 import {
   Box,
@@ -10,14 +11,51 @@ import {
   IconButton,
   Avatar,
 } from "@mui/material";
+import Image from "@node_modules/next/image";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-
+import { ToastContainer, toast } from "react-toastify";
+import { Bounce } from "react-toastify"; // Import the Bounce transition if it's provided by your toast library
+import "react-toastify/dist/ReactToastify.css";
 export default function Home() {
   const { data: session, status } = useSession();
   const router = useRouter();
+
+  const handleCopy = (address) => {
+    // const referralCode = session?.user?.referalCode;
+    if (address) {
+      navigator.clipboard
+        .writeText(address)
+        .then(() => {
+          toast.success("Copied to Clipboard", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+          // Optionally, display a notification or toast here
+        })
+        .catch((err) => {
+          toast.error("copy failed", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
+        });
+    }
+  };
 
   if (status === "loading") {
     return (
@@ -171,12 +209,56 @@ export default function Home() {
                     </a>
                   </div>
                 </div>
+
+                <div className="d-flex align-items-center p-3 my-3 text-black-50 bg-purple rounded box-shadow">
+                  <a href="#" target="_blank" style={{ marginRight: "20px" }}>
+                    {/* <svg
+                      className="mr-3"
+                      width="40"
+                      height="40"
+                      viewBox="0 0 126 126"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        opacity="0.05"
+                        cx="63"
+                        cy="63"
+                        r="63"
+                        fill="#0601B4"
+                      ></circle>
+                      <path
+                        d="M63 35C78.4644 35 91 47.5356 91 63C91 78.4644 78.4644 91 63 91C47.5356 91 35 78.4644 35 63C35 47.5356 47.5356 35 63 35ZM75.4376 51.8C74.3708 51.8196 72.7328 52.3796 64.8564 55.6136C59.3278 57.9217 53.8144 60.2662 48.3168 62.6472C46.9728 63.1764 46.2728 63.6916 46.2084 64.1956C46.0852 65.1644 47.4964 65.464 49.2716 66.0352C50.7192 66.5 52.668 67.0432 53.6816 67.0656C54.6 67.0852 55.6248 66.71 56.756 65.9456C64.484 60.7936 68.4684 58.1924 68.7204 58.1364C68.8968 58.0972 69.1404 58.0468 69.3084 58.1924C69.4736 58.338 69.4568 58.6124 69.4372 58.688C69.2972 59.2788 62.0424 65.7944 61.6252 66.2228L61.4236 66.4244C59.8836 67.9448 58.3296 68.9388 61.012 70.6832C63.4368 72.2596 64.848 73.2648 67.34 74.8832C68.936 75.9136 70.1876 77.1372 71.834 76.9888C72.5928 76.9188 73.374 76.216 73.7744 74.116C74.7124 69.16 76.5604 58.4136 76.986 53.984C77.0117 53.6166 76.9958 53.2474 76.9384 52.8836C76.9038 52.5899 76.7599 52.3199 76.5352 52.1276C76.1964 51.8532 75.67 51.7972 75.4376 51.8Z"
+                        fill="#4B3459"
+                      ></path>
+                    </svg> */}
+                    <Image
+                      src="/img/gmail.png"
+                      alt="gmail"
+                      width={25}
+                      height={25}
+                    />
+                  </a>
+
+                  <div className="lh-100">
+                    <h6 className="mb-0 text-black lh-100">
+                      Payment Complaints
+                    </h6>
+                    <p
+                      onClick={() => handleCopy("paymentactivestore@gmail.com")}
+                      style={{ textDecoration: "underline", cursor: "pointer" }}  
+                    >
+                      paymentactivestore@gmail.com
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
 
             <div style={{ height: "100px" }}></div>
           </div>
         </div>
+        <ToastContainer />
       </NavPage>
     );
 }

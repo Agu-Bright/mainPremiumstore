@@ -32,6 +32,7 @@ import { useSearchParams } from "next/navigation";
 import Modal from "@mui/material/Modal";
 import { borderRadius } from "@mui/system";
 import KorapayComponent from "@components/Korapay";
+import SafeHavenCheckoutComponent from "@components/SafeheavenPayment";
 
 const LoadingModal = ({ open, setOpen }) => {
   // const [open, setOpen] = React.useState(false);
@@ -113,6 +114,7 @@ const HomeData = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [toggle, setToggle] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("");
   const [deposits, setDeposits] = useState("");
@@ -285,6 +287,63 @@ const HomeData = () => {
       });
     }
   };
+  const handleSubmit2 = async () => {
+    if (!amount && !paymentMethod) {
+      toast.error("Amount and Payment Method, Required", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
+    }
+    try {
+      setLoading(true);
+      const { data } = await axios.post("/api/deposit/crypto-deposit/", {
+        amount: amount,
+        method: "Transfer",
+        network: main?.network,
+        usdt: "",
+        screenShot: image,
+        status: "pending",
+      });
+      toast.success("Deposit Successful", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      setState((prev) => !prev);
+      setLoading(false);
+      setAmount("");
+      setAppState("default");
+      setImage("");
+      setAmount("");
+    } catch (error) {
+      setLoading(false);
+      toast.error(error?.response?.data?.message, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
 
   const [fetching, setFetching] = useState(false);
   useEffect(() => {
@@ -348,8 +407,18 @@ const HomeData = () => {
   };
 
   const [colorIndex, setColorIndex] = useState(0);
+  // Define the colors to cycle through
   const colors = ["red", "blue", "green"];
 
+  // useEffect(() => {
+  //   // Change the color every second
+  //   const interval = setInterval(() => {
+  //     setColorIndex((prevIndex) => (prevIndex + 1) % colors.length);
+  //   }, 1000);
+
+  //   // Cleanup interval on component unmount
+  //   return () => clearInterval(interval);
+  // }, [colors.length]);
   const handleClick = () => {
     window.open(
       "https://drive.google.com/file/d/11uFSKv63FEvZ2GoFQbvaAzADjtPDGWSM/view?usp=drivesdk",
@@ -391,6 +460,28 @@ const HomeData = () => {
     }
   };
 
+  const [payments, setPayments] = useState();
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await axios.get("/api/get-payment");
+        setPayments(data?.payments);
+      } catch (error) {
+        toast.error(error?.response?.data?.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      }
+    })();
+  }, [toggle]);
+
   if (status === "loading") {
     return (
       <div
@@ -418,9 +509,6 @@ const HomeData = () => {
             <div className="col">
               {appState === "default" && (
                 <>
-                  <Typography sx={{ fontWeight: "800", fontSize: "30px" }}>
-                    ADD FUND
-                  </Typography>
                   <form>
                     <p class="mt-3" style={{ fontWeight: "700" }}>
                       Top up your wallet easily using Bank Transfer or Crypto
@@ -444,6 +532,39 @@ const HomeData = () => {
                       </div>
                     </div>
                   </form>
+                  {amount && (
+                    <>
+                      {payments &&
+                        payments.map((item, index) => {
+                          if (item.status === "active")
+                            return (
+                              <div key={index}>
+                                {item.name === "kora" && (
+                                  <button
+                                    onClick={() => router.push("/user/korapay")}
+                                    className="btn-md btn-block flutter_style"
+                                  >
+                                    Pay with Transfer!
+                                  </button>
+                                )}
+                                {item.name === "squad" && (
+                                  <SquadPayButton
+                                    amount={amount}
+                                    session={session}
+                                  />
+                                )}
+                              </div>
+                            );
+                        })}
+                    </>
+                  )}
+                  {/* {amount && (
+                    <SafeHavenCheckoutComponent
+                      amount={amount}
+                      session={session}
+
+                    />
+                  )} */}
                   {/* {amount && (
                     <FlutterButton amount={amount} session={session} />
                   )}{" "} */}
@@ -575,20 +696,20 @@ const HomeData = () => {
                       </div>
                     </>
                   )} */}
-                  {amount && (
+                  {/* {amount && (
                     <SquadPayButton amount={amount} session={session} />
-                  )}
+                  )} */}
                   {/* {amount && (
                     <KorapayComponent amount={amount} session={session} />
                   )} */}
-                  {amount && (
+                  {/* {amount && (
                     <button
                       onClick={() => router.push("/user/korapay")}
                       className="btn-md btn-block flutter_style"
                     >
                       Pay with Transfer!
                     </button>
-                  )}
+                  )} */}
                   {/* <p style={{ textAlign: "center" }}>------- OR ------- </p>
                    {amount && (
                     <PaymentButton amount={amount} session={session} />

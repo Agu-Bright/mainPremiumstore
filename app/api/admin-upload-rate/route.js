@@ -27,7 +27,16 @@ export const POST = async (req, res) => {
   try {
     await connectDB;
     const body = await req.json();
-
+    if (!body || !body?.rate)
+      return new Response(
+        JSON.stringify({
+          success: false,
+          message: "Incomplete upload details",
+        }),
+        {
+          status: 404,
+        }
+      );
     const rates = await Rate.find();
     if (rates.length === 0) {
       await Rate.create(body);

@@ -21,38 +21,33 @@ import LocalMallIcon from "@mui/icons-material/LocalMall";
 import axios from "axios";
 import { RestaurantContext } from "@context/RestaurantContext";
 import { toast } from "react-toastify";
-import { Bounce } from "react-toastify";
+import { Bounce } from "react-toastify"; // Import the Bounce transition if it's provided by your toast library
 import "react-toastify/dist/ReactToastify.css";
+function createData(name, calories, fat, carbs, protein) {
+  return { name, calories, fat, carbs, protein };
+}
 
-export default function TableList({
-  title,
-  key,
-  category,
-  catId,
-  products,
-  icon,
-  type,
-}) {
+export default function TableList({ title, key, category, catId }) {
   const router = useRouter();
+  const [logs, setLogs] = React.useState([]);
   const isMobile = useMediaQuery("(max-width:600px)");
 
-  const { setOpen, setActiveLog, formatMoney, rate, percentage, setType } =
+  const { open, setOpen, activeLog, setActiveLog, formatMoney } =
     React.useContext(RestaurantContext);
 
-  console.log("percentage", percentage);
-
-  const calculatePrice = (price) => {
-    const conversion = Number(price * rate?.rate).toFixed(2);
-    const profit = Number(conversion * (percentage / 100)).toFixed(2);
-    const finalPrice = (parseFloat(profit) + parseFloat(conversion)).toFixed(0);
-    return formatMoney(finalPrice);
-  };
-  const calculatePrice2 = (price) => {
-    const profit = Number(price * (percentage / 100)).toFixed(2);
-    const finalPrice = (parseFloat(profit) + parseFloat(price)).toFixed(0);
-    return formatMoney(finalPrice);
-  };
-
+  React.useEffect(() => {
+    (async () => {
+      try {
+        //fetch logs based on category
+        const { data } = await axios.post("/api/logs/get-category-logs2", {
+          category: catId,
+        });
+        setLogs(data?.logs.slice(0, 5));
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
   return (
     <>
       <div key={key} style={{ marginTop: "15px" }}>
@@ -61,7 +56,7 @@ export default function TableList({
           justifyContent="space-between"
           sx={{
             marginBottom: "10px",
-            background: "#6b5ff7",
+            background: "#8075ff",
             padding: "8px",
             borderRadius: "5px",
           }}
@@ -70,8 +65,10 @@ export default function TableList({
             {title}
           </Typography>
           <div
-            style={{ cursor: "pointer", visibility: "hidden" }}
-            onClick={() => router.push(`#`)}
+            style={{ cursor: "pointer" }}
+            onClick={() =>
+              router.push(`/user/products?cat=${catId}&&catType=${category}`)
+            }
           >
             <span
               style={{ fontWeight: "400", marginRight: "10px", color: "white" }}
@@ -79,177 +76,144 @@ export default function TableList({
               {" "}
               See More
             </span>
+            {/* <Image src="/img/right-arrow-1.png" height={30} width={40} /> */}
           </div>
         </Stack>
 
         <>
-          {products.length > 0 &&
-            products.map((log) =>
-              log?.amount !== 0 ? (
-                <Box
-                  sx={{
-                    marginTop: "10px",
-                    marginBottom: "5px",
-                    padding: "15px 10px",
-                    border: "0.2px solid #dcd7d7",
-                    borderRadius: "5px",
-                    wdth: "100%",
-                    background: "#fafafa",
-                  }}
+          {logs.length > 0 &&
+            logs.map((log) => (
+              <Box
+                sx={{
+                  marginTop: "10px",
+                  marginBottom: "5px",
+                  padding: "15px 10px",
+                  border: "0.2px solid #dcd7d7",
+                  borderRadius: "5px",
+                  wdth: "100%",
+                }}
+              >
+                <Stack
+                  flexDirection={{ md: "row", xs: "column" }}
+                  justifyContent="space-between"
                 >
-                  <Stack
-                    flexDirection={{ md: "row", xs: "column" }}
-                    justifyContent="space-between"
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: { md: "center", xs: "start" },
+                      justifyContent: "start",
+                      width: { md: "70%", xs: "100%" },
+                    }}
                   >
+                    <Avatar
+                      src={log?.image ? log?.image : `/img/${log?.social}.png`}
+                      sx={{
+                        width: "50px",
+                        height: "50px",
+                        borderRadius: "1px",
+                        marginRight: isMobile ? "0" : "10px",
+                        marginBottom: isMobile ? "10px" : "0",
+                      }}
+                    />
+                    <Typography>
+                      <span style={{ fontWeight: "700", marginRight: "5px" }}>
+                        {log?.social}:
+                      </span>
+                      {log?.description}
+                    </Typography>
+                  </Box>
+
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    sx={{ width: { md: "30%", xs: "100%" } }}
+                  >
+                    <Stack
+                      direction="row"
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          height: "50px",
+                          padding: "0px 20px",
+                          marginRight: "10px",
+                          borderRadius: "7px",
+                          background: "#d6e8ff",
+                        }}
+                      >
+                        <Typography
+                          sx={{ textAlign: "center", color: "black" }}
+                        >
+                          Stock
+                        </Typography>
+                        <Typography
+                          sx={{ textAlign: "center", color: "black" }}
+                        >
+                          {log?.logCount}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          height: "50px",
+                          padding: "0px 20px",
+                          borderRadius: "7px",
+                          background: "#d6e8ff",
+                        }}
+                      >
+                        <Typography
+                          sx={{ textAlign: "center", color: "black" }}
+                        >
+                          Price
+                        </Typography>
+                        <Typography
+                          sx={{ textAlign: "center", color: "black" }}
+                        >
+                          {formatMoney(log?.price)}{" "}
+                        </Typography>
+                      </Box>
+                    </Stack>
+
                     <Box
                       sx={{
                         display: "flex",
-                        alignItems: { md: "center", xs: "start" },
-                        justifyContent: "start",
-                        width: { md: "70%", xs: "100%" },
+                        alignItems: "center",
+                        justifyContent: "center",
                       }}
                     >
-                      <Avatar
-                        src={icon}
-                        sx={{
-                          width: "50px",
-                          height: "50px",
-                          borderRadius: "1px",
-                          marginRight: isMobile ? "0" : "10px",
-                          marginBottom: isMobile ? "10px" : "0",
+                      <Button
+                        onClick={() => {
+                          if (log?.logCount === 0) {
+                            toast.error("Sold Out", {
+                              position: "top-center",
+                              autoClose: 5000,
+                              hideProgressBar: true,
+                              closeOnClick: true,
+                              pauseOnHover: true,
+                              draggable: true,
+                              progress: undefined,
+                              theme: "light",
+                              transition: Bounce,
+                            });
+                            return;
+                          }
+                          setActiveLog(log);
+                          setOpen(true);
                         }}
-                      />
-                      <Typography>
-                        <span
-                          style={{
-                            fontWeight: "700",
-                            marginRight: "5px",
-                          }}
-                        >
-                          {log?.name}:
-                        </span>
-                        <span
-                          style={{
-                            color: "gray",
-                            fontSize: "10px",
-                            display: "block",
-                          }}
-                        >
-                          {log?.description}
-                        </span>
-                        {/*  */}
-                      </Typography>
+                        variant="outlined"
+                        sx={{ background: "primary" }}
+                        startIcon={<LocalMallIcon />}
+                      >
+                        Buy
+                      </Button>
                     </Box>
-                    <Stack
-                      direction="row"
-                      justifyContent="space-between"
-                      sx={{
-                        width: { md: "30%", xs: "100%" },
-                        marginTop: { md: "0", xs: "8px" },
-                      }}
-                    >
-                      <Stack
-                        direction="row"
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            height: "50px",
-                            padding: "0px 20px",
-                            marginRight: "10px",
-                            borderRadius: "7px",
-                            background: "#d7d6ff",
-                          }}
-                        >
-                          <Typography
-                            sx={{ textAlign: "center", color: "black" }}
-                          >
-                            Stock
-                          </Typography>
-                          <Typography
-                            sx={{ textAlign: "center", color: "black" }}
-                          >
-                            {log?.amount}
-                          </Typography>
-                        </Box>
-                        <Box
-                          sx={{
-                            height: "50px",
-                            padding: "0px 20px",
-                            borderRadius: "7px",
-                            background: "#d7d6ff",
-                          }}
-                        >
-                          <Typography
-                            sx={{ textAlign: "center", color: "black" }}
-                          >
-                            Price
-                          </Typography>
-                          {type === "shopviaclone22" ? (
-                            <Typography
-                              sx={{ textAlign: "center", color: "black" }}
-                            >
-                              {calculatePrice(log?.price)}
-                            </Typography>
-                          ) : (
-                            <Typography
-                              sx={{ textAlign: "center", color: "black" }}
-                            >
-                              {calculatePrice2(log?.price)}
-                            </Typography>
-                          )}
-                        </Box>
-                      </Stack>
-
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <Button
-                          onClick={() => {
-                            if (log?.amount == 0) {
-                              toast.error("Sold Out", {
-                                position: "top-center",
-                                autoClose: 5000,
-                                hideProgressBar: true,
-                                closeOnClick: true,
-                                pauseOnHover: true,
-                                draggable: true,
-                                progress: undefined,
-                                theme: "dark",
-                                transition: Bounce,
-                              });
-                              return;
-                            }
-                            setActiveLog(log);
-                            setType(type);
-                            setOpen(true);
-                          }}
-                          variant="outlined"
-                          sx={{
-                            background: "#6462e6",
-                            border: "1px solid white",
-                            color: "white",
-                          }}
-                          startIcon={<LocalMallIcon sx={{ color: "white" }} />}
-                        >
-                          Buy
-                        </Button>
-                      </Box>
-                    </Stack>
                   </Stack>
-                </Box>
-              ) : (
-                ""
-              )
-            )}
+                </Stack>
+              </Box>
+            ))}
         </>
       </div>
       <Divider sx={{ margin: "20px 0px", visibility: "hidden" }} />

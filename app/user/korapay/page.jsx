@@ -50,11 +50,19 @@ export default function Home() {
                 textAlign: "start",
                 width: "100%",
                 fontWeight: "800",
+                marginTop: "20px",
               }}
             >
               Pay with Korapay{" "}
             </h5>
             {amount && <KorapayComponent session={session} amount={amount} />}
+            <div style={{ width: "100%", marginTop: "15px" }}>
+              <img
+                src="/img/note.png"
+                alt="note"
+                style={{ width: "100%", height: "auto" }}
+              />
+            </div>
           </div>
         </NavPage>
       </div>

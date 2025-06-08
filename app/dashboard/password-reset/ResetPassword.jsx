@@ -26,7 +26,7 @@ const ResetPassword = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
       return;
@@ -40,7 +40,7 @@ const ResetPassword = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
       return;
@@ -61,7 +61,7 @@ const ResetPassword = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
       router.push("/login");
@@ -76,7 +76,7 @@ const ResetPassword = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Bounce,
       });
     }

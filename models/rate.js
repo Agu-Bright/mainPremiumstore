@@ -4,9 +4,6 @@ const rateModel = new mongoose.Schema({
   rate: {
     type: Number,
   },
-  percentage: {
-    type: Number,
-  },
   createdAt: {
     type: Date,
     default: Date.now,

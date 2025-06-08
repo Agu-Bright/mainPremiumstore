@@ -34,22 +34,41 @@ const KorapayComponent = ({ session, amount }) => {
     setIsProcessing(true);
     try {
       setLoading(true);
-      await axios.post("/api/deposit/create-deposit/", {
-        amount,
-        method: "korapay",
-        transactionRef: res?.reference,
-      });
-      toast.success("Deposit Successful", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "light",
-        transition: Bounce,
-      });
-      router.push("/user");
+      //verify payment
+      const { data } = await axios.get(
+        `/api/payment/verify-korapay/${res?.reference}`
+      );
+      console.log("payment verififcation", data);
+      if (data.success) {
+        await axios.post("/api/deposit/create-deposit/", {
+          amount: data?.data?.amount,
+          method: "korapay",
+          transactionRef: data?.data?.reference,
+        });
+        toast.success("Deposit Successful", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+          transition: Bounce,
+        });
+        router.push("/user/success");
+      } else {
+        toast.error("Deposit Failed", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+          transition: Bounce,
+        });
+        router.push("/user");
+      }
     } catch (error) {
       toast.error(error?.response?.data?.message || "Deposit Failed", {
         position: "top-center",
@@ -66,6 +85,7 @@ const KorapayComponent = ({ session, amount }) => {
       setIsProcessing(false);
     }
   };
+
   const hasSubmitted = useRef(false);
 
   const korapayBtnConfig = {
@@ -74,7 +94,6 @@ const KorapayComponent = ({ session, amount }) => {
       console.log("Payment closed");
     },
     onSuccess: (res) => {
-      console.log("res", res);
       if (!hasSubmitted.current && !isProcessing) {
         hasSubmitted.current = true;
         handleSubmit(res);

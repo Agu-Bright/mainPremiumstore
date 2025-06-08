@@ -16,7 +16,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import PersonIcon from "@mui/icons-material/Person";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
-import LocalPostOfficeIcon from "@mui/icons-material/LocalPostOffice";
+import AcUnitIcon from "@mui/icons-material/AcUnit";
 function SideBarDrawer({ open, close }) {
   const pathname = usePathname();
   const { data: session } = useSession();
@@ -71,7 +71,7 @@ function SideBarDrawer({ open, close }) {
                       <div>Add Funds</div>
                     </Link>
                   </li>
-                  {/* <li
+                  <li
                     className={`${
                       pathname === "/user/add-fund" ? "active" : ""
                     }`}
@@ -84,7 +84,7 @@ function SideBarDrawer({ open, close }) {
                       <AcUnitIcon sx={{ marginRight: "10px" }} />{" "}
                       <div>How to Login</div>
                     </Link>
-                  </li> */}
+                  </li>
                   <li
                     className={`${pathname === "/user/rules" ? "active" : ""}`}
                   >
@@ -124,11 +124,25 @@ function SideBarDrawer({ open, close }) {
                       pathname === "/dashboard/upload-logs" ? "active" : ""
                     }`}
                   >
-                    <Link href="/dashboard/orders" style={{ display: "flex" }}>
-                      <ProductionQuantityLimitsIcon
-                        sx={{ marginRight: "10px" }}
-                      />{" "}
-                      <div>Orders</div>
+                    <Link
+                      href="/dashboard/upload-logs"
+                      style={{ display: "flex" }}
+                    >
+                      <HomeRepairServiceIcon sx={{ marginRight: "10px" }} />{" "}
+                      <div>Manage Logs</div>
+                    </Link>
+                  </li>
+                  <li
+                    className={`${
+                      pathname === "/dashboard/manage-mail" ? "active" : ""
+                    }`}
+                  >
+                    <Link
+                      href="/dashboard/manage-mail"
+                      style={{ display: "flex" }}
+                    >
+                      <HomeRepairServiceIcon sx={{ marginRight: "10px" }} />{" "}
+                      <div>Manage Mail</div>
                     </Link>
                   </li>
                   <li
@@ -136,12 +150,11 @@ function SideBarDrawer({ open, close }) {
                       pathname === "/dashboard/upload-logs" ? "active" : ""
                     }`}
                   >
-                    <Link
-                      href="/dashboard/manage-mail"
-                      style={{ display: "flex" }}
-                    >
-                      <LocalPostOfficeIcon sx={{ marginRight: "10px" }} />{" "}
-                      <div>Email Service</div>
+                    <Link href="/dashboard/orders" style={{ display: "flex" }}>
+                      <ProductionQuantityLimitsIcon
+                        sx={{ marginRight: "10px" }}
+                      />{" "}
+                      <div>Orders</div>
                     </Link>
                   </li>
                   <li
