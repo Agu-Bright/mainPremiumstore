@@ -1,10 +1,10 @@
 "use client";
 
-import Spinner from "@components/Spinner";
+import { CircularProgress } from "@mui/material";
 import React from "react";
 
 const loading = () => {
-  return <Spinner />;
+  return <CircularProgress/>
 };
 
 export default loading;
