@@ -220,7 +220,7 @@ const Navbar = ({ fixed, type, data, topNav, title }) => {
                       height={30}
                     />
                     <Typography sx={{ fontWeight: "800" }}>
-                      Active Store{" "}
+                      Premium Store{" "}
                     </Typography>
                   </Link>
                 </Stack>

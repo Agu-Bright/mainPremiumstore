@@ -61,7 +61,7 @@ const page = () => {
                     className="cm-logo"
                     alt="black-logo"
                   /> */}
-                  Active Store{" "}
+                  Premium Store{" "}
                 </a>
                 {/* <!-- Name --> */}
                 <h3 style={{ fontSize: "0.8em" }}>Recover your password</h3>

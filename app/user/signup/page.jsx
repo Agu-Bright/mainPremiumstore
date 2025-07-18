@@ -37,7 +37,7 @@ const page = () => {
               <div className="details">
                 {/* <!-- Logo--> */}
                 <a href="/" style={{ fontWeight: "900", fontSize: "1.5em" }}>
-                  Active Store{" "}
+                  Premium Store{" "}
                 </a>
                 <h2 style={{ fontWeight: "800", color: "#8075ff" }}>
                   Create an account{" "}

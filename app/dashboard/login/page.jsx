@@ -36,7 +36,7 @@ const page = () => {
                 <div className="details">
                   {/* <!-- Logo --> */}
                   <a href="/" style={{ fontWeight: "900", fontSize: "1.5em" }}>
-                    Active Store{" "}
+                    Premium Store{" "}
                   </a>
                   {/* <!-- Name --> */}
                   <h2 style={{ fontWeight: "800", color: "#8075ff" }}>
@@ -197,7 +197,7 @@ const page = () => {
         </div>
         <ToastContainer />
         <p style={{ color: "white", zIndex: "999", marginTop: "30px" }}>
-          Copyright @2024 Active Store.
+          Copyright @2024 Premium Store.
         </p>
       </div>
     </>
