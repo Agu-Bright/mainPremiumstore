@@ -1,5 +1,4 @@
 import { authOptions } from "@app/api/auth/[...nextauth]/route";
-import User from "@models/user";
 import Wallet from "@models/wallet";
 import connectDB from "@utils/connectDB";
 import { getServerSession } from "next-auth";

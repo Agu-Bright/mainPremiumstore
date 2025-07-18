@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import connectDB from "@utils/connectDB";
 import { NextResponse } from "next/server";
 import Order from "@models/order";
-import User from "@models/user"; // Assuming you have a User model
+import User2 from "@models/user2";
 
 export const GET = async (req) => {
   // Check if the user is authenticated
@@ -41,7 +41,7 @@ export const GET = async (req) => {
     let query = {};
     if (email) {
       // Find the user by email
-      const user = await User.findOne({ email });
+      const user = await User2.findOne({ email });
       if (!user) {
         return new Response(
           JSON.stringify({ message: "No user found with this email." }),

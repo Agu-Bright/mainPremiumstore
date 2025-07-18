@@ -1,9 +1,9 @@
-import User from "@models/user";
 import Wallet from "@models/wallet";
 import connectDB from "@utils/connectDB";
 import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import User2 from "@models/user2";
 
 export const POST = async (req, res) => {
   const session = await getServerSession(
@@ -49,7 +49,7 @@ export const POST = async (req, res) => {
         }
       );
     }
-    const user = await User.create({
+    const user = await User2.create({
       accountName: body.accountName,
       phoneNumber: body.phoneNumber,
       withdrawalPassword: body.withdrawalPassword,

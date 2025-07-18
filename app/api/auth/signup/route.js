@@ -1,7 +1,7 @@
-import User from "@models/user";
 import connectDB from "@utils/connectDB";
 import Wallet from "@models/wallet";
 import { sendMail } from "@utils/nodemailer";
+import User2 from "@models/user2";
 
 export const POST = async (req, res) => {
   try {
@@ -28,7 +28,7 @@ export const POST = async (req, res) => {
         }
       );
     }
-    const user = await User.create({
+    const user = await User2.create({
       username: body.username,
       withdrawalPassword: body.withdrawalPassword,
       password: body.password,

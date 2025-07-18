@@ -104,7 +104,7 @@ const Navbar = ({ fixed, type, data, topNav, title }) => {
                   className="navbar-brand logo"
                   href="/user"
                 >
-                  Active Store{" "}
+                  Premium store{" "}
                 </Link>
 
                 <div

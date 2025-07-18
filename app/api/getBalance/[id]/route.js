@@ -1,5 +1,4 @@
 import connectDB from "@utils/connectDB";
-import User from "@models/user";
 import Wallet from "@models/wallet";
 //get single restaurant
 export const GET = async (req, { params }) => {

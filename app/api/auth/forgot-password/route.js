@@ -1,10 +1,10 @@
-import User from "@models/user";
+import User2 from "@models/user2";
 import { sendMail, transporter } from "@utils/nodemailer";
 
 export const POST = async (req) => {
   try {
     const { email } = await req.json();
-    const user = await User.findOne({ email });
+    const user = await User2.findOne({ email });
     if (!user) {
       return Response.json(
         { success: false, message: "No user found" },

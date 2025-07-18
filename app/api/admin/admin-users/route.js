@@ -1,8 +1,8 @@
 //admin get all restaurant owners
 import { authOptions } from "@app/api/auth/[...nextauth]/route";
+import User2 from "@models/user2";
 import connectDB from "@utils/connectDB";
 import { getServerSession } from "next-auth";
-import User from "@models/user";
 
 export const GET = async (req, res) => {
   const session = await getServerSession(
@@ -25,7 +25,7 @@ export const GET = async (req, res) => {
 
   try {
     await connectDB;
-    const result = await User.find();
+    const result = await User2.find();
 
     return Response.json(
       {

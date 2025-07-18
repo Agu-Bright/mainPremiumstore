@@ -1,5 +1,5 @@
 import { authOptions } from "@app/api/auth/[...nextauth]/route";
-import User from "@models/user";
+import User2 from "@models/user2";
 import Wallet from "@models/wallet";
 import connectDB from "@utils/connectDB";
 import { getServerSession } from "next-auth";
@@ -25,7 +25,7 @@ export const DELETE = async (req, { params }) => {
     await connectDB;
     const id = params.id;
 
-    const user = await User.findById(id);
+    const user = await User2.findById(id);
     if (!user) {
       return Response.json(
         { message: "No user with ID found" },
@@ -39,7 +39,7 @@ export const DELETE = async (req, { params }) => {
       );
     }
 
-    await User.findByIdAndDelete(id);
+    await User2.findByIdAndDelete(id);
     await Wallet.deleteOne({ user: id });
     return Response.json({ success: true }, { status: 200 });
   } catch (error) {

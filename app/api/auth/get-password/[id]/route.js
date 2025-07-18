@@ -2,7 +2,7 @@ import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import connectDB from "@utils/connectDB";
 import { NextResponse } from "next/server";
-import User from "@models/user";
+import User2 from "@models/user2";
 
 //get single restaurant
 export const GET = async (req, { params }) => {
@@ -27,7 +27,7 @@ export const GET = async (req, { params }) => {
   try {
     await connectDB;
     const id = params.id;
-    const user = await User.findById(id);
+    const user = await User2.findById(id);
     if (!user) {
       return Response.json(
         { message: `No User found with Id: ${id}` },

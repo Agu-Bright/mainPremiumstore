@@ -1,9 +1,9 @@
-import User from "@models/user";
 import bcrypt from "bcryptjs";
 import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import connectDB from "@utils/connectDB";
 import { NextResponse } from "next/server";
+import User2 from "@models/user2";
 
 export const POST = async (req) => {
   const session = await getServerSession(
@@ -31,7 +31,7 @@ export const POST = async (req) => {
       );
     }
 
-    const user = await User.findById(session?.user?.id);
+    const user = await User2.findById(session?.user?.id);
 
     if (!user) {
       return Response.json(

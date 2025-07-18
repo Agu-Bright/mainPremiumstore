@@ -1,4 +1,3 @@
-import User from "@models/user";
 import connectDB from "@utils/connectDB";
 import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";

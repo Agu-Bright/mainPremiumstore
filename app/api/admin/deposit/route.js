@@ -1,10 +1,10 @@
-import User from "@models/user";
 import Wallet from "@models/wallet";
 import connectDB from "@utils/connectDB";
 import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import Deposit from "@models/Deposit";
+import User2 from "@models/user2";
 
 export const POST = async (req, res) => {
   const session = await getServerSession(
@@ -36,7 +36,7 @@ export const POST = async (req, res) => {
         }
       );
 
-    const user = await User.findById(body.user);
+    const user = await User2.findById(body.user);
     if (!user) {
       return new Response(
         JSON.stringify({ success: false, message: "No user found" }),

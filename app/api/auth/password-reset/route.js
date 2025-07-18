@@ -1,4 +1,4 @@
-import User from "@models/user";
+import User2 from "@models/user2";
 import { sendMail, transporter } from "@utils/nodemailer";
 import crypto from "crypto";
 
@@ -12,7 +12,7 @@ export const POST = async (req) => {
       .digest("hex");
 
     //compare the reset password hashed token with the one in the database
-    const user = await User.findOne({
+    const user = await User2.findOne({
       resetPasswordToken,
       resetPasswordExpire: { $gt: Date.now() },
     });

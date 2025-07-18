@@ -3,8 +3,7 @@ import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import connectDB from "@utils/connectDB";
 import { NextResponse } from "next/server";
-import User from "@models/user";
-import Task from "@models/task";
+import User2 from "@models/user2";
 export const GET = async (req, res) => {
   //check if user is authenticated
   const session = await getServerSession(
@@ -24,7 +23,7 @@ export const GET = async (req, res) => {
   }
   try {
     await connectDB;
-    const user = await User.findById(session?.user?.id);
+    const user = await User2.findById(session?.user?.id);
     return Response.json({ message: "success", user }, { status: 200 });
   } catch (error) {
     console.log(error);

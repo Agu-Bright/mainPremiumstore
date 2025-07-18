@@ -2,10 +2,9 @@ import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import connectDB from "@utils/connectDB";
-import User from "@models/user";
 import bcrypt from "bcryptjs";
+import User2 from "@models/user2";
 // import connectDb from "@utils/connectDb";
-// import User from "@models/user";
 export const authOptions = {
   providers: [
     GoogleProvider({
@@ -18,7 +17,7 @@ export const authOptions = {
       async authorize(credentials, req) {
         await connectDB;
         //check user existance
-        const result = await User.findOne({
+        const result = await User2.findOne({
           email: credentials.email,
         });
         if (!result) {
@@ -47,7 +46,7 @@ export const authOptions = {
     },
     async session({ session, token }) {
       //get user data and set it to the session storage
-      const sessionUser = await User.findById(token.id);
+      const sessionUser = await User2.findById(token.id);
       session.user.id = sessionUser._id.toString();
       session.user.role = sessionUser.role;
       session.user.username = sessionUser?.username;
@@ -63,12 +62,12 @@ export const authOptions = {
         await connectDB;
 
         //check if the use exists
-        const userExists = await User.findOne({
+        const userExists = await User2.findOne({
           email: profile.email,
         });
         if (!userExists) {
           //create a new user and save it to the database
-          await User.create({
+          await User2.create({
             username: profile.username,
             password: profile.password,
             confirmPassword: profile.confirmPassword,
@@ -83,6 +82,7 @@ export const authOptions = {
     },
   },
 };
+
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

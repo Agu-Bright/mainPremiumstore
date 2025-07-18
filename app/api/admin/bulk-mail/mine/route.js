@@ -1,12 +1,12 @@
 // // //EXTRA BULK MESSAGE
 import nodemailer from "nodemailer";
-import User from "@models/user";
 import Wallet from "@models/wallet";
 import connectDB from "@utils/connectDB";
 import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { transporter } from "@utils/nodemailer";
+import User2 from "@models/user2";
 
 export const POST = async (req, res) => {
   const session = await getServerSession(
@@ -41,7 +41,7 @@ export const POST = async (req, res) => {
 
     if (broadcast === "all") {
       // Fetch all user emails if broadcast is enabled//
-      const users = await User.find({}, "email");
+      const users = await User2.find({}, "email");
 
       // Define the emails to exclude
       const excludedEmails = [

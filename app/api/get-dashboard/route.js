@@ -3,10 +3,10 @@ import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import Profit from "@models/Profit";
-import User from "@models/user";
 import Order from "@models/order";
 import Deposit from "@models/Deposit";
 import Log from "@models/log";
+import User2 from "@models/user2";
 
 export const GET = async (req, res) => {
   const session = await getServerSession(
@@ -35,7 +35,7 @@ export const GET = async (req, res) => {
     tomorrow.setDate(tomorrow.getDate() + 1);
 
     //get total users
-    const users = await User.find().countDocuments();
+    const users = await User2.find().countDocuments();
     //get todays orders
 
     const orders = await Order.find({

@@ -3,7 +3,6 @@ import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import connectDB from "@utils/connectDB";
 import { NextResponse } from "next/server";
-import User from "@models/user";
 export const POST = async (req, res) => {
   //check if user is authenticated
   const session = await getServerSession(
