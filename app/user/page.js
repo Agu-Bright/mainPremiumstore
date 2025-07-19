@@ -117,119 +117,144 @@ export default function Home() {
     return (
       <NavPage>
         <Box sx={{ height: "100vh" }}>
-          <Stack direction="row" justifyContent="space-between">
-            <h2 style={{ fontSize: "1em" }}>
-              <span style={{ color: "#8075ff", fontWeight: "800" }}>
-                Welcome!!{" "}
-              </span>
-              <span style={{}}>{session?.user?.username}</span> 😇
-            </h2>
-            <h2 style={{ fontSize: "1em" }}>
-              <span style={{ fontWeight: "800", paddingRight: "10px" }}>
-                Balance:
-              </span>
-              <span
-                style={{
-                  textDecoration: "underline",
-                  cursor: "pointer",
-                  fontWeight: "800",
-                }}
-              >
-                {formatMoney(myWallet?.balance)}
-              </span>
-            </h2>
-          </Stack>
-          <Typography
-            sx={{
-              textAlign: "center",
-              fontWeight: "800",
-              fontSize: { md: "3em", xs: "1.6em" },
-              background:
-                "linear-gradient(92.12deg, #007C9B 1.46%, #00CCFF 41.25%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            Buy social accounts and Followers
-          </Typography>
-          <Typography
-            sx={{ textAlign: "center", fontSize: { md: "1em", xs: "0.8em" } }}
-          >
-            Leading marketplace to buy established Facebook accounts, Youtube
-            Followers, Theme pages etc.
-          </Typography>
+          <>
+            <Stack direction="row" justifyContent="space-between">
+              <h2 style={{ fontSize: "1em", color: "#ffffff" }}>
+                <span style={{ color: "#8075ff", fontWeight: "800" }}>
+                  Welcome!!{" "}
+                </span>
+                <span>{session?.user?.username}</span> 😇
+              </h2>
 
-          <Box
-            sx={{
-              border: "1px solid #e6dede",
-              borderRadius: { md: "40px", xs: "20px" },
-              width: "100%",
-              marginBottom: "20px",
-              // boxShadow: "1px 1px 2px gray",
-              padding: "5px",
-              overflow: "hidden",
-            }}
-          >
-            <Swiper
-              style={{ width: "100%", height: "100%" }}
-              spaceBetween={30}
-              centeredSlides={true}
-              autoplay={{
-                delay: 2500,
-                disableOnInteraction: false,
+              <h2 style={{ fontSize: "1em", color: "#ffffff" }}>
+                <span style={{ fontWeight: "800", paddingRight: "10px" }}>
+                  Balance:
+                </span>
+                <span
+                  style={{
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                    fontWeight: "800",
+                    color: "#00CCFF",
+                  }}
+                >
+                  {formatMoney(myWallet?.balance)}
+                </span>
+              </h2>
+            </Stack>
+
+            <Typography
+              sx={{
+                textAlign: "center",
+                fontWeight: "800",
+                fontSize: { md: "3em", xs: "1.6em" },
+                background:
+                  "linear-gradient(92.12deg, #6f42c1 0%, #6f42c1 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
               }}
-              modules={[Autoplay]}
-              className="mySwiper"
             >
-              <SwiperSlide>
-                {" "}
-                <a href="https://t.me/activest0re" target="_blank">
-                  <img
-                    src="/img/flier-1.png"
-                    alt="flier"
-                    style={{ width: "100%" }}
-                  />
-                </a>
-              </SwiperSlide>
-              <SwiperSlide>
-                <a href="#" target="_blank">
-                  <img
-                    src="/img/note.png"
-                    alt="flier"
-                    style={{ width: "100%" }}
-                  />
-                </a>
-              </SwiperSlide>
-              <SwiperSlide>
-                <a href="https://t.me/activest0re" target="_blank">
-                  <img
-                    src="/img/flier-3.png"
-                    alt="flier"
-                    style={{ width: "100%" }}
-                  />
-                </a>
-              </SwiperSlide>
-            </Swiper>
-          </Box>
+              Buy social accounts and Followers
+            </Typography>
+
+            <Typography
+              sx={{
+                textAlign: "center",
+                fontSize: { md: "1em", xs: "0.8em" },
+                color: "#CCCCCC",
+              }}
+            >
+              Leading marketplace to buy established Facebook accounts, Youtube
+              Followers, Theme pages etc.
+            </Typography>
+
+            <Box
+              sx={{
+                border: "1px solid #444",
+                borderRadius: { md: "40px", xs: "20px" },
+                width: "100%",
+                marginBottom: "20px",
+                padding: "5px",
+                overflow: "hidden",
+                backgroundColor: "#1c1c1c", // Dark background
+              }}
+            >
+              <Swiper
+                style={{ width: "100%", height: "100%" }}
+                spaceBetween={30}
+                centeredSlides={true}
+                autoplay={{
+                  delay: 2500,
+                  disableOnInteraction: false,
+                }}
+                modules={[Autoplay]}
+                className="mySwiper"
+              >
+                <SwiperSlide>
+                  <a href="https://t.me/activest0re" target="_blank">
+                    <img
+                      src="/img/flier-1.png"
+                      alt="flier"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        borderRadius: "20px",
+                      }}
+                    />
+                  </a>
+                </SwiperSlide>
+                {/* <SwiperSlide>
+                  <a href="#" target="_blank">
+                    <img
+                      src="/img/note.png"
+                      alt="flier"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        borderRadius: "20px",
+                      }}
+                    />
+                  </a>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <a href="https://t.me/activest0re" target="_blank">
+                    <img
+                      src="/img/flier-3.png"
+                      alt="flier"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        borderRadius: "20px",
+                      }}
+                    />
+                  </a>
+                </SwiperSlide> */}
+              </Swiper>
+            </Box>
+          </>
 
           <div>
+            {/* Category List */}
             <>
               {categories.length > 0 &&
-                categories.map((category) => {
-                  return (
-                    <TableList
-                      key={category?._id}
-                      category={category?.catType}
-                      catId={category?._id}
-                      title={
-                        <Topic title={category?.catType} src="/img/star.png" />
-                      }
-                    />
-                  );
-                })}
+                categories.map((category) => (
+                  <TableList
+                    key={category?._id}
+                    category={category?.catType}
+                    catId={category?._id}
+                    title={
+                      <Topic title={category?.catType} src="/img/star.png" />
+                    }
+                  />
+                ))}
             </>
+
+            {/* No categories */}
             <>
-              {categories.length == 0 && (
+              {categories.length === 0 && (
                 <div
                   style={{
                     width: "100%",
@@ -248,8 +273,19 @@ export default function Home() {
                       justifyContent: "center",
                     }}
                   >
-                    <Image src="/img/photo.png" width={200} height={200} />
-                    <Typography sx={{ textAlign: "center", fontWeight: "800" }}>
+                    <Image
+                      src="/img/photo.png"
+                      width={200}
+                      height={200}
+                      alt="Empty"
+                    />
+                    <Typography
+                      sx={{
+                        textAlign: "center",
+                        fontWeight: "800",
+                        color: "white",
+                      }}
+                    >
                       No Log Uploaded yet
                     </Typography>
                     {session?.user?.role === "admin" && (
@@ -266,20 +302,25 @@ export default function Home() {
                             marginTop: "20px",
                             textAlign: "center",
                             background:
-                              "linear-gradient(90deg, rgba(128,117,255,1) 0%, rgba(128,117,255,1) 35%, rgba(0,212,255,1) 100%)",
+                              "linear-gradient(90deg, #6f42c1 0%, #5e38a4 100%)",
+                            padding: "10px 20px",
+                            textDecoration: "none",
                           }}
-                          className="btn-md  btn-block"
+                          className="btn-md btn-block"
                         >
-                          Manage Logs{" "}
+                          Manage Logs
                         </a>
                         <Typography
                           style={{
                             fontWeight: "300",
                             fontSize: "0.8em",
                             marginTop: "10px",
+                            color: "#bbb",
                           }}
                         >
-                          <span style={{ fontWeight: "800" }}>N/B:</span> {""}{" "}
+                          <span style={{ fontWeight: "800", color: "#fff" }}>
+                            N/B:
+                          </span>{" "}
                           This button is only visible to the admin
                         </Typography>
                       </>
@@ -288,19 +329,21 @@ export default function Home() {
                 </div>
               )}
             </>
+
+            {/* Recent Activity */}
             <div className="mt-5">
               <Stack
                 direction="row"
                 justifyContent="space-between"
                 sx={{
                   marginBottom: "10px",
-                  background: "#131132",
+                  background: "#1c1c1c",
                   padding: "8px",
                   borderRadius: "5px",
                 }}
               >
                 <Typography sx={{ fontWeight: "800", color: "white" }}>
-                  latest Orders and Deposits
+                  Latest Orders and Deposits
                 </Typography>
               </Stack>
 
@@ -309,119 +352,71 @@ export default function Home() {
                   marginTop: "10px",
                   marginBottom: "15px",
                   padding: "15px 10px",
-                  border: "0.2px solid #dcd7d7",
+                  border: "0.2px solid #333",
                   borderRadius: "5px",
-                  wdth: "100%",
+                  width: "100%",
                   maxHeight: "80vh",
                   overflowY: "scroll",
                 }}
               >
-                {values.map((item) => {
-                  if (item.method) {
-                    return (
-                      <>
-                        <Stack flexDirection="row">
-                          <Image
-                            src="/img/icons/deposit.png"
-                            alt="deposit"
-                            width={20}
-                            height={20}
-                            className="mr-2"
-                          />
-                          <Typography
-                            className="mr-2"
-                            style={{ fontSize: "12px" }}
-                          >
-                            {item?.user?.username.slice(0, 3)}
-                          </Typography>{" "}
-                          |{" "}
-                          <Typography
-                            className="mr-2 !text-green"
-                            sx={{ color: "green", fontSize: "12px" }}
-                          >
-                            Deposited
-                          </Typography>
-                          |{" "}
-                          <Typography
-                            className="mr-2"
-                            sx={{ color: "orange", fontSize: "12px" }}
-                          >
-                            &#8358;{item?.amount}
-                          </Typography>{" "}
-                          |{" "}
-                          <Typography
-                            sx={{
-                              background: "#8075FF",
-                              borderRadius: "10px",
-                              padding: "2px",
-                              color: "white",
-                              fontSize: "12px",
-                            }}
-                          >
-                            {timeAgo(item?.createdAt)}
-                          </Typography>
-                        </Stack>
-                        <Divider className="my-2" />
-                      </>
-                    );
-                  } else {
-                    return (
-                      <>
-                        <Stack flexDirection="row">
-                          <Image
-                            src="/img/icons/order.png"
-                            alt="order"
-                            width={20}
-                            height={20}
-                            className="mr-2"
-                          />
-                          <Typography
-                            className="mr-2"
-                            style={{ fontSize: "12px" }}
-                          >
-                            {item?.user?.username.slice(0, 3)}
-                          </Typography>{" "}
-                          |{" "}
-                          <Typography
-                            sx={{ color: "green", fontSize: "12px" }}
-                            className="mr-2 "
-                          >
-                            Bought
-                          </Typography>
-                          |{" "}
-                          <Typography className="mr-2">
-                            {item?.social}
-                          </Typography>{" "}
-                          |{" "}
-                          <Typography
-                            className="mr-2"
-                            sx={{ color: "orange", fontSize: "12px" }}
-                          >
-                            &#8358;{item?.orderLog?.price}
-                          </Typography>{" "}
-                          |{" "}
-                          <Typography
-                            sx={{
-                              background: "#8075FF",
-                              borderRadius: "10px",
-                              padding: "2px",
-                              color: "white",
-                              fontSize: "12px",
-                            }}
-                          >
-                            {timeAgo(item?.createdAt)}
-                          </Typography>
-                        </Stack>
-                        <Divider className="my-2" />
-                      </>
-                    );
-                  }
-                })}
+                {values.map((item, i) => (
+                  <React.Fragment key={i}>
+                    <Stack flexDirection="row" alignItems="center">
+                      <Image
+                        src={
+                          item.method
+                            ? "/img/icons/deposit.png"
+                            : "/img/icons/order.png"
+                        }
+                        alt={item.method ? "deposit" : "order"}
+                        width={20}
+                        height={20}
+                        className="mr-2"
+                      />
+                      <Typography
+                        className="mr-2"
+                        sx={{ fontSize: "12px", color: "#ccc" }}
+                      >
+                        {item?.user?.username.slice(0, 3)}
+                      </Typography>{" "}
+                      |{" "}
+                      <Typography
+                        className="mr-2"
+                        sx={{
+                          color: item.method ? "green" : "lightgreen",
+                          fontSize: "12px",
+                        }}
+                      >
+                        {item.method ? "Deposited" : "Bought"}
+                      </Typography>{" "}
+                      |{" "}
+                      <Typography
+                        className="mr-2"
+                        sx={{ fontSize: "12px", color: "#bbb" }}
+                      >
+                        {item.method ? `₦${item.amount}` : item.social}
+                      </Typography>{" "}
+                      |{" "}
+                      <Typography
+                        sx={{
+                          background: "#6f42c1",
+                          borderRadius: "10px",
+                          padding: "2px 6px",
+                          color: "white",
+                          fontSize: "12px",
+                        }}
+                      >
+                        {timeAgo(item?.createdAt)}
+                      </Typography>
+                    </Stack>
+                    <Divider sx={{ background: "#333", my: 1 }} />
+                  </React.Fragment>
+                ))}
               </Box>
+
               <div style={{ visibility: "hidden" }}>hii</div>
             </div>
           </div>
-          
         </Box>
       </NavPage>
     );

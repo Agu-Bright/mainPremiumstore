@@ -38,7 +38,6 @@ export default function TableList({ title, key, category, catId }) {
   React.useEffect(() => {
     (async () => {
       try {
-        //fetch logs based on category
         const { data } = await axios.post("/api/logs/get-category-logs2", {
           category: catId,
         });
@@ -48,6 +47,7 @@ export default function TableList({ title, key, category, catId }) {
       }
     })();
   }, []);
+
   return (
     <>
       <div key={key} style={{ marginTop: "15px" }}>
@@ -56,7 +56,7 @@ export default function TableList({ title, key, category, catId }) {
           justifyContent="space-between"
           sx={{
             marginBottom: "10px",
-            background: "#8075ff",
+            background: "#6f42c1",
             padding: "8px",
             borderRadius: "5px",
           }}
@@ -73,150 +73,145 @@ export default function TableList({ title, key, category, catId }) {
             <span
               style={{ fontWeight: "400", marginRight: "10px", color: "white" }}
             >
-              {" "}
               See More
             </span>
-            {/* <Image src="/img/right-arrow-1.png" height={30} width={40} /> */}
           </div>
         </Stack>
 
-        <>
-          {logs.length > 0 &&
-            logs.map((log) => (
-              <Box
-                sx={{
-                  marginTop: "10px",
-                  marginBottom: "5px",
-                  padding: "15px 10px",
-                  border: "0.2px solid #dcd7d7",
-                  borderRadius: "5px",
-                  wdth: "100%",
-                }}
+        {logs.length > 0 &&
+          logs.map((log) => (
+            <Box
+              key={log._id}
+              sx={{
+                marginTop: "10px",
+                marginBottom: "5px",
+                padding: "15px 10px",
+                border: "1px solid #333",
+                borderRadius: "5px",
+                background: "#1a1a1a",
+                width: "100%",
+              }}
+            >
+              <Stack
+                flexDirection={{ md: "row", xs: "column" }}
+                justifyContent="space-between"
               >
-                <Stack
-                  flexDirection={{ md: "row", xs: "column" }}
-                  justifyContent="space-between"
+                {/* Left */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: { md: "center", xs: "start" },
+                    justifyContent: "start",
+                    width: { md: "70%", xs: "100%" },
+                  }}
                 >
+                  <Avatar
+                    src={log?.image ? log.image : `/img/${log.social}.png`}
+                    sx={{
+                      width: "50px",
+                      height: "50px",
+                      borderRadius: "1px",
+                      marginRight: isMobile ? "0" : "10px",
+                      marginBottom: isMobile ? "10px" : "0",
+                    }}
+                  />
+                  <Typography sx={{ color: "#ddd" }}>
+                    <span style={{ fontWeight: "700", marginRight: "5px" }}>
+                      {log?.social}:
+                    </span>
+                    {log?.description}
+                  </Typography>
+                </Box>
+
+                {/* Right */}
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  sx={{ width: { md: "30%", xs: "100%" } }}
+                >
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Box
+                      sx={{
+                        height: "50px",
+                        padding: "0px 20px",
+                        marginRight: "10px",
+                        borderRadius: "7px",
+                        background: "#2b2b2b",
+                      }}
+                    >
+                      <Typography sx={{ textAlign: "center", color: "#aaa" }}>
+                        Stock
+                      </Typography>
+                      <Typography sx={{ textAlign: "center", color: "#fff" }}>
+                        {log?.logCount}
+                      </Typography>
+                    </Box>
+                    <Box
+                      sx={{
+                        height: "50px",
+                        padding: "0px 20px",
+                        borderRadius: "7px",
+                        background: "#2b2b2b",
+                      }}
+                    >
+                      <Typography sx={{ textAlign: "center", color: "#aaa" }}>
+                        Price
+                      </Typography>
+                      <Typography sx={{ textAlign: "center", color: "#fff" }}>
+                        {formatMoney(log?.price)}
+                      </Typography>
+                    </Box>
+                  </Stack>
+
                   <Box
                     sx={{
                       display: "flex",
-                      alignItems: { md: "center", xs: "start" },
-                      justifyContent: "start",
-                      width: { md: "70%", xs: "100%" },
+                      alignItems: "center",
+                      justifyContent: "center",
                     }}
                   >
-                    <Avatar
-                      src={log?.image ? log?.image : `/img/${log?.social}.png`}
-                      sx={{
-                        width: "50px",
-                        height: "50px",
-                        borderRadius: "1px",
-                        marginRight: isMobile ? "0" : "10px",
-                        marginBottom: isMobile ? "10px" : "0",
+                    <Button
+                      onClick={() => {
+                        if (log?.logCount === 0) {
+                          toast.error("Sold Out", {
+                            position: "top-center",
+                            autoClose: 5000,
+                            hideProgressBar: true,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            theme: "dark",
+                            transition: Bounce,
+                          });
+                          return;
+                        }
+                        setActiveLog(log);
+                        setOpen(true);
                       }}
-                    />
-                    <Typography>
-                      <span style={{ fontWeight: "700", marginRight: "5px" }}>
-                        {log?.social}:
-                      </span>
-                      {log?.description}
-                    </Typography>
+                      variant="outlined"
+                      sx={{
+                        color: "#fff",
+                        borderColor: "#6f42c1",
+                        "&:hover": {
+                          backgroundColor: "#6f42c1",
+                          color: "#fff",
+                        },
+                      }}
+                      startIcon={<LocalMallIcon />}
+                    >
+                      Buy
+                    </Button>
                   </Box>
-
-                  <Stack
-                    direction="row"
-                    justifyContent="space-between"
-                    sx={{ width: { md: "30%", xs: "100%" } }}
-                  >
-                    <Stack
-                      direction="row"
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          height: "50px",
-                          padding: "0px 20px",
-                          marginRight: "10px",
-                          borderRadius: "7px",
-                          background: "#d6e8ff",
-                        }}
-                      >
-                        <Typography
-                          sx={{ textAlign: "center", color: "black" }}
-                        >
-                          Stock
-                        </Typography>
-                        <Typography
-                          sx={{ textAlign: "center", color: "black" }}
-                        >
-                          {log?.logCount}
-                        </Typography>
-                      </Box>
-                      <Box
-                        sx={{
-                          height: "50px",
-                          padding: "0px 20px",
-                          borderRadius: "7px",
-                          background: "#d6e8ff",
-                        }}
-                      >
-                        <Typography
-                          sx={{ textAlign: "center", color: "black" }}
-                        >
-                          Price
-                        </Typography>
-                        <Typography
-                          sx={{ textAlign: "center", color: "black" }}
-                        >
-                          {formatMoney(log?.price)}{" "}
-                        </Typography>
-                      </Box>
-                    </Stack>
-
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Button
-                        onClick={() => {
-                          if (log?.logCount === 0) {
-                            toast.error("Sold Out", {
-                              position: "top-center",
-                              autoClose: 5000,
-                              hideProgressBar: true,
-                              closeOnClick: true,
-                              pauseOnHover: true,
-                              draggable: true,
-                              progress: undefined,
-                              theme: "light",
-                              transition: Bounce,
-                            });
-                            return;
-                          }
-                          setActiveLog(log);
-                          setOpen(true);
-                        }}
-                        variant="outlined"
-                        sx={{ background: "primary" }}
-                        startIcon={<LocalMallIcon />}
-                      >
-                        Buy
-                      </Button>
-                    </Box>
-                  </Stack>
                 </Stack>
-              </Box>
-            ))}
-        </>
+              </Stack>
+            </Box>
+          ))}
       </div>
-      <Divider sx={{ margin: "20px 0px", visibility: "hidden" }} />
+      <Divider sx={{ margin: "20px 0px", background: "#333" }} />
     </>
   );
 }

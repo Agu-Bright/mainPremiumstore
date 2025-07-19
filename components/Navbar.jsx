@@ -96,15 +96,15 @@ const Navbar = ({ fixed, type, data, topNav, title }) => {
     <>
       {type !== "dashboard" ? (
         <>
-          <header className={handlePosition()}>
+          <header className={`${handlePosition()} bg-black text-white`}>
             <div className="container" style={{ position: "relative" }}>
-              <nav className="navbar navbar-expand-lg navbar-light">
+              <nav className="navbar navbar-expand-lg navbar-dark">
                 <Link
-                  style={{ fontWeight: "800" }}
+                  style={{ fontWeight: "800", color: "#fff" }}
                   className="navbar-brand logo"
                   href="/user"
                 >
-                  Premium store{" "}
+                  Premium Store
                 </Link>
 
                 <div
@@ -126,11 +126,11 @@ const Navbar = ({ fixed, type, data, topNav, title }) => {
                     aria-controls="navbarSupportedContent"
                     aria-expanded="false"
                     aria-label="Toggle navigation"
-                    style={{ background: "white" }}
+                    style={{ background: "#333" }}
                   >
                     <span
                       className="fa fa-bars"
-                      style={{ color: "black" }}
+                      style={{ color: "#fff" }}
                     ></span>
                   </button>
                 </div>
@@ -143,33 +143,40 @@ const Navbar = ({ fixed, type, data, topNav, title }) => {
                     <li className="nav-item dropdown"></li>
                     <li className="nav-item dropdown"></li>
                   </ul>
+
                   <ul
                     className="navbar-nav ml-auto"
                     style={{ visibility: "hidden" }}
                   >
                     <li className="nav-item"></li>
                     <li className="nav-item">
-                      <div className="nav-link link-color">
-                        <i className="fa fa-search"></i>
-                        Find
+                      <div className="nav-link link-color text-white">
+                        <i className="fa fa-search"></i> Find
                       </div>
                     </li>
                   </ul>
+
                   <Stack direction="row" spacing={1}>
-                    <IconButton onClick={() => router.push("/user/account")}>
+                    <IconButton
+                      onClick={() => router.push("/user/account")}
+                      sx={{ color: "white" }}
+                    >
                       <PersonOutlineIcon />
                     </IconButton>
+
                     <IconButton
                       onClick={() => {
                         signOut();
                         router.push("/user/login");
                       }}
+                      sx={{ color: "white" }}
                     >
                       <LogoutIcon />
                     </IconButton>
                   </Stack>
                 </div>
               </nav>
+
               {topNav && <TopNav title={title} />}
             </div>
           </header>
@@ -186,12 +193,14 @@ const Navbar = ({ fixed, type, data, topNav, title }) => {
             className="main-header header-2 fixed-header"
             style={{
               zIndex: "999",
-              borderBottom: "0.1px solid #d6d3d3",
-              boxShadow: "1px 2px 5px #e4e4e4",
+              borderBottom: "0.1px solid #333",
+              boxShadow: "1px 2px 5px rgba(0, 0, 0, 0.5)",
+              backgroundColor: "#121212", // dark background
+              color: "#ffffff", // white text
             }}
           >
             <div className="container-fluid">
-              <nav className="navbar navbar-expand-lg navbar-light">
+              <nav className="navbar navbar-expand-lg navbar-dark">
                 <Stack
                   direction="row"
                   justifyContent="space-between"
@@ -199,50 +208,63 @@ const Navbar = ({ fixed, type, data, topNav, title }) => {
                 >
                   <IconButton
                     onClick={() => setSideBar2(true)}
-                    sx={{ border: "0.1px solid gray", marginRight: "10px" }}
+                    sx={{
+                      border: "0.5px solid #555",
+                      marginRight: "10px",
+                      color: "white",
+                    }}
                   >
                     <SortIcon sx={{ fontWeight: "800" }} />
                   </IconButton>
+
                   <Link
                     style={{
                       fontWeight: "800",
                       display: "flex",
                       alignItems: "center",
                       flexDirection: "row",
+                      color: "white",
+                      textDecoration: "none",
                     }}
                     className="navbar-brand logo"
                     href="/user"
                   >
-                    <Image
-                      src="/img/logo.png"
-                      alt="logo"
-                      width={30}
-                      height={30}
-                    />
-                    <Typography sx={{ fontWeight: "800" }}>
-                      Premium Store{" "}
+                    <Typography
+                      sx={{
+                        fontWeight: "800",
+                        color: "white",
+                        marginLeft: "5px",
+                      }}
+                    >
+                      Premium Store
                     </Typography>
                   </Link>
                 </Stack>
+
                 <IconButton
-                  // style={{ border: "1px solid black" }}
                   onClick={() => setSideBar(true)}
-                  // className="navbar-toggler"
                   type="button"
                   data-toggle="collapse"
                   data-target="#navbarSupportedContent"
                   aria-controls="navbarSupportedContent"
                   aria-expanded="false"
                   aria-label="Toggle navigation"
+                  sx={{ color: "white" }}
                 >
-                  {/* <span className="fa fa-bars"></span> */}
                   <ViewWeekIcon sx={{ display: { md: "none", xs: "block" } }} />
                 </IconButton>
+
                 <div
                   className="collapse navbar-collapse"
                   id="navbarSupportedContent"
                 ></div>
-                <Box sx={{ display: { sm: "block", md: "block", xs: "none" } }}>
+
+                <Box
+                  sx={{
+                    display: { sm: "block", md: "block", xs: "none" },
+                    color: "white",
+                  }}
+                >
                   <span style={{ paddingRight: "10px", fontWeight: "800" }}>
                     Balance:
                   </span>
@@ -253,6 +275,7 @@ const Navbar = ({ fixed, type, data, topNav, title }) => {
               </nav>
             </div>
           </header>
+
           <SideBarDrawer
             open={sidebar}
             close={handleSidebarClose}

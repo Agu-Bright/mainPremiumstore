@@ -109,7 +109,7 @@ export default function RootLayout({ children }) {
         {/* <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]> */}
       </head>
-      <body className={inter.className}>
+      <body className={inter.className} style={{ background: "#000" }}>
         <Provider>
           <RestaurantContextProvider>
             <FilterContextProvider>{children}</FilterContextProvider>
