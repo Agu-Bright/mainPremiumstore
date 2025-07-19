@@ -149,219 +149,216 @@ export default function BasicModal({ open, setOpen, handleClose }) {
           ) : (
             <div>
               {index === 1 && (
-                <Box sx={style}>
+                <Box
+                  sx={{
+                    ...style,
+                    background: "#1a1a1a",
+                    borderRadius: "10px",
+                    padding: "20px",
+                  }}
+                >
                   <Typography
-                    id="modal-modal-title"
                     variant="h6"
                     component="h2"
                     sx={{ color: "white" }}
                   >
-                    Buy Log{" "}
+                    Buy Log
                   </Typography>
                   <Typography sx={{ color: "white" }}>
                     You are about to order
                   </Typography>
+
                   <Divider
                     sx={{
-                      color: "white",
                       borderColor: "#878383",
-                      margin: "20px 0px",
+                      margin: "20px 0",
                     }}
                   />
+
                   <Typography sx={{ color: "white", fontSize: "1.5em" }}>
                     Order Details
                   </Typography>
-                  <Stack spacing={10} direction="row" alignItems="start">
+
+                  <Stack spacing={4} direction="row" alignItems="start" mt={2}>
                     <Avatar
                       src={
                         activeLog?.image
-                          ? activeLog?.image
+                          ? activeLog.image
                           : `/img/${activeLog?.social}.png`
                       }
                       alt="social"
-                      sx={{ borderRadius: "1px", width: 56, height: 56 }}
+                      sx={{ width: 56, height: 56, borderRadius: "1px" }}
                     />
-                    <Stack direction="column">
-                      <Box
-                        sx={{
-                          color: "white",
-                          fontSize: { md: "1em", xs: "0.7em" },
-                        }}
-                      >
-                        <span style={{ fontWeight: "700", marginRight: "5px" }}>
-                          {activeLog?.social}:
-                        </span>
-                        {activeLog?.description}
-                      </Box>
+                    <Stack>
                       <Typography
                         sx={{
                           color: "white",
-                          fontSize: { md: "1em", xs: "0.7em" },
+                          fontSize: { md: "1em", xs: "0.85em" },
                         }}
                       >
-                        <span style={{ fontWeight: "700" }}>Stock:</span>{" "}
-                        {activeLog?.logCount}
+                        <strong>{activeLog?.social}:</strong>{" "}
+                        {activeLog?.description}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "white",
+                          fontSize: { md: "1em", xs: "0.85em" },
+                        }}
+                      >
+                        <strong>Stock:</strong> {activeLog?.logCount}
                       </Typography>
                     </Stack>
                   </Stack>
-                  <Typography sx={{ color: "gray" }}>
-                    The account format includes username, password, email and
+
+                  <Typography sx={{ color: "gray", mt: 2 }}>
+                    The account format includes username, password, email, and
                     email password
                   </Typography>
+
                   <Divider
                     sx={{
-                      color: "white",
                       borderColor: "#878383",
-                      margin: "20px 0px",
+                      margin: "20px 0",
                     }}
                   />
+
                   <Stack direction="row" justifyContent="space-between">
-                    <Stack direction="row">
+                    <Stack direction="row" alignItems="center">
                       <IconButton
-                        onClick={() => handleDecreament()}
-                        sx={{ border: "1px solid gray", margin: "0px 10px" }}
+                        onClick={handleDecreament}
+                        sx={{ border: "1px solid gray", mx: 1 }}
                       >
                         <RemoveIcon sx={{ color: "white" }} />
-                      </IconButton>{" "}
-                      <div
-                        style={{
+                      </IconButton>
+                      <Box
+                        sx={{
                           border: "0.1px solid gray",
                           color: "white",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
                           width: "30px",
+                          textAlign: "center",
+                          lineHeight: "30px",
                         }}
                       >
                         {count}
-                      </div>
+                      </Box>
                       <IconButton
-                        onClick={() => handleIncrement()}
-                        sx={{ border: "1px solid gray", margin: "0px 10px" }}
+                        onClick={handleIncrement}
+                        sx={{ border: "1px solid gray", mx: 1 }}
                       >
                         <AddIcon sx={{ color: "white" }} />
                       </IconButton>
                     </Stack>
-                    <Box
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Typography sx={{ color: "white", textAlign: "center" }}>
-                        {formatMoney(Number(activeLog?.price) * count)}
-                      </Typography>
-                    </Box>
+
+                    <Typography sx={{ color: "white", fontWeight: "bold" }}>
+                      {formatMoney(Number(activeLog?.price) * count)}
+                    </Typography>
                   </Stack>
+
                   <Button
-                    onClick={() => handleBuy()}
+                    onClick={handleBuy}
                     style={{
-                      display: "flex",
-                      border: "none",
+                      marginTop: "20px",
+                      width: "100%",
                       color: "white",
                       fontWeight: "800",
                       borderRadius: "10px",
                       fontSize: "1.2em",
-                      marginTop: "20px",
-                      textAlign: "center",
                       background:
                         "linear-gradient(90deg, rgba(128,117,255,1) 0%, rgba(128,117,255,1) 35%, rgba(0,212,255,1) 100%)",
                     }}
-                    className="btn-md  btn-block"
+                    className="btn-md btn-block"
                   >
-                    <Typography sx={{ color: "white" }}>Buy </Typography>
+                    <Typography sx={{ color: "white" }}>Buy</Typography>
                     <IconButton>
                       <LocalMallIcon sx={{ color: "white" }} />
                     </IconButton>
                   </Button>
                 </Box>
               )}
+
               {index === 2 && (
-                <Box sx={style}>
+                <Box
+                  sx={{
+                    ...style,
+                    background: "#1a1a1a",
+                    borderRadius: "10px",
+                    padding: "20px",
+                  }}
+                >
                   <Typography
-                    id="modal-modal-title"
                     variant="h6"
                     component="h2"
                     sx={{ color: "white" }}
                   >
-                    Complete Order{" "}
+                    Complete Order
                   </Typography>
                   <Typography sx={{ color: "white" }}>
                     You are about to order
                   </Typography>
+
                   <Divider
                     sx={{
-                      color: "white",
                       borderColor: "#878383",
-                      margin: "20px 0px",
+                      margin: "20px 0",
                     }}
                   />
+
                   <Typography sx={{ color: "white", fontSize: "1.5em" }}>
                     Order Details
                   </Typography>
-                  <Stack spacing={10} direction="row" alignItems="start">
+
+                  <Stack spacing={4} direction="row" alignItems="start" mt={2}>
                     <Avatar
                       src={
                         activeLog?.image
-                          ? activeLog?.image
+                          ? activeLog.image
                           : `/img/${activeLog?.social}.png`
                       }
                       alt="social"
-                      sx={{ borderRadius: "1px", width: 56, height: 56 }}
+                      sx={{ width: 56, height: 56, borderRadius: "1px" }}
                     />
-                    <Stack direction="column">
-                      <Box
-                        sx={{
-                          color: "white",
-                          fontSize: { md: "1em", xs: "0.7em" },
-                        }}
-                      >
-                        <span style={{ fontWeight: "700", marginRight: "5px" }}>
-                          {activeLog?.social}:
-                        </span>
-                        {activeLog?.description}
-                      </Box>
+                    <Stack>
                       <Typography
                         sx={{
                           color: "white",
-                          fontSize: { md: "1em", xs: "0.7em" },
+                          fontSize: { md: "1em", xs: "0.85em" },
                         }}
                       >
-                        <span style={{ fontWeight: "700" }}>Stock:</span>{" "}
-                        {activeLog?.logCount}
+                        <strong>{activeLog?.social}:</strong>{" "}
+                        {activeLog?.description}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "white",
+                          fontSize: { md: "1em", xs: "0.85em" },
+                        }}
+                      >
+                        <strong>Stock:</strong> {activeLog?.logCount}
                       </Typography>
                     </Stack>
                   </Stack>
-                  <Typography sx={{ color: "gray" }}>
-                    The account format includes username, password, email and
+
+                  <Typography sx={{ color: "gray", mt: 2 }}>
+                    The account format includes username, password, email, and
                     email password
                   </Typography>
+
                   <Divider
                     sx={{
-                      color: "white",
                       borderColor: "#878383",
-                      margin: "20px 0px",
+                      margin: "20px 0",
                     }}
                   />
-                  {/* <FlutterButton
-                    session={session}
-                    amount={Number(activeLog?.price * count)}
-                    activeLog={activeLog}
-                    count={count}
-                  /> */}
 
                   <Button
-                    onClick={() => handleOrder()}
+                    onClick={handleOrder}
                     style={{
-                      display: "flex",
-                      border: "none",
+                      marginTop: "20px",
+                      width: "100%",
                       color: "white",
                       fontWeight: "800",
                       borderRadius: "10px",
                       fontSize: "1.2em",
-                      marginTop: "20px",
-                      textAlign: "center",
                       background:
                         "linear-gradient(90deg, rgba(128,117,255,1) 0%, rgba(128,117,255,1) 35%, rgba(0,212,255,1) 100%)",
                     }}
@@ -369,7 +366,7 @@ export default function BasicModal({ open, setOpen, handleClose }) {
                   >
                     {!processing ? (
                       <Typography sx={{ color: "white" }}>
-                        Process order{" "}
+                        Process Order
                       </Typography>
                     ) : (
                       <CircularProgress sx={{ color: "white" }} size={20} />
