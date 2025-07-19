@@ -7,6 +7,7 @@ import { useContext } from "react"; // Import the Bounce transition if it's prov
 import "react-toastify/dist/ReactToastify.css";
 import KorapayComponent from "@components/Korapay";
 import { RestaurantContext } from "@context/RestaurantContext";
+import VpayCheckout from "@components/VpayCheckout";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -56,6 +57,13 @@ export default function Home() {
               Pay with Korapay{" "}
             </h5>
             {amount && <KorapayComponent session={session} amount={amount} />}
+            {amount && (
+              <VpayCheckout
+                amount={amount}
+                email="user@example.com"
+                transactionRef={`vpay-${Date.now()}`}
+              />
+            )}
             <div style={{ width: "100%", marginTop: "15px" }}>
               <img
                 src="/img/note.png"
