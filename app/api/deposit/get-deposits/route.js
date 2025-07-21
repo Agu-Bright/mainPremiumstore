@@ -2,8 +2,9 @@ import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import connectDB from "@utils/connectDB";
 import { NextResponse } from "next/server";
-import Deposit from "@models/Deposit";
+// import Deposit from "@models/Deposit";
 import User2 from "@models/user2";
+import Deposit2 from "@models/Deposit2";
 
 
 export const GET = async (req) => {
@@ -51,7 +52,7 @@ export const GET = async (req) => {
       }
 
       // Fetch deposits for the found user
-      deposits = await Deposit.find({ user: user._id })
+      deposits = await Deposit2    .find({ user: user._id })
         .sort({ createdAt: -1 })
         .populate("user")
         .skip(skip)
@@ -60,13 +61,13 @@ export const GET = async (req) => {
       total = await Deposit.countDocuments({ user: user._id });
     } else {
       // Fetch all deposits with pagination
-      deposits = await Deposit.find()
+      deposits = await Deposit2.find()
         .sort({ createdAt: -1 })
         .populate("user")
         .skip(skip)
         .limit(limit);
 
-      total = await Deposit.countDocuments();
+      total = await Deposit2.countDocuments();
     }
 
     if (!deposits || deposits.length === 0) {

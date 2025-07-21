@@ -3,8 +3,9 @@ import connectDB from "@utils/connectDB";
 import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
-import Deposit from "@models/Deposit";
+// import Deposit from "@models/Deposit";
 import User2 from "@models/user2";
+import Deposit2 from "@models/Deposit2";
 
 export const POST = async (req, res) => {
   const session = await getServerSession(
@@ -56,7 +57,7 @@ export const POST = async (req, res) => {
       );
     }
     //create deposit for this user
-    const deposit = await Deposit.create({
+    const deposit = await Deposit2.create({
       user: user?.id,
       wallet: wallet.user,
       method: body.method,

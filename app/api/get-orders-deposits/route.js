@@ -3,8 +3,9 @@ import connectDB from "@utils/connectDB";
 import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
-import Deposit from "@models/Deposit";
-import Order from "@models/order";
+// import Deposit from "@models/Deposit";
+import Order2 from "@models/order2";
+import Deposit2 from "@models/Deposit2";
 
 export const GET = async (req, res) => {
   const session = await getServerSession(
@@ -20,7 +21,7 @@ export const GET = async (req, res) => {
     await connectDB;
 
     // Fetch the latest 10 Orders
-    const orders = await Order.find()
+    const orders = await Order2.find()
       .sort({ createdAt: -1 })
       .limit(10)
       .select("-logs.log")
@@ -28,7 +29,7 @@ export const GET = async (req, res) => {
       .populate(["user", "orderLog"]);
 
     // Fetch the latest 10 Deposits
-    const deposits = await Deposit.find()
+    const deposits = await Deposit2.find()
       .sort({ createdAt: -1 })
       .limit(10)
       .select("-wallet")

@@ -3,7 +3,8 @@ import connectDB from "@utils/connectDB";
 import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
-import Deposit from "@models/Deposit";
+import Deposit2 from "@models/Deposit2";
+// import Deposit from "@models/Deposit";
 
 export const POST = async (req, res) => {
   const session = await getServerSession(
@@ -49,7 +50,7 @@ export const POST = async (req, res) => {
     if (body?.transactionRef) {
       //check if depeosit already exist
 
-      const alreadyexist = await Deposit.findOne({
+      const alreadyexist = await Deposit2.findOne({
         transactionRef: body?.transactionRef,
       });
 
@@ -64,7 +65,7 @@ export const POST = async (req, res) => {
           }
         );
       }
-      deposit = await Deposit.create({
+      deposit = await Deposit2.create({
         user: session?.user.id,
         wallet: wallet.user,
         method: body.method,

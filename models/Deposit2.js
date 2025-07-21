@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const depositModel = new mongoose.Schema({
+const deposit2Model = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
@@ -37,6 +37,6 @@ const depositModel = new mongoose.Schema({
   },
 });
 const Deposit2 =
-  mongoose.models.Deposit2 || mongoose.model("Deposit2", depositModel);
+  mongoose.models.Deposit2 || mongoose.model("Deposit2", deposit2Model);
 
 export default Deposit2;

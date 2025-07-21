@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import connectDB from "@utils/connectDB";
 import { NextResponse } from "next/server";
 import Wallet from "@models/wallet";
-import Order from "@models/order";
+import Order2 from "@models/order2";
 import Log from "@models/log";
 
 export const GET = async (req) => {
@@ -26,7 +26,7 @@ export const GET = async (req) => {
   try {
     await connectDB;
 
-    const myOrders = await Order.find({ user: session?.user?.id }).populate(
+    const myOrders = await Order2.find({ user: session?.user?.id }).populate(
       "orderLog"
     );
     const orders = myOrders.reverse();

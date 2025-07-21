@@ -3,7 +3,8 @@ import { getServerSession } from "next-auth";
 import connectDB from "@utils/connectDB";
 import { NextResponse } from "next/server";
 import Wallet from "@models/wallet";
-import Deposit from "@models/Deposit";
+import Deposit2 from "@models/Deposit2";
+// import Deposit from "@models/Deposit";
 
 export const GET = async (req) => {
   //check if user is authenticated
@@ -25,7 +26,7 @@ export const GET = async (req) => {
   try {
     await connectDB;
 
-    const deposits = await Deposit.find({ user: session?.user?.id }).populate(
+    const deposits = await Deposit2.find({ user: session?.user?.id }).populate(
       "user"
     );
 

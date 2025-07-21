@@ -2,8 +2,9 @@ import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import connectDB from "@utils/connectDB";
 import { NextResponse } from "next/server";
-import Order from "@models/order";
+// import Order from "@models/order";
 import User2 from "@models/user2";
+import Order2 from "@models/order2";
 
 export const GET = async (req) => {
   // Check if the user is authenticated
@@ -54,8 +55,8 @@ export const GET = async (req) => {
     console.log(query);
 
     // Fetch paginated orders based on the query
-    const totalOrders = await Order.countDocuments(query); // Total number of filtered orders
-    const orders = await Order.find(query)
+    const totalOrders = await Order2.countDocuments(query); // Total number of filtered orders
+    const orders = await Order2.find(query)
       .populate("orderLog user")
       .sort({ createdAt: -1 }) // Sort orders by creation date (newest first)
       .skip(skip)

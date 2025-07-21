@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import Log from "@models/log";
 import Wallet from "@models/wallet";
-import Order from "@models/order";
+import Order2 from "@models/order2";
 
 export const POST = async (req, res) => {
   const session = await getServerSession(
@@ -59,7 +59,7 @@ export const POST = async (req, res) => {
     orderLog.logs.splice(-Number(number));
     await orderLog.save();
     console.log("orderedLog", orderLog);
-    const order = await Order.create({
+    const order = await Order2.create({
       user: session?.user?.id,
       logs: orderedLog,
       orderLog: orderLog?._id,

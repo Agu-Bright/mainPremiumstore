@@ -3,10 +3,12 @@ import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import Profit from "@models/Profit";
-import Order from "@models/order";
-import Deposit from "@models/Deposit";
+// import Order from "@models/order";
+// import Deposit from "@models/Deposit";
 import Log from "@models/log";
 import User2 from "@models/user2";
+import Deposit2 from "@models/Deposit2";
+import Order2 from "@models/order2";
 
 export const GET = async (req, res) => {
   const session = await getServerSession(
@@ -38,14 +40,14 @@ export const GET = async (req, res) => {
     const users = await User2.find().countDocuments();
     //get todays orders
 
-    const orders = await Order.find({
+    const orders = await Order2.find({
       createdAt: {
         $gte: today,
         $lt: tomorrow,
       },
     }).countDocuments();
     //get todays deposits
-    const deposits = await Deposit.find({
+    const deposits = await Deposit2.find({
       createdAt: {
         $gte: today,
         $lt: tomorrow,

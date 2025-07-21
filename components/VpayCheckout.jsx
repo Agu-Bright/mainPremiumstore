@@ -18,7 +18,7 @@ const VpayCheckout = ({
           amount,
           currency,
           domain: "sandbox", // Change to 'live' in production
-          key: "fdcdb195-6553-4890-844c-ee576b7ea715", // Replace with your Vpay public key
+          key: "3e71a8ca-b1fa-4780-b3b3-72965c450f13", // Replace with your Vpay public key
           email,
           transactionref: transactionRef,
           customer_logo: "https://www.vpay.africa/static/media/vpayLogo.91e11322.svg",

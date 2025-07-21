@@ -166,7 +166,6 @@ export default function BasicModal({
   const [loading, setLoading] = React.useState(false);
   const [customLog, setCustomLog] = React.useState("");
 
-  const [newCategory, setNewCategory] = useState("");
 
   const handleRemoveLog = (index) => {
     setLogs((prev) => {

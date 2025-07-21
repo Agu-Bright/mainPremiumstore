@@ -2,8 +2,9 @@ import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import connectDB from "@utils/connectDB";
 import { NextResponse } from "next/server";
-import Deposit from "@models/Deposit";
+// import Deposit from "@models/Deposit";
 import Wallet from "@models/wallet";
+import Deposit2 from "@models/Deposit2";
 
 export const POST = async (req) => {
   //check if user is authenticated
@@ -25,7 +26,7 @@ export const POST = async (req) => {
   try {
     await connectDB;
     const data = await req.json();
-    const deposit = await Deposit.findById(data.id);
+    const deposit = await Deposit2.findById(data.id);
     if (!deposit) {
       return Response.json({ message: "No Deposit found" }, { status: 401 });
     }
