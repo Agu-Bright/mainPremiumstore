@@ -9,7 +9,7 @@ const VpayCheckout = ({
   useEffect(() => {
     // Dynamically inject the Vpay script
     const script = document.createElement("script");
-    script.src = "https://sandbox.vpay.africa/dropin/v1/initialise.js"; // update if production
+    script.src = "https://dropin.vpay.africa/dropin/v1/initialise.js"; // update if production
     script.async = true;
 
     script.onload = () => {
@@ -17,11 +17,12 @@ const VpayCheckout = ({
         const { open } = window.VPayDropin.create({
           amount,
           currency,
-          domain: "sandbox", // Change to 'live' in production
+          domain: "live", // Change to 'live' in production
           key: "3e71a8ca-b1fa-4780-b3b3-72965c450f13", // Replace with your Vpay public key
           email,
           transactionref: transactionRef,
-          customer_logo: "https://www.vpay.africa/static/media/vpayLogo.91e11322.svg",
+          customer_logo:
+            "https://www.vpay.africa/static/media/vpayLogo.91e11322.svg",
           customer_service_channel: "+2348030007000, support@org.com",
           txn_charge: 6,
           txn_charge_type: "flat",

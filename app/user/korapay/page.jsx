@@ -54,7 +54,7 @@ export default function Home() {
                 marginTop: "20px",
               }}
             >
-              Pay with Korapay{" "}
+              Pay with Vpay{" "}
             </h5>
             {amount && <KorapayComponent session={session} amount={amount} />}
             {amount && (
