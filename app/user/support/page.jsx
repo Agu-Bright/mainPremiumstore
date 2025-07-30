@@ -172,14 +172,14 @@ export default function Home() {
                     <h6 className="mb-0 text-black lh-100">
                       Telegram Announcement Group
                     </h6>
-                    <a href="https://t.me/activest0re">
+                    <a href="https://t.me/premiumstorezcom">
                       <small>Click to join group</small>
                     </a>
                   </div>
                 </div>
 
                 <div className="d-flex align-items-center p-3 my-3 text-black-50 bg-purple rounded box-shadow">
-                  <a href="https://t.me/active_storee" target="_blank">
+                  <a href="https://t.me/premiumstorexcom" target="_blank">
                     <svg
                       className="mr-3"
                       width="40"
@@ -204,7 +204,7 @@ export default function Home() {
 
                   <div className="lh-100">
                     <h6 className="mb-0 text-black lh-100">Complaints</h6>
-                    <a href="https://t.me/active_storee">
+                    <a href="https://t.me/premiumstorexcom">
                       <small>Click here to log your complaints</small>
                     </a>
                   </div>
@@ -232,25 +232,7 @@ export default function Home() {
                         fill="#4B3459"
                       ></path>
                     </svg> */}
-                    <Image
-                      src="/img/gmail.png"
-                      alt="gmail"
-                      width={25}
-                      height={25}
-                    />
                   </a>
-
-                  <div className="lh-100">
-                    <h6 className="mb-0 text-black lh-100">
-                      Payment Complaints
-                    </h6>
-                    <p
-                      onClick={() => handleCopy("paymentactivestore@gmail.com")}
-                      style={{ textDecoration: "underline", cursor: "pointer" }}  
-                    >
-                      paymentactivestore@gmail.com
-                    </p>
-                  </div>
                 </div>
               </div>
             </div>
