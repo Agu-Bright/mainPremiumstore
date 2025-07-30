@@ -83,7 +83,7 @@ const NavPage = ({ children, buttonNav, topNav, title, type }) => {
             color: "white",
           }}
         >
-          <a href="https://t.me/active_storee" target="_blank">
+          <a href="https://t.me/premiumstorexcom" target="_blank">
             <img
               style={{ width: "100%", height: "100%" }}
               src="/img/telegram.png"
