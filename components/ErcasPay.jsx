@@ -19,7 +19,7 @@ export default function PaymentButton({ session, amount }) {
   const [reference, setReference] = useState("");
 
   const baseUrl = "https://api.ercaspay.com/api/v1";
-  const secretKey = "ECRS-LIVE-SKaFF2rOeaMLVGptmUjQaKZ2vxlnysAhtg8CXYjkHG"
+  const secretKey = "ECRS-LIVE-SKEyKOqWH317fc9jC7dZ3MPeLCNevpLSXb29nchdNF";
 
   const verifyPayment = async (transactionRef) => {
     try {
@@ -75,7 +75,6 @@ export default function PaymentButton({ session, amount }) {
       router.push("/user/add-fund");
     }
   };
-
 
   const initializePayment = async () => {
     setLoading(true);
@@ -134,8 +133,6 @@ export default function PaymentButton({ session, amount }) {
     }
   };
 
-
-
   return (
     <button
       onClick={initializePayment}
@@ -144,7 +141,6 @@ export default function PaymentButton({ session, amount }) {
       className="btn-md btn-block flutter_style"
     >
       Pay With Transfer
-     
     </button>
   );
 }

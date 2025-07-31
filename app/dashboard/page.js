@@ -1,12 +1,7 @@
 "use client";
-// import Navbar from "@components/Navbar";
 import { CircularProgress } from "@mui/material";
-import { images } from "@next.config.cjs";
-import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-// import Body from "./Body";
 import dynamic from "next/dynamic";
 const Navbar = dynamic(() => import("@components/Navbar"), { ssr: false });
 const Body = dynamic(() => import("./Body"), { ssr: false });

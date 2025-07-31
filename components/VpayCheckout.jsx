@@ -18,7 +18,7 @@ const VpayCheckout = ({
           amount,
           currency,
           domain: "live", //Change to 'live' in production
-          key: "3e71a8cab1fa4780b3b372965c450f13", //Replace with your Vpay public key
+          key: "3e71a8ca-b1fa-4780-b3b3-72965c450f13", //Replace with your Vpay public key
           email,
           transactionref: transactionRef,
           customer_logo:

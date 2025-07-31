@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import KorapayComponent from "@components/Korapay";
 import { RestaurantContext } from "@context/RestaurantContext";
 import VpayCheckout from "@components/VpayCheckout";
+import PaymentButton from "@components/ErcasPay";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -56,7 +57,7 @@ export default function Home() {
             >
               Pay with Vpay{" "}
             </h5>
-            {amount && <KorapayComponent session={session} amount={amount} />}
+            {/* {amount && <KorapayComponent session={session} amount={amount} />} */}
             {amount && (
               <VpayCheckout
                 amount={amount}
@@ -64,6 +65,7 @@ export default function Home() {
                 transactionRef={`vpay-${Date.now()}`}
               />
             )}
+            {/* {amount && <PaymentButton amount={amount} session={session} />} */}
             <div style={{ width: "100%", marginTop: "15px" }}>
               <img
                 src="/img/note.png"
