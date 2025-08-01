@@ -4,7 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import connectDB from "@utils/connectDB";
 import bcrypt from "bcryptjs";
 import User2 from "@models/user2";
-// import connectDb from "@utils/connectDb";
+
 export const authOptions = {
   providers: [
     GoogleProvider({
@@ -15,24 +15,48 @@ export const authOptions = {
     CredentialsProvider({
       name: "Credentials",
       async authorize(credentials, req) {
-        await connectDB();
-        //check user existance
-        const result = await User2.findOne({
-          email: credentials.email,
-        });
-        if (!result) {
-          throw new Error("Invalid Credentials");
+        try {
+          // Properly call connectDB function
+          await connectDB();
+
+          // Add timeout protection and better error handling
+          const result = await User2.findOne({
+            email: credentials.email,
+          })
+            .maxTimeMS(10000) // 10 second timeout
+            .lean(); // Use lean() for better performance
+
+          if (!result) {
+            throw new Error("Invalid Credentials");
+          }
+
+          // Check if password is correct
+          const isPasswordCorrect = await bcrypt.compare(
+            credentials.password,
+            result.password
+          );
+
+          if (!isPasswordCorrect) {
+            console.log("Invalid credentials for:", credentials.email);
+            throw new Error("Invalid Email or Password");
+          }
+
+          // Return user object with string ID
+          return {
+            id: result._id.toString(),
+            email: result.email,
+            username: result.username,
+            role: result.role,
+            name: result.name || result.username,
+            phone: result.phone || null,
+          };
+        } catch (error) {
+          console.error("Auth error:", error);
+          if (error.message.includes("timeout")) {
+            throw new Error("Database connection timeout. Please try again.");
+          }
+          throw error;
         }
-        //check if password is correct or not
-        const isPasswordCorrect = await bcrypt.compare(
-          credentials.password,
-          result.password
-        );
-        console.log("invalid credentials");
-        if (!isPasswordCorrect) {
-          throw new Error("Invalid Email or Password", 401);
-        }
-        return result;
       },
     }),
   ],
@@ -41,47 +65,109 @@ export const authOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.role = user.role;
+        token.username = user.username;
+        token.phone = user.phone;
       }
       return token;
     },
+
     async session({ session, token }) {
-      //get user data and set it to the session storage
-      const sessionUser = await User2.findById(token.id);
-      session.user.id = sessionUser._id.toString();
-      session.user.role = sessionUser.role;
-      session.user.username = sessionUser?.username;
-      return session;
+      try {
+        // Only fetch user data if we don't have it in token
+        if (!token.role || !token.username) {
+          await connectDB();
+
+          const sessionUser = await User2.findById(token.id)
+            .select("_id role username name phone email") // Only select needed fields
+            .maxTimeMS(10000) // 10 second timeout
+            .lean(); // Use lean for better performance
+
+          if (sessionUser) {
+            session.user.id = sessionUser._id.toString();
+            session.user.role = sessionUser.role;
+            session.user.username = sessionUser.username;
+            session.user.name = sessionUser.name || sessionUser.username;
+            session.user.phone = sessionUser.phone || null;
+          }
+        } else {
+          // Use data from token (more efficient)
+          session.user.id = token.id;
+          session.user.role = token.role;
+          session.user.username = token.username;
+          session.user.phone = token.phone;
+        }
+
+        return session;
+      } catch (error) {
+        console.error("Session callback error:", error);
+        // Return session even if DB query fails
+        session.user.id = token.id;
+        return session;
+      }
     },
 
-    async signIn({ profile }) {
+    async signIn({ profile, user, account }) {
       try {
-        if (profile === undefined) {
+        // Handle credential sign in (when profile is undefined)
+        if (!profile) {
           return true;
         }
-        //this is a setverless function
+
+        // Handle OAuth sign in (Google, etc.)
         await connectDB();
 
-        //check if the use exists
+        // Check if user exists
         const userExists = await User2.findOne({
           email: profile.email,
-        });
+        })
+          .maxTimeMS(10000)
+          .lean();
+
         if (!userExists) {
-          //create a new user and save it to the database
-          await User2.create({
-            username: profile.username,
-            password: profile.password,
-            confirmPassword: profile.confirmPassword,
+          // Create new user for OAuth sign in
+          const newUser = await User2.create({
+            email: profile.email,
+            name: profile.name,
+            username:
+              profile.name?.replace(/\s+/g, "").toLowerCase() ||
+              profile.email.split("@")[0],
+            // Don't set password for OAuth users
+            authProvider: account.provider,
+            image: profile.picture || profile.image,
           });
-          //send welcome mail
-          // await sendMail("welcome", sessionUser.fullName, profile.email);
+
+          console.log("New OAuth user created:", newUser.email);
         }
+
         return true;
       } catch (error) {
-        console.log(error);
-        return false;
+        console.error("SignIn callback error:", error);
+        // Allow sign in to continue even if there's a DB error
+        return true;
       }
     },
   },
+
+  // Add session configuration
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+
+  // Add JWT configuration
+  jwt: {
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+
+  // Add pages configuration
+  pages: {
+    signIn: "/user/login",
+    error: "/user/login", // Redirect to login on error
+  },
+
+  // Add debug logging in development
+  debug: process.env.NODE_ENV === "development",
 };
 
 const handler = NextAuth(authOptions);
