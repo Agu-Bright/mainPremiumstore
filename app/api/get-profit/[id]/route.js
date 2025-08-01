@@ -1,12 +1,13 @@
 import connectDB from "@utils/connectDB";
 import Wallet from "@models/wallet";
+import Wallet2 from "@models/wallet2";
 //get single restaurant
 
 export const GET = async (req, { params }) => {
   try {
     await connectDB();
     const id = params.id;
-    const wallet = await Wallet.findOne({ user: id });
+    const wallet = await Wallet2.findOne({ user: id });
     if (!wallet) {
       return Response.json(
         { message: `No restaurant found with Id: ${id}` },

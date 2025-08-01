@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import connectDB from "@utils/connectDB";
 import { NextResponse } from "next/server";
 import Wallet from "@models/wallet";
+import Wallet2 from "@models/wallet2";
 
 export const GET = async (req) => {
   //check if user is authenticated
@@ -26,7 +27,7 @@ export const GET = async (req) => {
   try {
     await connectDB();
 
-    const _wallets = await Wallet.find({ role: "sub-admin" }).populate("user");
+    const _wallets = await Wallet2.find({ role: "sub-admin" }).populate("user");
 
     if (!_wallets) {
       return Response.json(

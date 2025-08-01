@@ -3,6 +3,7 @@ import connectDB from "@utils/connectDB";
 import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import Wallet2 from "@models/wallet2";
 
 export const POST = async (req, res) => {
   const session = await getServerSession(
@@ -34,7 +35,7 @@ export const POST = async (req, res) => {
       );
     //update wallet for this user
 
-    const wallet = await Wallet.findOne({
+    const wallet = await Wallet2.findOne({
       type: "admin",
       network: body?.network,
     });

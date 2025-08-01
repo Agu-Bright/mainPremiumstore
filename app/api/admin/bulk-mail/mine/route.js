@@ -1,6 +1,5 @@
 // // //EXTRA BULK MESSAGE
 import nodemailer from "nodemailer";
-import Wallet from "@models/wallet";
 import connectDB from "@utils/connectDB";
 import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";

@@ -1,5 +1,6 @@
 import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import Wallet from "@models/wallet";
+import Wallet2 from "@models/wallet2";
 import connectDB from "@utils/connectDB";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
@@ -26,7 +27,7 @@ export const DELETE = async (req, { params }) => {
     await connectDB();
     const id = params.id;
 
-    const wallet = await Wallet.findById(id);
+    const wallet = await Wallet2.findById(id);
     if (!wallet) {
       return Response.json(
         { message: "No wallet with ID found" },

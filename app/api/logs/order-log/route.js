@@ -3,8 +3,8 @@ import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import Log from "@models/log";
-import Wallet from "@models/wallet";
 import Order2 from "@models/order2";
+import Wallet2 from "@models/wallet2";
 
 export const POST = async (req, res) => {
   const session = await getServerSession(
@@ -43,7 +43,7 @@ export const POST = async (req, res) => {
       );
     }
     //check is user have enough balance
-    const userWallet = await Wallet.findOne({ user: session?.user?.id });
+    const userWallet = await Wallet2.findOne({ user: session?.user?.id });
     if (!userWallet) {
       return Response.json({ message: `Invalid user waller` }, { status: 401 });
     }

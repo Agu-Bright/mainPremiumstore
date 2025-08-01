@@ -1,4 +1,3 @@
-import Wallet from "@models/wallet";
 import connectDB from "@utils/connectDB";
 import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
@@ -6,6 +5,7 @@ import { NextResponse } from "next/server";
 // import Deposit from "@models/Deposit";
 import User2 from "@models/user2";
 import Deposit2 from "@models/Deposit2";
+import Wallet2 from "@models/wallet2";
 
 export const POST = async (req, res) => {
   const session = await getServerSession(
@@ -47,7 +47,7 @@ export const POST = async (req, res) => {
       );
     }
 
-    const wallet = await Wallet.findOne({ user: user?._id });
+    const wallet = await Wallet2.findOne({ user: user?._id });
     if (!wallet) {
       return new Response(
         JSON.stringify({ success: false, message: "No wallet found" }),
