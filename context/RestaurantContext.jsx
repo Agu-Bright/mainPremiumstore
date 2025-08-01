@@ -106,10 +106,10 @@ const RestaurantContextProvider = ({ children }) => {
 
     (async () => {
       try {
-        const { data } = await axios.post("/api/get-today-profit", {
-          date: day,
-        });
-        setTotalp(data?.totalProfit);
+        // const { data } = await axios.post("/api/get-today-profit", {
+        //   date: day,
+        // });
+        setTotalp(12);
       } catch (error) {
         console.log(error);
       }
