@@ -191,7 +191,7 @@ export default function Home() {
                 className="mySwiper"
               >
                 <SwiperSlide>
-                  <a href="https://t.me/activest0re" target="_blank">
+                  <a href="https://t.me/premiumstorezcom" target="_blank">
                     <img
                       src="/img/flier-1.png"
                       alt="flier"
