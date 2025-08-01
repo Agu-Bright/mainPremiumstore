@@ -15,7 +15,7 @@ export const authOptions = {
     CredentialsProvider({
       name: "Credentials",
       async authorize(credentials, req) {
-        await connectDB;
+        await connectDB();
         //check user existance
         const result = await User2.findOne({
           accountName: credentials.accountName,
@@ -48,7 +48,7 @@ export const authOptions = {
     async signIn({ profile }) {
       try {
         // this is a setverless function
-        await connectDB;
+        await connectDB();
 
         // //check if the use exists
         const userExists = await User2.findOne({ email: profile.email });

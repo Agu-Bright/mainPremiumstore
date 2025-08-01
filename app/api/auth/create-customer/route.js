@@ -24,7 +24,7 @@ export const POST = async (req, res) => {
     return Response.json({ message: "Forbidden request" }, { status: 403 });
   }
   try {
-    await connectDB;
+    await connectDB();
     const body = await req.json();
     if (
       !body ||

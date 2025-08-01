@@ -3,7 +3,6 @@ import connectDB from "@utils/connectDB";
 import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
-// import Deposit from "@models/Deposit";
 import Order2 from "@models/order2";
 import Deposit2 from "@models/Deposit2";
 
@@ -17,24 +16,29 @@ export const GET = async (req, res) => {
     },
     authOptions
   );
+
   try {
-    await connectDB;
+    // Properly call the connectDB function
+    await connectDB();
 
-    // Fetch the latest 10 Orders
-    const orders = await Order2.find()
-      .sort({ createdAt: -1 })
-      .limit(10)
-      .select("-logs.log")
-      .lean()
-      .populate(["user", "orderLog"]);
+    // Execute queries with timeout protection
+    const [orders, deposits] = await Promise.all([
+      Order2.find()
+        .sort({ createdAt: -1 })
+        .limit(10)
+        .select("-logs.log")
+        .lean()
+        .populate(["user", "orderLog"])
+        .maxTimeMS(15000), // 15 second timeout
 
-    // Fetch the latest 10 Deposits
-    const deposits = await Deposit2.find()
-      .sort({ createdAt: -1 })
-      .limit(10)
-      .select("-wallet")
-      .lean()
-      .populate("user");
+      Deposit2.find()
+        .sort({ createdAt: -1 })
+        .limit(10)
+        .select("-wallet")
+        .lean()
+        .populate("user")
+        .maxTimeMS(15000), // 15 second timeout
+    ]);
 
     // Current time
     const now = new Date();
@@ -65,6 +69,22 @@ export const GET = async (req, res) => {
       }
     );
   } catch (error) {
+    console.error("API Error:", error);
+
+    // Handle specific MongoDB timeout errors
+    if (
+      error.name === "MongoTimeoutError" ||
+      error.message.includes("timed out")
+    ) {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          message: "Database query timeout. Please try again.",
+        }),
+        { status: 504 }
+      );
+    }
+
     return new Response(
       JSON.stringify({ success: false, message: error.message }),
       { status: 500 }

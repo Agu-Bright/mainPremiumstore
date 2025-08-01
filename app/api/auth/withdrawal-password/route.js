@@ -22,7 +22,7 @@ export const POST = async (req) => {
     );
   }
   try {
-    await connectDB;
+    await connectDB();
     const { oldPassword, newPassword, confirmNewPassword } = await req.json();
 
     const user = await User2.findById(session?.user?.id);

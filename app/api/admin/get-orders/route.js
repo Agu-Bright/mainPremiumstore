@@ -31,7 +31,7 @@ export const GET = async (req) => {
   }
 
   try {
-    await connectDB;
+    await connectDB();
 
     const { searchParams } = new URL(req.url);
     const email = searchParams.get("email"); // Search by email

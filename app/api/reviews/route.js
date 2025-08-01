@@ -34,7 +34,7 @@
 //     queryParams[key] = value;
 //   });
 //   try {
-//     await connectDB;
+//     await connectDB();;
 
 //     //find users restaurant
 //     const reviews = await Restaurant.findOne({

@@ -25,7 +25,7 @@ export const POST = async (req, res) => {
     return Response.json({ message: "Unauthorized Route" }, { status: 401 });
   }
   try {
-    await connectDB;
+    await connectDB();
     const { logId } = await req.json();
     await Log.findByIdAndDelete(logId);
 

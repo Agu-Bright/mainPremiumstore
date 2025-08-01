@@ -26,7 +26,7 @@
 //     return Response.json({ message: "Forbidden request" }, { status: 403 });
 //   }
 //   try {
-//     await connectDB;
+//     await connectDB();;
 //     const { id } = params;
 //     const data = await req.json();
 

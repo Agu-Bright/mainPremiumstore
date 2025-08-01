@@ -22,7 +22,7 @@ export const GET = async (req, res) => {
     );
   }
   try {
-    await connectDB;
+    await connectDB();
     const user = await User2.findById(session?.user?.id);
     return Response.json({ message: "success", user }, { status: 200 });
   } catch (error) {

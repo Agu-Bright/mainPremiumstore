@@ -25,7 +25,7 @@ export const POST = async (req, res) => {
   //     return Response.json({ message: "Unauthorized Route" }, { status: 401 });
   //   }
   try {
-    await connectDB;
+    await connectDB();
     const body = await req.json();
     const category = await Category.create({ catType: body.category });
     return new Response(JSON.stringify({ success: true, category }), {

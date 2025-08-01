@@ -24,7 +24,7 @@ export const GET = async (req) => {
     );
   }
   try {
-    await connectDB;
+    await connectDB();
 
     const deposits = await Deposit2.find({ user: session?.user?.id }).populate(
       "user"

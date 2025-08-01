@@ -25,7 +25,7 @@
 //     );
 //   }
 //   try {
-//     await connectDB;
+//     await connectDB();;
 //     const formData = await req.formData();
 //     const photo = formData.get("photo");
 

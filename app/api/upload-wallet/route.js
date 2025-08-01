@@ -22,7 +22,7 @@ export const PUT = async (req) => {
     );
   }
   try {
-    await connectDB;
+    await connectDB();
     const data = await req.json();
 
     const wallet = await Wallet.findOne({ user: session?.user.id.toString() });

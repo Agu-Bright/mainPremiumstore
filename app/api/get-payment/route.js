@@ -22,7 +22,7 @@ export const GET = async (req, res) => {
     );
   }
   try {
-    await connectDB;
+    await connectDB();
     const payments = await Payment.find();
 
     return new Response(JSON.stringify({ success: true, payments }), {

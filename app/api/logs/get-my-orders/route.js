@@ -24,7 +24,7 @@ export const GET = async (req) => {
     );
   }
   try {
-    await connectDB;
+    await connectDB();
 
     const myOrders = await Order2.find({ user: session?.user?.id }).populate(
       "orderLog"

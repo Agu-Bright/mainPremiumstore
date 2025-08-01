@@ -23,7 +23,7 @@
 //     );
 //   }
 //   try {
-//     await connectDB;
+//     await connectDB();;
 //     const data = await req.json();
 
 //     //create a restaurant owner attached to this user

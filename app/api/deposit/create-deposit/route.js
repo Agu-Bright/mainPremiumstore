@@ -23,7 +23,7 @@ export const POST = async (req, res) => {
     );
   }
   try {
-    await connectDB;
+    await connectDB();
     const body = await req.json();
     if (!body || !body.amount)
       return new Response(

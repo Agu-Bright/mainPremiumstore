@@ -3,7 +3,7 @@ import Category from "@models/Category";
 
 export const GET = async (req, res) => {
   try {
-    await connectDB;
+    await connectDB();
     const categories = await Category.find();
     return new Response(JSON.stringify({ success: true, categories }), {
       status: 200,

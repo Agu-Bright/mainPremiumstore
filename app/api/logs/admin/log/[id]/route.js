@@ -21,7 +21,7 @@ export const GET = async (req, { params }) => {
     );
   }
   try {
-    await connectDB;
+    await connectDB();
     const id = params.id;
 
     const log = await Log.findById(id);

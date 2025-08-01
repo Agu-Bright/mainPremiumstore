@@ -30,7 +30,7 @@
 //     queryParams[key] = value;
 //   });
 //   try {
-//     await connectDB;
+//     await connectDB();;
 //     const { id } = await req.json();
 //     if (!mongoose.Types.ObjectId.isValid(id)) {
 //       return Response.json(

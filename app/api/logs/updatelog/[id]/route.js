@@ -21,7 +21,7 @@ export const POST = async (req, { params }) => {
     );
   }
   try {
-    await connectDB;
+    await connectDB();
     const id = params.id;
     const body = await req.json();
 

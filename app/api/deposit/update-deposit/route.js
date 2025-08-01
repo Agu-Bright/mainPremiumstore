@@ -24,7 +24,7 @@ export const POST = async (req) => {
     );
   }
   try {
-    await connectDB;
+    await connectDB();
     const data = await req.json();
     const deposit = await Deposit2.findById(data.id);
     if (!deposit) {

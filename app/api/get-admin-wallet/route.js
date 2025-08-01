@@ -22,7 +22,7 @@ export const GET = async (req) => {
     );
   }
   try {
-    await connectDB;
+    await connectDB();
 
     const wallets = await Wallet.find({ type: "admin" });
 

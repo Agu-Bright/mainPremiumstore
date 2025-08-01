@@ -22,7 +22,7 @@ export const POST = async (req) => {
     );
   }
   try {
-    await connectDB;
+    await connectDB();
     const { withdrawalPassword } = await req.json();
     if (!withdrawalPassword) {
       return Response.json(

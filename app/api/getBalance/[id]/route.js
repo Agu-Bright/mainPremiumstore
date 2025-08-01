@@ -3,7 +3,7 @@ import Wallet from "@models/wallet";
 //get single restaurant
 export const GET = async (req, { params }) => {
   try {
-    await connectDB;
+    await connectDB();
     const id = params.id;
     const wallet = await Wallet.findOne({ user: id });
     if (!wallet) {

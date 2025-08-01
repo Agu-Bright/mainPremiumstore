@@ -25,7 +25,7 @@ export const PUT = async (req, res) => {
   }
 
   try {
-    await connectDB;
+    await connectDB();
     const body = await req.json();
     const { status, id } = body;
     if (!status) {

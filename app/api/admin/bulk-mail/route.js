@@ -26,7 +26,7 @@ export const POST = async (req, res) => {
   }
 
   try {
-    await connectDB;
+    await connectDB();
     const { emails, message, broadcast } = await req.json();
 
     if ((!emails || emails.length === 0) && broadcast !== "all") {

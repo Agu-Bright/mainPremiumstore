@@ -22,7 +22,7 @@ export const DELETE = async (req, { params }) => {
     );
   }
   try {
-    await connectDB;
+    await connectDB();
     const id = params.id;
 
     const user = await User2.findById(id);

@@ -23,11 +23,11 @@ export const POST = async (req, res) => {
   }
 
   try {
-    await connectDB;
+    await connectDB();
     const body = await req.json();
-  
+
     // Fetch logs without the `logs` field but include `logCount`
-    const logs = await Log.find({ social: body.social}).select("-logs");
+    const logs = await Log.find({ social: body.social }).select("-logs");
 
     // For each log, calculate the length of the `logs` array
     const logsWithCount = await Promise.all(

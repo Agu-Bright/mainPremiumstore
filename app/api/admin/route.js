@@ -27,7 +27,7 @@
 //   }
 
 //   try {
-//     await connectDB;
+//     await connectDB();;
 
 //     //admin details
 //     //==> restaurant requests

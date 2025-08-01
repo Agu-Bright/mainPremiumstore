@@ -23,7 +23,7 @@
 //     );
 //   }
 //   try {
-//     await connectDB;
+//     await connectDB();;
 //     const data = await req.json();
 //     const user = await User.findById(session.user.id);
 //     if (!user) {

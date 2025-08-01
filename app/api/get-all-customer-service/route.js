@@ -24,7 +24,7 @@ export const GET = async (req) => {
     return Response.json({ message: "Forbidden request" }, { status: 403 });
   }
   try {
-    await connectDB;
+    await connectDB();
 
     const _wallets = await Wallet.find({ role: "sub-admin" }).populate("user");
 

@@ -26,7 +26,7 @@
 //   }
 
 //   try {
-//     await connectDB;
+//     await connectDB();;
 //     const { id } = params;
 //     const data = await req.json();
 

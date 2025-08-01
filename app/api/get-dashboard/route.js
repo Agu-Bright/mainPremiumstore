@@ -27,7 +27,7 @@ export const GET = async (req, res) => {
     );
   }
   try {
-    await connectDB;
+    await connectDB();
     // Get the current date at midnight (start of the day)
     const today = new Date();
     today.setUTCHours(0, 0, 0, 0);

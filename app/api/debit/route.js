@@ -24,7 +24,7 @@ export const POST = async (req, res) => {
     return Response.json({ message: "Unauthorized route" }, { status: 409 });
   }
   try {
-    await connectDB;
+    await connectDB();
     const body = await req.json();
     if (!body || !body.amount || !body.user || !body.method)
       return new Response(

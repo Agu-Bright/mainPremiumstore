@@ -22,7 +22,7 @@ export const GET = async (req) => {
     );
   }
   try {
-    await connectDB;
+    await connectDB();
 
     const wallet = await Wallet.findOne({
       user: session?.user.id.toString(),

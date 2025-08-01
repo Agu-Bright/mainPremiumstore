@@ -23,7 +23,7 @@ export const DELETE = async (req, { params }) => {
     return Response.json({ message: "Forbidden request" }, { status: 403 });
   }
   try {
-    await connectDB;
+    await connectDB();
     const id = params.id;
 
     const wallet = await Wallet.findById(id);

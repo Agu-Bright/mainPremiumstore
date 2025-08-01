@@ -21,7 +21,7 @@ export const POST = async (req, res) => {
     );
   }
   try {
-    await connectDB;
+    await connectDB();
     const formData = await req.formData();
     const photos = formData.getAll("files[]");
     const uploadPhotosPromises = photos.map(async (photo) => {

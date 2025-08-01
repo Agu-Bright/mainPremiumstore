@@ -6,7 +6,6 @@ import { NextResponse } from "next/server";
 import User2 from "@models/user2";
 import Deposit2 from "@models/Deposit2";
 
-
 export const GET = async (req) => {
   // Check if user is authenticated
   const session = await getServerSession(
@@ -29,7 +28,7 @@ export const GET = async (req) => {
   }
 
   try {
-    await connectDB;
+    await connectDB();
 
     // Extract URL parameters
     const url = new URL(req.url);
@@ -52,7 +51,7 @@ export const GET = async (req) => {
       }
 
       // Fetch deposits for the found user
-      deposits = await Deposit2    .find({ user: user._id })
+      deposits = await Deposit2.find({ user: user._id })
         .sort({ createdAt: -1 })
         .populate("user")
         .skip(skip)

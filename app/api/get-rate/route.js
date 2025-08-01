@@ -22,7 +22,7 @@ export const GET = async (req, res) => {
     );
   }
   try {
-    await connectDB;
+    await connectDB();
 
     const rate = await Rate.find();
 

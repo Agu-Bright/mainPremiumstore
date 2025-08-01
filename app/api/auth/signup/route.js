@@ -1,11 +1,11 @@
 import connectDB from "@utils/connectDB";
-import Wallet from "@models/wallet";
 import { sendMail } from "@utils/nodemailer";
 import User2 from "@models/user2";
+import Wallet2 from "@models/wallet2";
 
 export const POST = async (req, res) => {
   try {
-    await connectDB;
+    await connectDB();
     const body = await req.json();
     if (
       !body ||
@@ -35,12 +35,11 @@ export const POST = async (req, res) => {
       confirmPassword: body.confirmPassword,
       email: body?.email,
     });
-    const _wallet = await Wallet.create({
+    await Wallet2.create({
       user: user._id,
     });
 
     await sendMail("welcome", user.username, user.email);
-    //create wallet for this user
 
     return new Response(JSON.stringify({ success: true, user }), {
       status: 200,

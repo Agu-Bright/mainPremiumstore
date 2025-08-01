@@ -4,7 +4,7 @@
 
 // export const GET = async (req, res) => {
 //   try {
-//     await connectDB;
+//     await connectDB();;
 //     // find all users
 //     const users = await User.find();
 //     for (const user of users) {

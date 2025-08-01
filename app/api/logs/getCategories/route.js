@@ -23,7 +23,7 @@ export const GET = async (req) => {
     );
   }
   try {
-    await connectDB;
+    await connectDB();
     const categories = await Category.find();
     console.log(categories);
     return new Response(JSON.stringify({ success: true, categories }), {

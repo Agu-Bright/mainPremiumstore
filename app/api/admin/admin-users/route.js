@@ -24,7 +24,7 @@ export const GET = async (req, res) => {
   }
 
   try {
-    await connectDB;
+    await connectDB();
     const result = await User2.find();
 
     return Response.json(
