@@ -146,7 +146,7 @@ export default function TableList({ title, key, category, catId }) {
                       <Typography sx={{ textAlign: "center", color: "black" }}>
                         Stock
                       </Typography>
-                      <Typography sx={{ textAlign: "center", color: "#fff" }}>
+                      <Typography sx={{ textAlign: "center", color: "#fff"}}>
                         {log?.logCount}
                       </Typography>
                     </Box>

@@ -3,8 +3,14 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import React, { createContext, useEffect, useState } from "react";
 export const RestaurantContext = createContext();
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const RestaurantContextProvider = ({ children }) => {
+  const theme = createTheme({
+    typography: {
+      fontFamily: ["Inter", "Arial", "sans-serif"].join(","),
+    },
+  });
   const { data: session, status } = useSession();
   const [myWallet, setMyWallet] = useState(null);
   const [user, setUser] = useState("");
@@ -252,7 +258,7 @@ const RestaurantContextProvider = ({ children }) => {
         setAmount,
       }}
     >
-      {children}
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
     </RestaurantContext.Provider>
   );
 };
