@@ -140,10 +140,10 @@ export default function TableList({ title, key, category, catId }) {
                         padding: "0px 20px",
                         marginRight: "10px",
                         borderRadius: "7px",
-                        background: "#2b2b2b",
+                        background: "#7babee",
                       }}
                     >
-                      <Typography sx={{ textAlign: "center", color: "#aaa" }}>
+                      <Typography sx={{ textAlign: "center", color: "black" }}>
                         Stock
                       </Typography>
                       <Typography sx={{ textAlign: "center", color: "#fff" }}>
@@ -155,10 +155,10 @@ export default function TableList({ title, key, category, catId }) {
                         height: "50px",
                         padding: "0px 20px",
                         borderRadius: "7px",
-                        background: "#2b2b2b",
+                        background: "#7babee",
                       }}
                     >
-                      <Typography sx={{ textAlign: "center", color: "#aaa" }}>
+                      <Typography sx={{ textAlign: "center", color: "black" }}>
                         Price
                       </Typography>
                       <Typography sx={{ textAlign: "center", color: "#fff" }}>
