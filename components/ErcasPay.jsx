@@ -83,17 +83,17 @@ export default function PaymentButton({ session, amount }) {
       }
     } catch (error) {
       console.error("Payment Verification Error:", error);
-      toast.error(
-        error.response?.data?.message ||
-          error.message ||
-          "Payment verification failed. Please contact support.",
-        {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: true,
-          transition: Bounce,
-        }
-      );
+      // toast.error(
+      //   error.response?.data?.message ||
+      //     error.message ||
+      //     "Payment verification failed. Please contact support.",
+      //   {
+      //     position: "top-center",
+      //     autoClose: 5000,
+      //     hideProgressBar: true,
+      //     transition: Bounce,
+      //   }
+      // );
     } finally {
       setActiveLoading(false);
     }
