@@ -154,7 +154,7 @@ export default function Home() {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              Buy social accounts
+              Buy social Media accounts
             </Typography>
 
             <Typography

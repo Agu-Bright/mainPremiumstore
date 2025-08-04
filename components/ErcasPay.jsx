@@ -189,7 +189,7 @@ export default function PaymentButton({ session, amount }) {
         opacity: isProcessing ? 0.7 : 1,
       }}
     >
-      {isProcessing ? "Processing..." : "Pay With Transfer"}
+      {isProcessing ? "Processing..." : "Pay With Transfer or Card"}
     </button>
   );
 }
