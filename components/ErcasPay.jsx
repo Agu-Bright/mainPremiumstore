@@ -130,12 +130,22 @@ export default function PaymentButton({ session, amount }) {
       .toString(36)
       .substr(2, 9)}`;
 
+    const sanitizeCustomerName = (name) => {
+      if (!name) return "Active User";
+
+      // Remove special characters and numbers, keep only letters and spaces
+      return name
+        .replace(/[^a-zA-Z\s]/g, "") // Remove everything except letters and spaces
+        .replace(/\s+/g, " ") // Replace multiple spaces with single space
+        .trim(); // Remove leading/trailing spaces
+    };
     try {
       // Move payment initialization to your backend API for security
       const response = await axios.post("/api/payment/initialize-ercaspay", {
         amount: parseFloat(amount),
         paymentReference: reference,
-        customerName: session?.user?.name || "Active User",
+        customerName:
+          sanitizeCustomerName(session?.user?.name) || "Active User",
         customerEmail: session?.user?.email,
         customerPhoneNumber: session?.user?.phone || undefined, // Optional field
         userId: session?.user?.id,
