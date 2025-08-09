@@ -47,25 +47,16 @@ export default function PaymentButton({ session, amount }) {
     }
 
     try {
-      setActiveLoading(true);
+      // setActiveLoading(true);
 
-      // Move verification to your backend API for security
-      const response = await axios.post("/api/payments/verify-ercaspay", {
+      // Backend handles verification and deposit creation
+      const response = await axios.post("/api/payment/verify-ercaspay", {
         transactionRef: transactionRef,
       });
 
       const result = response.data;
 
-      if (result?.success && result?.data?.requestSuccessful) {
-        // Create deposit record
-        await axios.post("/api/deposit/create-deposit/", {
-          amount: result.data.responseBody?.amount,
-          method: "ErcasPay",
-          transactionRef: transactionRef,
-          status: "successful",
-          userId: session?.user?.id,
-        });
-
+      if (result?.success) {
         toast.success("Payment verified and deposit successful!", {
           position: "top-center",
           autoClose: 5000,
@@ -83,17 +74,21 @@ export default function PaymentButton({ session, amount }) {
       }
     } catch (error) {
       console.error("Payment Verification Error:", error);
-      // toast.error(
-      //   error.response?.data?.message ||
-      //     error.message ||
-      //     "Payment verification failed. Please contact support.",
-      //   {
-      //     position: "top-center",
-      //     autoClose: 5000,
-      //     hideProgressBar: true,
-      //     transition: Bounce,
-      //   }
-      // );
+
+      let errorMessage = "Payment verification failed. Please contact support.";
+
+      if (error.response?.status === 409) {
+        errorMessage = "This transaction has already been processed.";
+      } else if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      }
+
+      toast.error(errorMessage, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        transition: Bounce,
+      });
     } finally {
       setActiveLoading(false);
     }
