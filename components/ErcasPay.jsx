@@ -23,7 +23,7 @@ export default function PaymentButton({ session, amount }) {
     const status = searchParams.get("status");
 
     if (transactionRef && status === "success") {
-      setActiveLoading(true);
+      // setActiveLoading(true);
       verifyPayment(transactionRef);
     } else if (transactionRef && status === "failed") {
       toast.error("Payment was cancelled or failed.", {
@@ -52,6 +52,7 @@ export default function PaymentButton({ session, amount }) {
       // Backend handles verification and deposit creation
       const response = await axios.post("/api/payment/verify-ercaspay", {
         transactionRef: transactionRef,
+        _session: session,
       });
 
       const result = response.data;

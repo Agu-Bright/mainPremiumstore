@@ -1,5 +1,12 @@
 "use client";
-import React, { useContext, useEffect, useState, useCallback, useMemo } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  useRef,
+} from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
@@ -46,7 +53,7 @@ import ErcasPay from "@components/ErcasPay";
 const PAYMENT_STATUS_COLORS = {
   success: "green",
   pending: "orange",
-  rejected: "red"
+  rejected: "red",
 };
 
 const MODAL_STYLE = {
@@ -69,7 +76,7 @@ const MODAL_STYLE = {
 const formatDateString = (dateString) => {
   const date = new Date(dateString);
   if (isNaN(date)) return "Invalid date";
-  
+
   return date.toLocaleDateString("en-US", {
     weekday: "long",
     year: "numeric",
@@ -98,9 +105,7 @@ const LoadingModal = ({ open, setOpen }) => (
       <Typography sx={{ fontSize: "10px", color: "gray", marginTop: "10px" }}>
         Verifying Transaction...
       </Typography>
-      <Typography sx={{ color: "red" }}>
-        Do not refresh this page
-      </Typography>
+      <Typography sx={{ color: "red" }}>Do not refresh this page</Typography>
     </Box>
   </Modal>
 );
@@ -125,7 +130,7 @@ const CryptoPaymentSection = ({
   rate,
   formatMoney,
   formatDollar,
-  setAmount
+  setAmount,
 }) => {
   const handleScreenshot = () => {
     document.getElementById("screenshot")?.click();
@@ -143,7 +148,7 @@ const CryptoPaymentSection = ({
       toast.error("Unable to upload", {
         position: "top-center",
         autoClose: 5000,
-        hideProgressBar: true,  
+        hideProgressBar: true,
         transition: Bounce,
       });
     } finally {
@@ -154,7 +159,13 @@ const CryptoPaymentSection = ({
   if (appState !== "crypto") return null;
 
   return (
-    <div style={{ border: "1px dotted gray", borderRadius: "10px", padding: "10px" }}>
+    <div
+      style={{
+        border: "1px dotted gray",
+        borderRadius: "10px",
+        padding: "10px",
+      }}
+    >
       <Stack direction="row" justifyContent="space-between">
         <div></div>
         <IconButton
@@ -172,7 +183,8 @@ const CryptoPaymentSection = ({
         <Typography>Payment Amount: {formatMoney(amount)}</Typography>
         <Typography>Exchange Rate: {formatMoney(rate?.rate)}</Typography>
         <Typography sx={{ color: "green", fontWeight: "800" }}>
-          USDT Equivalent: {formatDollar(Number(amount / rate?.rate).toFixed(2))}
+          USDT Equivalent:{" "}
+          {formatDollar(Number(amount / rate?.rate).toFixed(2))}
         </Typography>
       </Box>
 
@@ -194,9 +206,10 @@ const CryptoPaymentSection = ({
               alignContent: "center",
               padding: "10px",
               cursor: "pointer",
-              background: active === item?.network
-                ? "linear-gradient(90deg, #efeff4 0%, #e8e7f2 35%, #d3e5e8 100%)"
-                : "white",
+              background:
+                active === item?.network
+                  ? "linear-gradient(90deg, #efeff4 0%, #e8e7f2 35%, #d3e5e8 100%)"
+                  : "white",
             }}
           >
             <Typography sx={{ color: "black" }}>
@@ -219,14 +232,16 @@ const CryptoPaymentSection = ({
               }}
               onClick={() => handleCopy(main?.walletAddress)}
             >
-              <span style={{
-                background: "gray",
-                color: "white",
-                borderTopLeftRadius: "10px",
-                borderBottomLeftRadius: "10px",
-                height: "100%",
-                paddingRight: "4px",
-              }}>
+              <span
+                style={{
+                  background: "gray",
+                  color: "white",
+                  borderTopLeftRadius: "10px",
+                  borderBottomLeftRadius: "10px",
+                  height: "100%",
+                  paddingRight: "4px",
+                }}
+              >
                 copy:
               </span>
               <span>{main?.walletAddress}</span>
@@ -238,7 +253,8 @@ const CryptoPaymentSection = ({
 
             <button
               style={{
-                background: "linear-gradient(90deg, rgba(128,117,255,1) 0%, rgba(128,117,255,1) 35%, rgba(0,212,255,1) 100%)",
+                background:
+                  "linear-gradient(90deg, rgba(128,117,255,1) 0%, rgba(128,117,255,1) 35%, rgba(0,212,255,1) 100%)",
                 border: "none",
                 borderRadius: "10px",
                 color: "white",
@@ -258,15 +274,17 @@ const CryptoPaymentSection = ({
 
             <div style={{ marginTop: "10px" }}>
               {uploading ? (
-                <div style={{
-                  width: "150px",
-                  height: "150px",
-                  border: "0.1px solid #cacecf",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: "5px",
-                }}>
+                <div
+                  style={{
+                    width: "150px",
+                    height: "150px",
+                    border: "0.1px solid #cacecf",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    borderRadius: "5px",
+                  }}
+                >
                   <CircularProgress sx={{ color: "rgba(0,212,255,1)" }} />
                 </div>
               ) : (
@@ -275,11 +293,16 @@ const CryptoPaymentSection = ({
                     <Avatar
                       src={image}
                       alt="screenshot"
-                      sx={{ width: "100px", height: "100px", borderRadius: "5px" }}
+                      sx={{
+                        width: "100px",
+                        height: "100px",
+                        borderRadius: "5px",
+                      }}
                     />
                     <button
                       style={{
-                        background: "linear-gradient(90deg, rgba(128,117,255,1) 0%, rgba(128,117,255,1) 35%, rgba(0,212,255,1) 100%)",
+                        background:
+                          "linear-gradient(90deg, rgba(128,117,255,1) 0%, rgba(128,117,255,1) 35%, rgba(0,212,255,1) 100%)",
                         border: "none",
                         padding: "10px 20px",
                         borderRadius: "10px",
@@ -308,7 +331,7 @@ const PaymentMethodButtons = ({ amount, session, payments, router }) => {
     <>
       {payments?.map((item, index) => {
         if (item.status !== "active") return null;
-        
+
         return (
           <div key={index}>
             {/* {item.name === "kora" && (
@@ -333,7 +356,11 @@ const PaymentMethodButtons = ({ amount, session, payments, router }) => {
 };
 
 const DepositHistory = ({ deposits }) => (
-  <Stack direction="column" alignItems="center" sx={{ width: "100%", marginTop: "20px" }}>
+  <Stack
+    direction="column"
+    alignItems="center"
+    sx={{ width: "100%", marginTop: "20px" }}
+  >
     <div style={{ width: "100%" }}>
       <h5
         className="mt-4 mb-4"
@@ -357,13 +384,17 @@ const DepositHistory = ({ deposits }) => (
                 fill="#EA4335"
               />
             </svg>
-            <br /><br />
+            <br />
+            <br />
             <h6>No data found</h6>
           </div>
         </div>
       ) : (
         deposits?.map((item, index) => (
-          <Paper key={index} sx={{ padding: "10px", marginBottom: "10px", width: "99%" }}>
+          <Paper
+            key={index}
+            sx={{ padding: "10px", marginBottom: "10px", width: "99%" }}
+          >
             <Stack direction="row" justifyContent="space-between">
               <Typography sx={{ fontWeight: "600" }}>Deposit</Typography>
               <Typography sx={{ fontWeight: "600" }}>
@@ -375,7 +406,8 @@ const DepositHistory = ({ deposits }) => (
                 {formatDateString(item?.createdAt)}
               </Typography>
               <Typography sx={{ color: getStatusColor(item?.status) }}>
-                <span style={{ color: "black" }}>Approval Status:</span> {item?.status}
+                <span style={{ color: "black" }}>Approval Status:</span>{" "}
+                {item?.status}
               </Typography>
             </Stack>
           </Paper>
@@ -389,7 +421,8 @@ const HomeData = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
-  
+  console.log("session", session);
+
   // Context
   const {
     state,
@@ -436,8 +469,9 @@ const HomeData = () => {
 
   const handleCopy = useCallback((address) => {
     if (!address) return;
-    
-    navigator.clipboard.writeText(address)
+
+    navigator.clipboard
+      .writeText(address)
       .then(() => {
         toast.success("Copied to Clipboard", {
           position: "top-center",
@@ -456,54 +490,76 @@ const HomeData = () => {
       });
   }, []);
 
-  const verifyPayment = useCallback(async (transactionRef) => {
-    if (!transactionRef) return;
-
-    setActiveLoading(true);
-    try {
-      const response = await fetch(`${baseUrl}/payment/transaction/verify/${transactionRef}`, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
-
-      const result = await response.json();
-
-      if (result?.requestSuccessful) {
-        await axios.post("/api/deposit/create-deposit/", {
-          amount: result?.responseBody?.amount,
-          method: "ErcasPay",
-          transactionRef: transactionRef,
-          status: "successful",
-          userId: session?.user?.id,
-        });
-        setState(prev => !prev);
-        showSuccessAlert();
-        setOpen(false);
-      } else {
-        toast.error(result?.responseMessage || "Payment verification failed.", {
+  const verifyPayment = useCallback(
+    async (transactionRef) => {
+      if (!transactionRef) {
+        toast.error("No transaction reference provided.", {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: true,
           transition: Bounce,
         });
+        return;
       }
-    } catch (error) {
-      console.error("Payment Verification Error:", error);
-      toast.error("Payment verification failed", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        transition: Bounce,
-      });
-    } finally {
-      setActiveLoading(false);
-      setOpen(false);
-      router.push("/user/add-fund");
-    }
-  }, [baseUrl, session?.user?.id, setState, showSuccessAlert, setActiveLoading, router]);
+
+      try {
+        // setActiveLoading(true);
+
+        // Backend handles verification and deposit creation
+        const response = await axios.post("/api/payment/verify-ercaspay", {
+          transactionRef: transactionRef,
+          _session: session?.user?.id,
+        });
+
+        const result = response.data;
+
+        if (result?.success) {
+          toast.success("Payment verified and deposit successful!", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            transition: Bounce,
+          });
+
+          setState((prev) => !prev);
+          setOpen(false);
+
+          // Remove query parameters from URL
+          router.replace("/user/add-fund");
+        } else {
+          throw new Error(result?.message || "Payment verification failed");
+        }
+      } catch (error) {
+        console.error("Payment Verification Error:", error);
+
+        let errorMessage =
+          "Payment verification failed. Please contact support.";
+
+        if (error.response?.status === 409) {
+          errorMessage = "This transaction has already been processed.";
+        } else if (error.response?.data?.message) {
+          errorMessage = error.response.data.message;
+        }
+
+        toast.error(errorMessage, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: true,
+          transition: Bounce,
+        });
+      } finally {
+        setActiveLoading(false);
+      }
+    },
+    [
+      baseUrl,
+      session?.user?.id,
+      setState,
+      showSuccessAlert,
+      setActiveLoading,
+      router,
+    ]
+  );
 
   const handleSubmit = useCallback(async () => {
     if (!amount || !paymentMethod) {
@@ -526,15 +582,15 @@ const HomeData = () => {
         screenShot: image,
         status: "pending",
       });
-      
+
       toast.success("Deposit Successful", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: true,
         transition: Bounce,
       });
-      
-      setState(prev => !prev);
+
+      setState((prev) => !prev);
       setAmount("");
       setAppState("default");
       setImage("");
@@ -548,7 +604,15 @@ const HomeData = () => {
     } finally {
       setLoading(false);
     }
-  }, [amount, paymentMethod, main?.network, rate?.rate, image, setState, setAmount]);
+  }, [
+    amount,
+    paymentMethod,
+    main?.network,
+    rate?.rate,
+    image,
+    setState,
+    setAmount,
+  ]);
 
   const handleClick = useCallback(() => {
     window.open(
@@ -557,12 +621,12 @@ const HomeData = () => {
     );
   }, []);
 
-  // Effects
+  const processedTransactions = useRef(new Set());
+
   useEffect(() => {
     const transRef = searchParams.get("transRef");
-    if (transRef) {
-      setOpen(true);
-      console.log("THERE IS TRANSACTION REFERENCE");
+    if (transRef && !processedTransactions.current.has(transRef)) {
+      processedTransactions.current.add(transRef);
       verifyPayment(transRef);
     }
   }, [searchParams, verifyPayment]);
@@ -595,12 +659,15 @@ const HomeData = () => {
         const { data } = await axios.get("/api/deposit/get-my-deposits");
         setDeposits(data?.deposits?.reverse() || []);
       } catch (error) {
-        toast.error(error?.response?.data?.message || "Failed to fetch deposits", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: true,
-          transition: Bounce,
-        });
+        toast.error(
+          error?.response?.data?.message || "Failed to fetch deposits",
+          {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            transition: Bounce,
+          }
+        );
       }
     };
     fetchDeposits();
@@ -612,12 +679,15 @@ const HomeData = () => {
         const { data } = await axios.get("/api/get-payment");
         setPayments(data?.payments || []);
       } catch (error) {
-        toast.error(error?.response?.data?.message || "Failed to fetch payments", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: true,
-          transition: Bounce,
-        });
+        toast.error(
+          error?.response?.data?.message || "Failed to fetch payments",
+          {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            transition: Bounce,
+          }
+        );
       }
     };
     fetchPayments();
@@ -626,14 +696,16 @@ const HomeData = () => {
   // Loading states
   if (status === "loading") {
     return (
-      <div style={{
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "#EC5766",
-      }}>
+      <div
+        style={{
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "#EC5766",
+        }}
+      >
         <CircularProgress style={{ color: "#CDC5B4" }} />
       </div>
     );
@@ -673,7 +745,7 @@ const HomeData = () => {
                   </div>
                 </form>
 
-                <PaymentMethodButtons 
+                <PaymentMethodButtons
                   amount={amount}
                   session={session}
                   payments={payments}
@@ -716,7 +788,7 @@ const HomeData = () => {
           </div>
 
           <Divider sx={{ margin: "20px 0px" }} />
-          
+
           <Stack direction="row" alignItems="center">
             <Typography sx={{ marginRight: "10px" }}>
               Deposit Tutorial video
