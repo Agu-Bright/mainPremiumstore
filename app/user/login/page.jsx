@@ -7,12 +7,13 @@ import { Formik } from "formik";
 import { CircularProgress } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
-import { Bounce } from "react-toastify"; // Import the Bounce transition if it's provided by your toast library
+import { Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSession } from "next-auth/react";
 import { RestaurantContext } from "@context/RestaurantContext";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+
 const page = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -33,253 +34,335 @@ const page = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background:
-            "linear-gradient(90deg, rgba(128,117,255,1) 0%, rgba(128,117,255,1) 35%, rgba(0,212,255,1) 100%)",
+          backgroundColor: "#0f0f23",
         }}
       >
-        <CircularProgress style={{ color: "white" }} />
+        <CircularProgress style={{ color: "#8b5cf6" }} />
       </div>
     );
   }
+  
   if (status === "authenticated") {
     router.push("/user");
   } else
     return (
-      <>
-        <div
-          className="contact-section overview-bgi"
-          style={{ flexDirection: "column" }}
-        >
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-12">
-                {/* <!-- Form content box start --> */}
-                <div className="form-content-box">
-                  {/* <!-- details --> */}
-                  <div className="details">
-                    {/* <!-- Logo --> */}
-                    <a
-                      href="/"
-                      style={{ fontWeight: "900", fontSize: "1.5em" }}
-                    >
-                      Premium Store{" "}
-                    </a>
-                    {/* <!-- Name --> */}
-                    <h2 style={{ fontWeight: "800", color: "#8075ff" }}>
-                      Good To see you !!
-                    </h2>
-                    <h3 style={{ fontSize: "0.8em" }}>
-                      Welcome back, let's get started{" "}
-                    </h3>
+      <div style={{
+        minHeight: "100vh",
+        backgroundColor: "#0f0f23",
+        backgroundImage: "radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 50%)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "20px",
+        fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+      }}>
+        <div style={{
+          width: "100%",
+          maxWidth: "420px",
+          backgroundColor: "#1a1a2e",
+          border: "1px solid #2d2d44",
+          borderRadius: "16px",
+          padding: "40px",
+          boxShadow: "0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(139, 92, 246, 0.1)",
+        }}>
+          {/* Logo */}
+          <div style={{ textAlign: "center", marginBottom: "32px" }}>
+            <h1 style={{
+              fontSize: "24px",
+              fontWeight: "700",
+              color: "#8b5cf6",
+              margin: "0 0 8px 0"
+            }}>
+              Premium Store
+            </h1>
+            <h2 style={{
+              fontSize: "28px",
+              fontWeight: "600",
+              color: "#ffffff",
+              margin: "0 0 8px 0"
+            }}>
+              Welcome back!
+            </h2>
+            <p style={{
+              fontSize: "14px",
+              color: "#9ca3af",
+              margin: "0"
+            }}>
+              Sign in to your account to continue
+            </p>
+          </div>
 
-                    {/* <!-- Form start --> */}
-                    <Formik
-                      initialValues={{ email: "", password: "" }}
-                      validate={(values) => {
-                        const errors = {};
-                        if (!values.email) {
-                          errors.email = "Required";
+          <Formik
+            initialValues={{ email: "", password: "" }}
+            validate={(values) => {
+              const errors = {};
+              if (!values.email) {
+                errors.email = "Email is required";
+              } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+                errors.email = "Invalid email address";
+              }
+              if (!values.password) {
+                errors.password = "Password is required";
+              }
+              return errors;
+            }}
+            onSubmit={async (values, { setSubmitting }) => {
+              const status = await signIn("credentials", {
+                redirect: false,
+                email: values.email,
+                password: values.password,
+                callbackUrl: "/",
+              });
+              if (status.ok) {
+                console.log("routing");
+                location.reload();
+              }
+              if (!status.ok) {
+                toast.error(status.error || "Invalid credentials", {
+                  position: "top-center",
+                  autoClose: 5000,
+                  hideProgressBar: true,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "dark",
+                  transition: Bounce,
+                });
+                setSubmitting(false);
+              }
+            }}
+          >
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              isSubmitting,
+            }) => (
+              <form onSubmit={handleSubmit}>
+                {/* Email Input */}
+                <div style={{ marginBottom: "20px" }}>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email address"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.email}
+                    style={{
+                      width: "100%",
+                      padding: "14px 16px",
+                      backgroundColor: "#2d2d44",
+                      border: errors.email && touched.email ? "2px solid #ef4444" : "2px solid #3d3d5c",
+                      borderRadius: "8px",
+                      color: "#ffffff",
+                      fontSize: "16px",
+                      outline: "none",
+                      transition: "all 0.2s ease",
+                      boxSizing: "border-box"
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = "#8b5cf6";
+                      e.target.style.backgroundColor = "#363654";
+                    }}
+                    // onBlur={(e) => {
+                    //   handleBlur(e);
+                    //   if (!errors.email || !touched.email) {
+                    //     e.target.style.borderColor = "#3d3d5c";
+                    //     e.target.style.backgroundColor = "#2d2d44";
+                    //   }
+                    // }}
+                  />
+                  {errors.email && touched.email && (
+                    <div style={{
+                      color: "#ef4444",
+                      fontSize: "13px",
+                      marginTop: "6px",
+                      fontWeight: "500"
+                    }}>
+                      {errors.email}
+                    </div>
+                  )}
+                </div>
+
+                {/* Password Input */}
+                <div style={{ marginBottom: "24px" }}>
+                  <div style={{ position: "relative" }}>
+                    <input
+                      type={viewPassword ? "text" : "password"}
+                      name="password"
+                      placeholder="Password"
+                      onChange={handleChange}
+                      onBlur={(e) => {
+                        handleBlur(e);
+                        if (!errors.password || !touched.password) {
+                          e.target.style.borderColor = "#3d3d5c";
+                          e.target.style.backgroundColor = "#2d2d44";
                         }
-                        return errors;
                       }}
-                      onSubmit={async (values, { setSubmitting }) => {
-                        const status = await signIn("credentials", {
-                          redirect: false,
-                          email: values.email,
-                          password: values.password,
-                          callbackUrl: "/",
-                        });
-                        if (status.ok) {
-                          console.log("routign");
-                          location.reload();
-                          // router.push("/");
-                          // setSubmitting(false);
-                        }
-                        if (!status.ok) {
-                          toast.error(status.error, {
-                            position: "top-center",
-                            autoClose: 5000,
-                            hideProgressBar: true,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "light",
-                            transition: Bounce,
-                          });
-                          setSubmitting(false);
-                        }
+                      value={values.password}
+                      autoComplete="current-password"
+                      style={{
+                        width: "100%",
+                        padding: "14px 50px 14px 16px",
+                        backgroundColor: "#2d2d44",
+                        border: errors.password && touched.password ? "2px solid #ef4444" : "2px solid #3d3d5c",
+                        borderRadius: "8px",
+                        color: "#ffffff",
+                        fontSize: "16px",
+                        outline: "none",
+                        transition: "all 0.2s ease",
+                        boxSizing: "border-box"
                       }}
+                      onFocus={(e) => {
+                        e.target.style.borderColor = "#8b5cf6";
+                        e.target.style.backgroundColor = "#363654";
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setViewPassword((prev) => !prev)}
+                      style={{
+                        position: "absolute",
+                        right: "12px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        background: "none",
+                        border: "none",
+                        color: "#9ca3af",
+                        cursor: "pointer",
+                        padding: "4px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center"
+                      }}
+                      onMouseEnter={(e) => e.target.style.color = "#8b5cf6"}
+                      onMouseLeave={(e) => e.target.style.color = "#9ca3af"}
                     >
-                      {({
-                        values,
-                        errors,
-                        touched,
-                        handleChange,
-                        handleBlur,
-                        handleSubmit,
-                        isSubmitting,
-
-                        /* and other goodies */
-                      }) => (
-                        <form onSubmit={handleSubmit}>
-                          <div className="form-group">
-                            <input
-                              type="email"
-                              name="email"
-                              className="input-text"
-                              placeholder="Email"
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.email}
-                            />
-                            <span style={{ color: "red" }}>
-                              {" "}
-                              {errors.email && touched.email && errors.email}
-                            </span>
-                          </div>
-                          <div className="form-group">
-                            <div
-                              style={{ display: "flex", alignItems: "center" }}
-                            >
-                              <input
-                                type={viewPassword ? "text" : "password"}
-                                name="password"
-                                className="input-text"
-                                style={{ borderRight: "none" }}
-                                placeholder="Password"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.password}
-                                autoComplete="on"
-                              />
-                              <span
-                                style={{
-                                  borderLeft: "none",
-                                  height: "100%",
-                                }}
-                                onClick={() => setViewPassword((prev) => !prev)}
-                                className="text-xl absolute font-bold right-[23px] top-[5px]"
-                              >
-                                {viewPassword ? (
-                                  <VisibilityIcon
-                                    fontSize="small"
-                                    className="size-4 text-gray-500"
-                                  />
-                                ) : (
-                                  <VisibilityOffIcon
-                                    fontSize="small"
-                                    className="size-4 text-gray-500"
-                                  />
-                                )}
-                              </span>
-                            </div>
-                            <span style={{ color: "red" }}>
-                              {errors.password &&
-                                touched.password &&
-                                errors.password}
-                            </span>
-                          </div>
-
-                          <div className="form-group mb-0">
-                            <button
-                              style={{ background: "#8075ff", color: "white" }}
-                              type="submit"
-                              className="btn-md button-theme btn-block"
-                              disabled={isSubmitting}
-                            >
-                              {isSubmitting ? (
-                                <CircularProgress
-                                  size={20}
-                                  sx={{ color: "white" }}
-                                />
-                              ) : (
-                                "Sign In"
-                              )}
-                            </button>
-                          </div>
-                        </form>
+                      {viewPassword ? (
+                        <VisibilityIcon fontSize="small" />
+                      ) : (
+                        <VisibilityOffIcon fontSize="small" />
                       )}
-                    </Formik>
-                    {/* googel signin */}
-                    {/* <button
-                  onClick={() =>
-                    signIn("google", {
-                      callbackUrl: `${
-                        restaurantIntent
-                          ? "http://localhost:3000/pricing"
-                          : "http://localhost:3000"
-                      }`,
-                    })
-                  }
-                  className="btn-md btn-block"
+                    </button>
+                  </div>
+                  {errors.password && touched.password && (
+                    <div style={{
+                      color: "#ef4444",
+                      fontSize: "13px",
+                      marginTop: "6px",
+                      fontWeight: "500"
+                    }}>
+                      {errors.password}
+                    </div>
+                  )}
+                </div>
+
+                {/* Sign In Button */}
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
                   style={{
-                    padding: "0px",
-                    height: "auto",
-                    marginTop: "7px",
-                    background: "white",
-                    color: "black",
+                    width: "100%",
+                    padding: "14px 24px",
+                    backgroundColor: isSubmitting ? "#6d28d9" : "#8b5cf6",
+                    color: "#ffffff",
+                    border: "none",
+                    borderRadius: "8px",
+                    fontSize: "16px",
                     fontWeight: "600",
-                    border: "1px solid #b6afaf",
+                    cursor: isSubmitting ? "not-allowed" : "pointer",
+                    transition: "all 0.2s ease",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginBottom: "24px"
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isSubmitting) {
+                      e.target.style.backgroundColor = "#7c3aed";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isSubmitting) {
+                      e.target.style.backgroundColor = "#8b5cf6";
+                    }
                   }}
                 >
-                  <span>
-                    <Image
-                      height={30}
-                      width={30}
-                      alt="svgImg"
-                      src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiPgo8cGF0aCBmaWxsPSIjZjllNjVjIiBkPSJNODQuNDY3LDQ0SDUwdjEzaDIwLjg1NkM2Ny45MzEsNjUuNzE3LDU5LjcwMiw3Miw1MCw3MmMtMTIuMTUsMC0yMi05Ljg1LTIyLTIyczkuODUtMjIsMjItMjIJYzQuNzk5LDAsOS4yMzUsMS41NDEsMTIuODUxLDQuMTQ5bDkuMjY5LTkuMjY5QzY2LjA5MSwxNy45NTYsNTguMzkxLDE1LDUwLDE1Yy0xOS4zMywwLTM1LDE1LjY3LTM1LDM1czE1LjY3LDM1LDM1LDM1CXMzNS0xNS42NywzNS0zNUM4NSw0Ny45NTIsODQuODA2LDQ1Ljk1MSw4NC40NjcsNDR6Ij48L3BhdGg+PHBhdGggZmlsbD0iIzc4YTJkMiIgZD0iTTUwLDU3aDIwLjg1NmMtMS41NzcsNC42OTktNC43MDQsOC42NzktOC43NjMsMTEuMzZsOS44Nyw4Ljg4NEM3OS45MTEsNzAuODI4LDg1LDYxLjAxLDg1LDUwCWMwLTIuMDQ4LTAuMTk0LTQuMDQ5LTAuNTMzLTZINTBWNTd6Ij48L3BhdGg+PHBhdGggZmlsbD0iIzYwYmU5MiIgZD0iTTYyLjA5Myw2OC4zNkM1OC42MjIsNzAuNjUzLDU0LjQ3Miw3Miw1MCw3MmMtOC45OTcsMC0xNi43MjctNS40MDMtMjAuMTM3LTEzLjEzOUwxOC44MTgsNjUuODkJQzI0LjYwOSw3Ny4yMywzNi4zOTMsODUsNTAsODVjOC4zMiwwLDE1Ljk1Ny0yLjkwOCwyMS45NjMtNy43NTZMNjIuMDkzLDY4LjM2eiI+PC9wYXRoPjxwYXRoIGZpbGw9IiNmMTViNmMiIGQ9Ik0yOS42NzcsNDEuNTY5QzMyLjk4NSwzMy42MDMsNDAuODM3LDI4LDUwLDI4YzQuNzk5LDAsOS4yMzUsMS41NDEsMTIuODUxLDQuMTQ5bDkuMjY5LTkuMjY5CUM2Ni4wOTEsMTcuOTU2LDU4LjM5MSwxNSw1MCwxNWMtMTMuNzcyLDAtMjUuNjgxLDcuOTU4LTMxLjM5NCwxOS41MjRMMjkuNjc3LDQxLjU2OXoiPjwvcGF0aD48cGF0aCBmaWxsPSIjMWYyMTJiIiBkPSJNNTAsODZjLTE5Ljg1MSwwLTM2LTE2LjE0OS0zNi0zNnMxNi4xNDktMzYsMzYtMzZjOC4yNzEsMCwxNi4zNTMsMi44NzgsMjIuNzUzLDguMTA1CWMwLjIxOSwwLjE3OSwwLjM1MiwwLjQ0MiwwLjM2NiwwLjcyNGMwLjAxNCwwLjI4Mi0wLjA5MiwwLjU1OC0wLjI5MiwwLjc1N2wtOS4yNjksOS4yNjljLTAuMzQ3LDAuMzQ3LTAuODk1LDAuMzkxLTEuMjkyLDAuMTA0CUM1OC42NzUsMzAuMzY5LDU0LjQzMywyOSw1MCwyOWMtMTEuNTc5LDAtMjEsOS40Mi0yMSwyMXM5LjQyMSwyMSwyMSwyMWM4LjU2MywwLDE2LjE5Ni01LjE2OCwxOS40MTctMTNINTBjLTAuNTUzLDAtMS0wLjQ0OC0xLTFWNDQJYzAtMC41NTIsMC40NDctMSwxLTFoMzQuNDY3YzAuNDg2LDAsMC45MDIsMC4zNSwwLjk4NSwwLjgyOUM4NS44MTUsNDUuOTIyLDg2LDQ3Ljk5OSw4Niw1MEM4Niw2OS44NTEsNjkuODUxLDg2LDUwLDg2eiBNNTAsMTYJYy0xOC43NDgsMC0zNCwxNS4yNTItMzQsMzRzMTUuMjUyLDM0LDM0LDM0czM0LTE1LjI1MiwzNC0zNGMwLTEuNjI0LTAuMTI5LTMuMzAyLTAuMzg0LTVINTF2MTFoMTkuODU2CWMwLjMyMiwwLDAuNjI0LDAuMTU1LDAuODEyLDAuNDE2YzAuMTg4LDAuMjYxLDAuMjM5LDAuNTk3LDAuMTM3LDAuOTAyQzY4LjY1Nyw2Ni42OTgsNTkuODk1LDczLDUwLDczYy0xMi42ODMsMC0yMy0xMC4zMTgtMjMtMjMJczEwLjMxNy0yMywyMy0yM2M0LjU2OSwwLDguOTU0LDEuMzI5LDEyLjczNSwzLjg1MWw3Ljg4My03Ljg4M0M2NC43MiwxOC40NjcsNTcuNDQyLDE2LDUwLDE2eiI+PC9wYXRoPjxwYXRoIGZpbGw9IiMxZjIxMmIiIGQ9Ik03MS41LDc4Yy0wLjExOSwwLTAuMjM5LTAuMDQyLTAuMzM1LTAuMTI4bC00LTMuNmMtMC4yMDUtMC4xODUtMC4yMjItMC41MDEtMC4wMzctMC43MDYJYzAuMTg3LTAuMjA1LDAuNTAyLTAuMjIxLDAuNzA3LTAuMDM3bDQsMy42YzAuMjA1LDAuMTg1LDAuMjIyLDAuNTAxLDAuMDM3LDAuNzA2QzcxLjc3Miw3Ny45NDQsNzEuNjM3LDc4LDcxLjUsNzh6Ij48L3BhdGg+PHBhdGggZmlsbD0iIzFmMjEyYiIgZD0iTTY1LjUsNzIuNmMtMC4xMTksMC0wLjIzOS0wLjA0Mi0wLjMzNS0wLjEyOGwtMS43NzctMS42Yy0wLjIwNS0wLjE4NS0wLjIyMi0wLjUwMS0wLjAzNy0wLjcwNgljMC4xODctMC4yMDUsMC41MDItMC4yMjEsMC43MDctMC4wMzdsMS43NzcsMS42YzAuMjA1LDAuMTg1LDAuMjIyLDAuNTAxLDAuMDM3LDAuNzA2QzY1Ljc3Miw3Mi41NDQsNjUuNjM3LDcyLjYsNjUuNSw3Mi42eiI+PC9wYXRoPjxwYXRoIGZpbGw9IiMxZjIxMmIiIGQ9Ik0yNy45MjksNjBjLTAuMTY1LDAtMC4zMjYtMC4wODItMC40MjItMC4yMzFjLTAuMTQ4LTAuMjMzLTAuMDc5LTAuNTQyLDAuMTUzLTAuNjlsMS41NzEtMQljMC4yMzEtMC4xNDYsMC41NDEtMC4wOCwwLjY5LDAuMTUzYzAuMTQ4LDAuMjMzLDAuMDc5LDAuNTQyLTAuMTUzLDAuNjlsLTEuNTcxLDFDMjguMTE0LDU5Ljk3NSwyOC4wMjEsNjAsMjcuOTI5LDYweiI+PC9wYXRoPjxwYXRoIGZpbGw9IiMxZjIxMmIiIGQ9Ik0yMy41LDYyLjgxOGMtMC4xNjUsMC0wLjMyNi0wLjA4Mi0wLjQyMi0wLjIzMWMtMC4xNDgtMC4yMzMtMC4wNzktMC41NDIsMC4xNTMtMC42OWwyLTEuMjczCWMwLjIzMS0wLjE0NiwwLjU0MS0wLjA4MSwwLjY5LDAuMTUzYzAuMTQ4LDAuMjMzLDAuMDc5LDAuNTQyLTAuMTUzLDAuNjlsLTIsMS4yNzNDMjMuNjg2LDYyLjc5MywyMy41OTMsNjIuODE4LDIzLjUsNjIuODE4eiI+PC9wYXRoPjxwYXRoIGZpbGw9IiMxZjIxMmIiIGQ9Ik0xOC41LDY2Yy0wLjE2NSwwLTAuMzI2LTAuMDgyLTAuNDIyLTAuMjMxYy0wLjE0OC0wLjIzMy0wLjA3OS0wLjU0MiwwLjE1My0wLjY5bDMtMS45MDkJYzAuMjMtMC4xNDYsMC41NDEtMC4wOCwwLjY5LDAuMTUzYzAuMTQ4LDAuMjMzLDAuMDc5LDAuNTQyLTAuMTUzLDAuNjlsLTMsMS45MDlDMTguNjg2LDY1Ljk3NSwxOC41OTMsNjYsMTguNSw2NnoiPjwvcGF0aD48cGF0aCBmaWxsPSIjMWYyMTJiIiBkPSJNMjQuNSwzOC4xODJjLTAuMDkzLDAtMC4xODYtMC4wMjUtMC4yNjktMC4wNzhsLTUtMy4xODJjLTAuMjMyLTAuMTQ4LTAuMzAyLTAuNDU4LTAuMTUzLTAuNjkJYzAuMTQ5LTAuMjMzLDAuNDYtMC4yOTksMC42OS0wLjE1M2w1LDMuMTgyYzAuMjMyLDAuMTQ4LDAuMzAyLDAuNDU4LDAuMTUzLDAuNjlDMjQuODI2LDM4LjEsMjQuNjY1LDM4LjE4MiwyNC41LDM4LjE4MnoiPjwvcGF0aD48cGF0aCBmaWxsPSIjMWYyMTJiIiBkPSJNMjcuNSw0MC4wOTFjLTAuMDkzLDAtMC4xODYtMC4wMjUtMC4yNjktMC4wNzhsLTEtMC42MzZjLTAuMjMyLTAuMTQ4LTAuMzAyLTAuNDU4LTAuMTUzLTAuNjkJYzAuMTUtMC4yMzMsMC40Ni0wLjI5OSwwLjY5LTAuMTUzbDEsMC42MzZjMC4yMzIsMC4xNDgsMC4zMDIsMC40NTgsMC4xNTMsMC42OUMyNy44MjYsNDAuMDA5LDI3LjY2NSw0MC4wOTEsMjcuNSw0MC4wOTF6Ij48L3BhdGg+Cjwvc3ZnPg=="
-                    />
-                  </span>{" "}
-                  login with Google
-                </button> */}
-                  </div>
-                  {/* <!-- Footer --> */}
-                  <div
-                    className="footer"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <div>
-                      Don't have an account?{" "}
-                      <Link
-                        href="signup"
-                        style={{
-                          textDecoration: "underline",
-                          fontWeight: "700",
-                        }}
-                      >
-                        Register here
-                      </Link>
-                    </div>
-                    <div>
-                      <Link
-                        href="/user/forgotPassword"
-                        style={{
-                          textDecoration: "underline",
-                          fontWeight: "700",
-                        }}
-                      >
-                        Forgot Password
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-                {/* <!-- Form content box end --> */}
-              </div>
+                  {isSubmitting ? (
+                    <CircularProgress size={20} sx={{ color: "white" }} />
+                  ) : (
+                    "Sign In"
+                  )}
+                </button>
+              </form>
+            )}
+          </Formik>
+
+          {/* Footer Links */}
+          <div style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            paddingTop: "20px",
+            borderTop: "1px solid #2d2d44",
+            fontSize: "14px"
+          }}>
+            <div style={{ color: "#9ca3af" }}>
+              New here?{" "}
+              <Link
+                href="signup"
+                style={{
+                  color: "#8b5cf6",
+                  textDecoration: "none",
+                  fontWeight: "500"
+                }}
+                onMouseEnter={(e) => e.target.style.color = "#7c3aed"}
+                onMouseLeave={(e) => e.target.style.color = "#8b5cf6"}
+              >
+                Create account
+              </Link>
             </div>
+            <Link
+              href="/user/forgotPassword"
+              style={{
+                color: "#8b5cf6",
+                textDecoration: "none",
+                fontWeight: "500"
+              }}
+              onMouseEnter={(e) => e.target.style.color = "#7c3aed"}
+              onMouseLeave={(e) => e.target.style.color = "#8b5cf6"}
+            >
+              Forgot password?
+            </Link>
           </div>
-          <ToastContainer />
-          <p style={{ color: "white", zIndex: "999", marginTop: "30px" }}>
-            Copyright @2024 Premium Store.
-          </p>
         </div>
-      </>
+
+        <ToastContainer 
+          theme="dark"
+          toastStyle={{
+            backgroundColor: "#1a1a2e",
+            color: "#ffffff",
+            border: "1px solid #2d2d44"
+          }}
+        />
+
+        {/* Copyright */}
+        <div style={{
+          position: "fixed",
+          bottom: "20px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          color: "#6b7280",
+          fontSize: "13px"
+        }}>
+          Copyright © 2025 Premium Store. All rights reserved.
+        </div>
+      </div>
     );
 };
 
 export default page;
- 
