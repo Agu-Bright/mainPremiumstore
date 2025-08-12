@@ -263,6 +263,7 @@ export default function BasicModal({ open, setOpen, handleClose }) {
                       fontWeight: "800",
                       borderRadius: "10px",
                       fontSize: "1.2em",
+                      display: "flex",
                       background:
                         "linear-gradient(90deg, rgba(128,117,255,1) 0%, rgba(128,117,255,1) 35%, rgba(0,212,255,1) 100%)",
                     }}
