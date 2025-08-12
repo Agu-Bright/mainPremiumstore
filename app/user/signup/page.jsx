@@ -222,13 +222,13 @@ const page = () => {
                     e.target.style.borderColor = "#8b5cf6";
                     e.target.style.backgroundColor = "#363654";
                   }}
-                  onBlur={(e) => {
-                    handleBlur(e);
-                    if (!errors.username || !touched.username) {
-                      e.target.style.borderColor = "#3d3d5c";
-                      e.target.style.backgroundColor = "#2d2d44";
-                    }
-                  }}
+                  // onBlur={(e) => {
+                  //   handleBlur(e);
+                  //   if (!errors.username || !touched.username) {
+                  //     e.target.style.borderColor = "#3d3d5c";
+                  //     e.target.style.backgroundColor = "#2d2d44";
+                  //   }
+                  // }}
                 />
                 {errors.username && touched.username && (
                   <div
@@ -272,13 +272,13 @@ const page = () => {
                     e.target.style.borderColor = "#8b5cf6";
                     e.target.style.backgroundColor = "#363654";
                   }}
-                  onBlur={(e) => {
-                    handleBlur(e);
-                    if (!errors.email || !touched.email) {
-                      e.target.style.borderColor = "#3d3d5c";
-                      e.target.style.backgroundColor = "#2d2d44";
-                    }
-                  }}
+                  // onBlur={(e) => {
+                  //   handleBlur(e);
+                  //   if (!errors.email || !touched.email) {
+                  //     e.target.style.borderColor = "#3d3d5c";
+                  //     e.target.style.backgroundColor = "#2d2d44";
+                  //   }
+                  // }}
                 />
                 {errors.email && touched.email && (
                   <div
