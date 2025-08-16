@@ -232,6 +232,20 @@ export default function Home() {
                     />
                   </a>
                 </SwiperSlide>
+                <SwiperSlide>
+                  <a href="https://t.me/premiumstorezcom" target="_blank">
+                    <img
+                      src="/img/flier.jpg"
+                      alt="flier"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        borderRadius: "20px",
+                      }}
+                    />
+                  </a>
+                </SwiperSlide>
                 {/* <SwiperSlide>
                   <a href="#" target="_blank">
                     <img
