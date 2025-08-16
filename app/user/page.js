@@ -193,7 +193,35 @@ export default function Home() {
                 <SwiperSlide>
                   <a href="https://t.me/premiumstorezcom" target="_blank">
                     <img
-                      src="/img/flier-1.png"
+                      src="/img/flier-1.jpg"
+                      alt="flier"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        borderRadius: "20px",
+                      }}
+                    />
+                  </a>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <a href="https://t.me/premiumstorezcom" target="_blank">
+                    <img
+                      src="/img/flier-2.jpg"
+                      alt="flier"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        borderRadius: "20px",
+                      }}
+                    />
+                  </a>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <a href="https://t.me/premiumstorezcom" target="_blank">
+                    <img
+                      src="/img/flier-3.jpg"
                       alt="flier"
                       style={{
                         width: "100%",
