@@ -164,8 +164,7 @@ export default function Home() {
                 color: "#CCCCCC",
               }}
             >
-              Leading marketplace to buy established Facebook accounts, Youtube
-              Followers, Theme pages etc.
+            Leading marketplace to buy established Facebook accounts, Instagram,TikTok accounts etc.
             </Typography>
 
             <Box
